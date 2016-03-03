@@ -1,0 +1,10 @@
+/.build/
+/.dist/
+/node_modules/
+/jspm_packages/
+
+npm-debug.log
+
+*.js.map
+/src/**/*.js
+/src/index.html

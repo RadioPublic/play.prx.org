@@ -1,2 +1,4 @@
 # embed.prx.org
-Embed player 
+Embed player
+
+`jspm bundle src/main - src/app ./.build/vendor.js --inject`

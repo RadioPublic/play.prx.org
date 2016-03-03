@@ -1,0 +1,47 @@
+{
+  "name": "embed.prx.org",
+  "version": "0.0.1",
+  "description": "",
+  "homepage": "http://embed.prx.org",
+  "bugs": "https://github.com/PRX/embed.prx.org/issues",
+  "license": "MIT",
+  "author": "PRX, Inc. <help@prx.org> (http://www.prx.org)",
+  "contributors": [
+    "Chris Kalafarski <chris.kalafarski@prx.org>",
+    "Chris Rhoden <chris@prx.org>"
+  ],
+  "repository": "https://github.com/PRX/embed.prx.org.git",
+  "scripts": {
+    "start": "gulp dev && lite-server --config=./config/dev.bs.config.json",
+    "test": "lite-server --config=./config/test.bs.config.json"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "angular2": "2.0.0-beta.7",
+    "gulp": "^3.9.1",
+    "gulp-jade": "^1.1.0",
+    "gulp-jspm": "^0.5.7",
+    "gulp-rename": "^1.2.2",
+    "gulp-s3": "^0.3.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "jasmine-core": "^2.4.1",
+    "jspm": "^0.16.30",
+    "lite-server": "^2.1.0",
+    "run-sequence": "^1.1.5",
+    "rxjs": "^5.0.0-beta.2"
+  },
+  "jspm": {
+    "configFile": "config/systemjs.config.js",
+    "dependencies": {
+      "angular2": "npm:angular2@^2.0.0-beta.7",
+      "plugin-typescript": "github:frankwallis/plugin-typescript@^4.0.1",
+      "reflect-metadata": "npm:reflect-metadata@^0.1.3",
+      "rxjs": "npm:rxjs@^5.0.0-beta.2",
+      "ts": "github:frankwallis/plugin-typescript@^4.0.1",
+      "zone.js": "npm:zone.js@^0.5.15"
+    },
+    "devDependencies": {
+      "typescript": "npm:typescript@^1.8.2"
+    }
+  }
+}
