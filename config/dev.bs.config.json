@@ -1,7 +1,6 @@
 {
   "server": {
     "baseDir": "./src",
-    "index": "index.html",
     "routes": {
       "/": "./"
     }

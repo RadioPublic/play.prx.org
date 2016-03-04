@@ -12,8 +12,10 @@
   ],
   "repository": "https://github.com/PRX/embed.prx.org.git",
   "scripts": {
-    "start": "gulp dev && lite-server --config=./config/dev.bs.config.json",
-    "test": "lite-server --config=./config/test.bs.config.json"
+    "deploy": "gulp deploy",
+    "start": "gulp start",
+    "start:dist": "gulp start:dist",
+    "test": "gulp test"
   },
   "dependencies": {},
   "devDependencies": {
