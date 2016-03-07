@@ -14,19 +14,19 @@ let shell         = require('gulp-shell');
 let sourcemaps    = require('gulp-sourcemaps');
 
 // Public tasks (serial)
-gulp.task('deploy', cb => run('build:dist', 'preinstall:dist', 'install:dist', 'postinstall:dist', cb));
-gulp.task('start', cb => run('build:dev', 'server:dev', cb));
-gulp.task('start:dist', cb => run('build:dist', 'server:dist', cb));
-gulp.task('test', cb => run('server:test', cb));
+gulp.task('deploy', (cb) => run('build:dist', 'preinstall:dist', 'install:dist', 'postinstall:dist', cb));
+gulp.task('start', (cb) => run('build:dev', 'server:dev', cb));
+gulp.task('start:dist', (cb) => run('build:dist', 'server:dist', cb));
+gulp.task('test', (cb) => run('server:test', cb));
 
 // Build tasks (parallel)
-gulp.task('build:dev', cb => run(['jade:index:dev', 'jspm:bundle:dev'], cb));
-gulp.task('build:dist', cb => run(['copy:assets:dist', 'copy:vendor:dist', 'jade:index:dist', 'jspm:bundle:dist'], cb));
+gulp.task('build:dev', (cb) => run(['jade:index:dev', 'jspm:bundle:dev'], cb));
+gulp.task('build:dist', (cb) => run(['copy:assets:dist', 'copy:vendor:dist', 'jade:index:dist', 'jspm:bundle:dist'], cb));
 
 // Deploy tasks (serial)
-gulp.task('install:dist', cb => run('push:s3:dist', cb));
-gulp.task('preinstall:dist', cb => run('version:bump', 'version:mark:dist', cb));
-gulp.task('postinstall:dist', cb => run('push:s3:version', cb));
+gulp.task('install:dist', (cb) => run('push:s3:dist', cb));
+gulp.task('preinstall:dist', (cb) => run('version:bump', 'version:mark:dist', cb));
+gulp.task('postinstall:dist', (cb) => run('push:s3:version', cb));
 
 // Server tasks
 gulp.task('server:dev', shell.task(['lite-server --config=config/dev.bs.config.json']));
@@ -35,7 +35,7 @@ gulp.task('server:test', shell.task(['lite-server --config=config/test.bs.config
 
 // JSPM bundle tasks
 gulp.task('jspm:bundle:dev', shell.task([
-  'jspm bundle src/main - [src/app/**/*] ./.dev/vendor.js --inject'
+  'jspm bundle src/main - [src/app/**/*] - [src/lib/**/*] ./.dev/vendor.js --inject'
 ]));
 
 gulp.task('jspm:bundle:dist', callback => {

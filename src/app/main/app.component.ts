@@ -1,7 +1,7 @@
 import {Component} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 
-import {PlayerComponent} from '../player/player.component';
+import {MainPlayerComponent} from '../player/main_player.component';
 
 @Component({
   directives: [ROUTER_DIRECTIVES],
@@ -9,8 +9,10 @@ import {PlayerComponent} from '../player/player.component';
   template: '<router-outlet></router-outlet>'
 })
 @RouteConfig([
-  { component: PlayerComponent, name: 'Player', path: '/' },
+  { component: MainPlayerComponent, name: 'Player', path: '/' }
 ])
 export class AppComponent {
-
+  constructor() {
+    console.log("WAT");
+  }
 }
