@@ -2,6 +2,10 @@
   "name": "embed.prx.org",
   "version": "0.0.1",
   "description": "",
+  "keywords": [
+    "PRX",
+    "Embed"
+  ],
   "homepage": "http://embed.prx.org",
   "bugs": "https://github.com/PRX/embed.prx.org/issues",
   "license": "MIT",
@@ -13,13 +17,15 @@
   "repository": "https://github.com/PRX/embed.prx.org.git",
   "scripts": {
     "deploy": "gulp deploy",
+    "git:hooks:pre-commit": "gulp git:hooks:pre-commit",
     "start": "gulp start",
     "start:dist": "gulp start:dist",
-    "test": "gulp test"
+    "test": "gulp test",
+    "postinstall": "gulp postinstall"
   },
   "dependencies": {},
   "devDependencies": {
-    "angular2": "2.0.0-beta.7",
+    "angular2": "^2.0.0-beta.7",
     "gulp": "^3.9.1",
     "gulp-bump": "^1.0.0",
     "gulp-file": "^0.2.0",
@@ -34,7 +40,11 @@
     "jspm": "^0.16.30",
     "lite-server": "^2.1.0",
     "run-sequence": "^1.1.5",
-    "rxjs": "^5.0.0-beta.2"
+    "rxjs": "^5.0.0-beta.2",
+    "typings": "^0.7.3"
+  },
+  "engines": {
+    "node": "^5.7.0"
   },
   "jspm": {
     "configFile": "config/systemjs.config.js",
