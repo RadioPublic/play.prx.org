@@ -15,7 +15,7 @@ const AUDIO_URL = 'audioUrl';
     <button *ngIf="paused" (click)="play()">Play {{audioUrl}}</button>
     <button *ngIf="!paused" (click)="pause()">Pause {{audioUrl}}</button>
     <progress-bar (seek)="onSeek($event)"
-      position="currentTime | async" maximum="duration | async"></progress-bar>
+      [position]="currentTime | async" [maximum]="duration | async"></progress-bar>
   `
 })
 export class PlayerComponent implements OnChanges, OnInit {
@@ -59,6 +59,6 @@ export class PlayerComponent implements OnChanges, OnInit {
   }
 
   onSeek(position: number) {
-    console.log(position);
+    this.player.currentTime = position;
   }
 }

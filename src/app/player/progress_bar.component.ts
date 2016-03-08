@@ -1,5 +1,6 @@
 import {
-  Component, Input, Output, OnChanges, EventEmitter, SimpleChange, ElementRef
+  Component, Input, Output, OnChanges, EventEmitter, SimpleChange, ElementRef,
+  HostListener
 } from 'angular2/core';
 
 const POSITION = 'position';
@@ -7,10 +8,23 @@ const MAXIMUM  = 'maximum';
 
 @Component({
   selector: 'progress-bar',
+  styles: [`
+    :host {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: var(--progress-track-background, #333);
+    }
+
+    bar {
+      background: var(--bar-background, #999);
+      display: block;
+      height: 100%;
+      pointer-events: none;
+    }
+  `],
   template: `
-    <div (click)="sendSeek($event)">
-      <div></div>
-    </div>
+    <bar [style.width.%]="currentPosition / currentMaximum * 100.0"></bar>
   `
 })
 export default class ProgressBarComponent implements OnChanges {
@@ -20,8 +34,6 @@ export default class ProgressBarComponent implements OnChanges {
 
   private currentPosition: number;
   private currentMaximum: number;
-
-  constructor(private element: ElementRef) { }
 
   ngOnChanges(changes: {[propName: string]: SimpleChange}) {
     for (let property in changes) {
@@ -35,8 +47,10 @@ export default class ProgressBarComponent implements OnChanges {
     }
   }
 
+  @HostListener('click', ['$event'])
   sendSeek(event: MouseEvent) {
-    let percentage = (event.clientX / this.element.nativeElement.clientWidth);
+    const el = <HTMLElement> event.target;
+    let percentage = (event.offsetX / el.clientWidth);
     this.seek.emit(percentage * this.currentMaximum);
   }
 }
