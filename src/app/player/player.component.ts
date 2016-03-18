@@ -14,8 +14,8 @@ const AUDIO_URL = 'audioUrl';
   template: `
     <button *ngIf="paused" (click)="play()">Play {{audioUrl}}</button>
     <button *ngIf="!paused" (click)="pause()" [disabled]="adPlaying">Pause {{audioUrl}}</button>
-    <progress-bar (seek)="onSeek($event)"
-      [position]="currentTime | async" [maximum]="duration | async"></progress-bar>
+    <progress-bar (seek)="onSeek($event)" (hold)="onHold($event)"
+      [value]="currentTime | async" [maximum]="duration | async"></progress-bar>
   `
 })
 export class PlayerComponent implements OnChanges, OnInit {
@@ -25,6 +25,8 @@ export class PlayerComponent implements OnChanges, OnInit {
   @Input() private audioUrl: string;
   private currentTime: Observable<number>;
   private duration: Observable<number>;
+
+  private isHeld: boolean;
 
   play() {
     this.player.play();
@@ -63,5 +65,15 @@ export class PlayerComponent implements OnChanges, OnInit {
 
   onSeek(position: number) {
     this.player.currentTime = position;
+  }
+
+  onHold(hold: boolean) {
+    if (hold && !this.paused) {
+      this.pause();
+      this.isHeld = true;
+    } else if (!hold && this.isHeld) {
+      this.play();
+      this.isHeld = false;
+    }
   }
 }
