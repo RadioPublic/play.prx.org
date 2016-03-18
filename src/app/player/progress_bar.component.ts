@@ -20,6 +20,7 @@ export default class ProgressBarComponent {
   @Output() hold = new EventEmitter<boolean>();
 
   private pointerRatio: number;
+  private previousMousemoveEvent: MouseEvent;
 
   private isScrubbing = false;
   private isHover = false;
@@ -64,28 +65,16 @@ export default class ProgressBarComponent {
   @HostListener('mousemove', ['$event'])
   onMousemove(event: MouseEvent) {
     if (event.target === this.el.nativeElement) {
-      const width = this.el.nativeElement.getBoundingClientRect().width;
-      this.pointerRatio = event.offsetX / width;
+      this.onBasicMousemove(event);
     } else if (event.target === this.el.nativeElement.querySelector('scrub-detector')) {
-      let barRect = this.el.nativeElement.getBoundingClientRect();
-
-      let inBarX = event.offsetX >= barRect.left && event.offsetX <= barRect.right;
-      let inBarY = event.offsetY >= barRect.top && event.offsetY <= barRect.bottom;
-      let inBar = inBarX && inBarY;
-
-      if (inBar) {
-        let xOffsetInBar = event.offsetX - barRect.left;
-        this.pointerRatio = xOffsetInBar / barRect.width;
-      } else {
-        // TODO Add variable-speed scrubbing
-        let garbageX = Math.min(Math.max(event.offsetX - barRect.left, 0), barRect.width);
-        this.pointerRatio = garbageX / barRect.width;
-      }
+      this.onFancyMousemove(event);
     }
 
     if (this.isScrubbing) {
       this.sendSeek(this.pointerRatio);
     }
+
+    this.previousMousemoveEvent = event;
   }
 
   @HostListener('mouseup', ['$event'])
@@ -109,5 +98,68 @@ export default class ProgressBarComponent {
   // Takes a ratio and emits the position
   private sendSeek(ratio: number) {
     this.seek.emit(ratio * this.maximum);
+  }
+
+  private onBasicMousemove(event: MouseEvent) {
+    const width = this.el.nativeElement.getBoundingClientRect().width;
+    this.pointerRatio = event.offsetX / width;
+  }
+
+  private onVariableSpeedMousemove(event: MouseEvent) {
+    let barRect = this.el.nativeElement.getBoundingClientRect();
+
+    const secondsPerPixel = this.maximum / barRect.width;
+
+    const max = 50;
+    let factor: number;
+
+    if (event.offsetY > barRect.bottom) {
+      let amt = Math.min(max, event.offsetY - barRect.bottom);
+      factor = amt / max;
+    } else if (event.offsetY < barRect.top) {
+      let amt = Math.min(max, barRect.top - event.offsetY);
+      factor = amt / max;
+    } else {
+      factor = 0;
+    }
+
+    let rate = 1.0 - (0.95 * factor);
+
+    let deltaX = 0;
+
+    if (this.previousMousemoveEvent) {
+      deltaX = event.offsetX - this.previousMousemoveEvent.offsetX;
+    }
+
+    let adjDeltaX = deltaX * rate;
+
+    let deltaPosition = adjDeltaX * secondsPerPixel;
+    console.log(deltaPosition);
+
+    let deltaRatio = deltaPosition / this.maximum;
+
+    let newPer = this.progressRatio + deltaRatio;
+
+    this.pointerRatio = newPer;
+
+
+    // TODO Add variable-speed scrubbing
+    // let garbageX = Math.min(Math.max(event.offsetX - barRect.left, 0), barRect.width);
+    // this.pointerRatio = garbageX / barRect.width;
+  }
+
+  private onFancyMousemove(event: MouseEvent) {
+    let barRect = this.el.nativeElement.getBoundingClientRect();
+
+    let inBarX = event.offsetX >= barRect.left && event.offsetX <= barRect.right;
+    let inBarY = event.offsetY >= barRect.top && event.offsetY <= barRect.bottom;
+    let inBar = inBarX && inBarY;
+
+    if (inBar) {
+      let xOffsetInBar = event.offsetX - barRect.left;
+      this.pointerRatio = xOffsetInBar / barRect.width;
+    } else {
+      this.onVariableSpeedMousemove(event);
+    }
   }
 }

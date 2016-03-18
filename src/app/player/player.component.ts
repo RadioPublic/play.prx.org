@@ -67,6 +67,10 @@ export class PlayerComponent implements OnChanges, OnInit {
     this.player.currentTime = position;
   }
 
+  onJump(seconds: number) {
+    this.player.currentTime = (this.player.currentTime + seconds);
+  }
+
   onHold(hold: boolean) {
     if (hold && !this.paused) {
       this.pause();
