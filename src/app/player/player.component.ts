@@ -40,6 +40,7 @@ export class PlayerComponent implements OnChanges, OnInit {
 
   ngOnInit() {
     this.player = new DovetailAudio(this.audioUrl);
+    window['player'] = this.player;
     this.player.addEventListener('adstart', () => this.adPlaying = true);
     this.player.addEventListener('adend', () => this.adPlaying = false);
     this.duration = Observable.create((observer: Observer<number>) => {

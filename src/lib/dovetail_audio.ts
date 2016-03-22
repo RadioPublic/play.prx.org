@@ -97,7 +97,20 @@ export class DovetailAudio extends ExtendableAudio {
   }
 
   set currentTime(position: number) {
-    console.log('not yet!');
+    if (this.duration >= position) {
+      let soFar = 0, paused = this.paused;
+      for (let i = 0; i < this.arrangement.entries.length; i++) {
+        let duration = this.arrangement.entries[i].duration;
+        if (soFar + duration > position) {
+          this.skipToFile(i);
+          this._audio.currentTime = position - soFar;
+          if (!paused) { this.play(); }
+          return;
+        } else {
+          soFar += duration;
+        }
+      }
+    }
   }
 
   set src(url: string) {
