@@ -22,19 +22,37 @@ class CancelledError extends Error { }
 
 export type DovetailFetchError = NonDovetailUrlError | HttpRequestError | CancelledError;
 
+export interface ArrangementEntry {
+  id: string;
+  type: "original"|"ad"|"sonicId"|"billboard"|"houseAd";
+  duration?: number;
+  audioUrl?: string;
+}
+
+export interface DovetailResponse {
+  program: {
+    id: string;
+    siteId: number;
+    networkId: number;
+  };
+  arrangement: ArrangementEntry[];
+  request: AdzerkRequest;
+}
+
 export class DovetailFetcher {
-  private activePromise: Promise<AdzerkRequest>;
+  private activePromise: Promise<DovetailResponse>;
   private currentRequest: XMLHttpRequest;
   private currentUrl: string;
-  private toResolve: (value?: AdzerkRequest | PromiseLike<AdzerkRequest>) => void;
+  private toResolve: (value?: DovetailResponse | PromiseLike<DovetailResponse>) => void;
   private toReject: (reason?: DovetailFetchError) => any;
 
   public fetch(url: string) {
+    url = url.replace(/([^\/]*\/\/)[^/]*podtrac.com\/[^/]*/, '$1');
     if (this.currentUrl !== url) {
       this.cancel();
       this.currentUrl = url;
 
-      this.activePromise = new Promise<AdzerkRequest>((resolve, reject) => {
+      this.activePromise = new Promise<DovetailResponse>((resolve, reject) => {
         this.toResolve = resolve;
         this.toReject = reject;
 
@@ -60,7 +78,16 @@ export class DovetailFetcher {
     if (request == this.currentRequest && request.readyState >= 2) {
       if (request.getResponseHeader(CONTENT_TYPE) == APPLICATION_JSON) {
         if (request.readyState >= 4) {
-          this.toResolve(<AdzerkRequest> JSON.parse(request.responseText).request);
+          let response =  JSON.parse(request.responseText) as DovetailResponse;
+          for (let entry of response.arrangement) {
+            if (!entry.type) {
+              entry.type = 'ad';
+            }
+            if (typeof entry.duration == 'string') {
+              entry.duration = parseFloat('' + entry.duration);
+            }
+          }
+          this.toResolve(response);
         }
       } else {
         request.abort();

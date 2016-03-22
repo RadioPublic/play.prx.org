@@ -35,7 +35,7 @@ gulp.task('server:test', shell.task(['lite-server --config=config/test.bs.config
 
 // JSPM bundle tasks
 gulp.task('jspm:bundle:dev', shell.task([
-  'jspm bundle src/main - [src/app/**/*] ./.dev/vendor.js --inject'
+  'jspm bundle src - [src/app/**/*] - [src/lib/**/*] - [src/javascript/**/*] ./.dev/vendor.js --inject'
 ]));
 
 gulp.task('jspm:bundle:dist', () => {

@@ -12,19 +12,37 @@ System.config({
 
   packages: {
     "src": {
+      "main": "./main.ts",
+      "meta": {
+        "*.ts": {
+          "loader": "ts"
+        }
+      }
+    },
+    "src/lib": {
       "defaultExtension": "ts",
       "meta": {
         "*.ts": {
           "loader": "ts"
         }
       }
+    },
+    "src/app": {
+      "defaultExtension": "ts",
+      "meta": {
+        "*.ts": {
+          "loader": "ts"
+        }
+      }
+    },
+    "src/javascript": {
+      "defaultExtension": "js"
     }
   },
 
   map: {
     "angular2": "npm:angular2@2.0.0-beta.8",
     "es6-shim": "github:es-shims/es6-shim@0.34.4",
-    "evaporate": "npm:evaporate@0.0.2",
     "plugin-typescript": "github:frankwallis/plugin-typescript@4.0.2",
     "reflect-metadata": "npm:reflect-metadata@0.1.3",
     "rxjs": "npm:rxjs@5.0.0-beta.2",
@@ -217,9 +235,6 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:es6-shim@0.33.13": {
-      "process": "github:jspm/nodelibs-process@0.1.2"
-    },
-    "npm:evaporate@0.0.2": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:evp_bytestokey@1.0.0": {

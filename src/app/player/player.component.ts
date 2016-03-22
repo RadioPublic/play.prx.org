@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges, SimpleChange, OnInit} from 'angular2/core';
 import {AsyncPipe} from 'angular2/common';
-import {DovetailPlayer} from '../../lib/dovetail-player';
+import {DovetailAudio} from '../../lib/dovetail_audio';
 import {Observable, Observer} from 'rxjs/Rx';
 import ProgressBarComponent from './progress_bar.component';
 
@@ -13,13 +13,14 @@ const AUDIO_URL = 'audioUrl';
   styleUrls: ['src/app/player/player.component.css'],
   template: `
     <button *ngIf="paused" (click)="play()">Play {{audioUrl}}</button>
-    <button *ngIf="!paused" (click)="pause()">Pause {{audioUrl}}</button>
+    <button *ngIf="!paused" (click)="pause()" [disabled]="adPlaying">Pause {{audioUrl}}</button>
     <progress-bar (seek)="onSeek($event)"
-      [position]="currentTime | async" [maximum]="duration | async"></progress-bar>
+      [position]="currentTime | async " [maximum]="duration | async"></progress-bar>
   `
 })
 export class PlayerComponent implements OnChanges, OnInit {
-  private player: DovetailPlayer;
+  private player: DovetailAudio;
+  private adPlaying = false;
 
   @Input() private audioUrl: string;
   private currentTime: Observable<number>;
@@ -38,7 +39,9 @@ export class PlayerComponent implements OnChanges, OnInit {
   }
 
   ngOnInit() {
-    this.player = new DovetailPlayer(this.audioUrl);
+    this.player = new DovetailAudio(this.audioUrl);
+    this.player.addEventListener('adstart', () => this.adPlaying = true);
+    this.player.addEventListener('adend', () => this.adPlaying = false);
     this.duration = Observable.create((observer: Observer<number>) => {
       observer.next(0);
       this.player.ondurationchange = (event) => observer.next(this.player.duration);
@@ -46,7 +49,7 @@ export class PlayerComponent implements OnChanges, OnInit {
     });
     this.currentTime = Observable.create((observer: Observer<number>) => {
       observer.next(0);
-      this.player.ontimeupdate = (event) => observer.next(this.player.currentTime);
+      this.player.ontimeupdate = () => observer.next(this.player.currentTime);
       return (): void => this.player.ontimeupdate = undefined;
     });
   }
