@@ -15,7 +15,7 @@ const AUDIO_URL = 'audioUrl';
     <button *ngIf="paused" (click)="play()">Play {{audioUrl}}</button>
     <button *ngIf="!paused" (click)="pause()" [disabled]="adPlaying">Pause {{audioUrl}}</button>
     <progress-bar (seek)="onSeek($event)"
-      [position]="currentTime | async " [maximum]="duration | async"></progress-bar>
+      [position]="currentTime | async" [maximum]="duration | async"></progress-bar>
   `
 })
 export class PlayerComponent implements OnChanges, OnInit {
@@ -40,12 +40,11 @@ export class PlayerComponent implements OnChanges, OnInit {
 
   ngOnInit() {
     this.player = new DovetailAudio(this.audioUrl);
-    window['player'] = this.player;
     this.player.addEventListener('adstart', () => this.adPlaying = true);
     this.player.addEventListener('adend', () => this.adPlaying = false);
     this.duration = Observable.create((observer: Observer<number>) => {
       observer.next(0);
-      this.player.ondurationchange = (event) => observer.next(this.player.duration);
+      this.player.ondurationchange = () => observer.next(this.player.duration);
       return (): void => this.player.ondurationchange = undefined;
     });
     this.currentTime = Observable.create((observer: Observer<number>) => {
