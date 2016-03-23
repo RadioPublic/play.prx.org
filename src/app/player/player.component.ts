@@ -84,7 +84,6 @@ export class PlayerComponent implements OnChanges, OnInit {
   }
 
   handleHotkey(event: KeyboardEvent): void {
-    // console.log(event.code);
     switch (event.code) {
       case 'Space':
         this.togglePlayPause();
@@ -105,46 +104,46 @@ export class PlayerComponent implements OnChanges, OnInit {
         this.seekBy(5);
         break;
       case 'Comma':
-        this.seekBy(-0.0334);
+        if (this.paused) { this.seekBy(-1 / 30); }
         break;
       case 'Period':
-        this.seekBy(0.0334);
+        if (this.paused) { this.seekBy(1 / 30); }
         break;
       case 'Home':
-        this.jumpToRelative(0);
+        this.seekTo(0);
         break;
       case 'End':
-        this.jumpToRelative(1);
+        this.seekToRelative(1);
         break;
       case 'Digit1':
-        this.jumpToRelative(0.1);
+        this.seekToRelative(0.1);
         break;
       case 'Digit2':
-        this.jumpToRelative(0.2);
+        this.seekToRelative(0.2);
         break;
       case 'Digit3':
-        this.jumpToRelative(0.3);
+        this.seekToRelative(0.3);
         break;
       case 'Digit4':
-        this.jumpToRelative(0.4);
+        this.seekToRelative(0.4);
         break;
       case 'Digit5':
-        this.jumpToRelative(0.5);
+        this.seekToRelative(0.5);
         break;
       case 'Digit6':
-        this.jumpToRelative(0.6);
+        this.seekToRelative(0.6);
         break;
       case 'Digit7':
-        this.jumpToRelative(0.7);
+        this.seekToRelative(0.7);
         break;
       case 'Digit8':
-        this.jumpToRelative(0.8);
+        this.seekToRelative(0.8);
         break;
       case 'Digit9':
-        this.jumpToRelative(0.9);
+        this.seekToRelative(0.9);
         break;
       case 'Digit0':
-        this.jumpToRelative(0);
+        this.seekTo(0);
         break;
       default:
         break;
@@ -171,7 +170,7 @@ export class PlayerComponent implements OnChanges, OnInit {
     this.player.currentTime = this.protectedTime(position);
   }
 
-  private jumpToRelative(ratio: number) {
+  private seekToRelative(ratio: number) {
     this.seekTo(this.player.duration * ratio);
   }
 }
