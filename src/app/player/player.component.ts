@@ -1,22 +1,20 @@
 import {Component, Input, OnChanges, SimpleChange, OnInit} from 'angular2/core';
+import {RouteParams} from 'angular2/router';
 import {AsyncPipe} from 'angular2/common';
 import {DovetailAudio} from '../../lib/dovetail_audio';
 import {Observable, Observer} from 'rxjs/Rx';
+import 'rxjs/add/operator/share';
 import ProgressBarComponent from './progress_bar.component';
+import TimeIndicatorComponent from './time_indicator.component';
 
 const AUDIO_URL = 'audioUrl';
 
 @Component({
-  directives: [ProgressBarComponent],
+  directives: [ProgressBarComponent, TimeIndicatorComponent],
   pipes: [AsyncPipe],
   selector: 'player',
   styleUrls: ['src/app/player/player.component.css'],
-  template: `
-    <button *ngIf="paused" (click)="play()">Play {{audioUrl}}</button>
-    <button *ngIf="!paused" (click)="pause()" [disabled]="adPlaying">Pause {{audioUrl}}</button>
-    <progress-bar (seek)="onSeek($event)" (hold)="onHold($event)"
-      [value]="currentTime | async" [maximum]="duration | async"></progress-bar>
-  `
+  templateUrl: 'src/app/player/player.component.html'
 })
 export class PlayerComponent implements OnChanges, OnInit {
   private player: DovetailAudio;
@@ -27,6 +25,8 @@ export class PlayerComponent implements OnChanges, OnInit {
   private duration: Observable<number>;
 
   private isHeld: boolean;
+
+  constructor(private routeParams: RouteParams) {}
 
   play() {
     this.player.play();
@@ -41,19 +41,25 @@ export class PlayerComponent implements OnChanges, OnInit {
   }
 
   ngOnInit() {
+<<<<<<< 13c677762913f893e8f42c785507ad93bf3d3052
     this.player = new DovetailAudio(this.audioUrl);
     this.player.addEventListener('adstart', () => this.adPlaying = true);
     this.player.addEventListener('adend', () => this.adPlaying = false);
+=======
+    this.player = new DovetailPlayer(this.audioUrl);
+
+>>>>>>> Start building out embed player view
     this.duration = Observable.create((observer: Observer<number>) => {
       observer.next(0);
       this.player.ondurationchange = () => observer.next(this.player.duration);
       return (): void => this.player.ondurationchange = undefined;
-    });
+    }).share();
+
     this.currentTime = Observable.create((observer: Observer<number>) => {
       observer.next(0);
       this.player.ontimeupdate = () => observer.next(this.player.currentTime);
       return (): void => this.player.ontimeupdate = undefined;
-    });
+    }).share();
   }
 
   ngOnChanges(changes: { [key: string]: SimpleChange }) {

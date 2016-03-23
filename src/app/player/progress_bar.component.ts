@@ -8,18 +8,24 @@ import {
   selector: 'progress-bar',
   styleUrls: ['src/app/player/progress_bar.component.css'],
   template: `
-    <bar [style.width.%]="progressPercentage"></bar>
-    <highlight *ngIf="isHover && !isScrubbing" [style.width.%]="highlightPercentage"></highlight>
-    <scrub-detector [style.display]="isScrubbing ? 'block' : 'none'"></scrub-detector>
+    <bar
+      [style.width.%]="progress * 100.0"></bar>
+    <highlight
+      *ngIf="isHover && !isScrubbing"
+      [style.width.%]="provisionalProgress * 100.0"></highlight>
+    <scrub-detector
+      [style.display]="isScrubbing ? 'block' : 'none'"></scrub-detector>
   `
 })
 export default class ProgressBarComponent {
-  @Input() value: number;
-  @Input() maximum: number;
-  @Output() seek = new EventEmitter<number>();
-  @Output() hold = new EventEmitter<boolean>();
+  @Input() value: number = 0;
+  @Input() minimum: number = 0;
+  @Input() maximum: number = 1;
 
-  private pointerRatio: number;
+  @Output() seek = new EventEmitter<number>();
+  @Output() scrubbing = new EventEmitter<boolean>();
+
+  private provisionalValue: number;
   private previousMousemoveEvent: MouseEvent;
 
   private isScrubbing = false;
@@ -27,20 +33,16 @@ export default class ProgressBarComponent {
 
   constructor(private el: ElementRef) {}
 
-  private get progressRatio() {
-    if (!this.maximum) {
-      return 0.0;
-    }
-
-    return this.value / this.maximum;
+  private get range() {
+    return this.maximum - this.minimum;
   }
 
-  private get progressPercentage() {
-    return this.progressRatio * 100.0;
+  private get progress() {
+    return this.value / this.range;
   }
 
-  private get highlightPercentage() {
-    return this.pointerRatio * 100.0;
+  private get provisionalProgress() {
+    return this.provisionalValue / this.range;
   }
 
   @HostListener('mouseover', ['$event'])
@@ -53,12 +55,13 @@ export default class ProgressBarComponent {
   @HostListener('mousedown', ['$event'])
   onMousedown(event: MouseEvent) {
     this.isScrubbing = true;
-    this.hold.emit(true);
+    this.scrubbing.emit(true);
 
     if (event.target === this.el.nativeElement) {
       const width = this.el.nativeElement.getBoundingClientRect().width;
-      this.pointerRatio = event.offsetX / width;
-      this.sendSeek(this.pointerRatio);
+      const ratio = event.offsetX / width;
+      this.provisionalValue = this.range * ratio;
+      this.sendSeek();
     }
   }
 
@@ -71,7 +74,7 @@ export default class ProgressBarComponent {
     }
 
     if (this.isScrubbing) {
-      this.sendSeek(this.pointerRatio);
+      this.sendSeek();
     }
 
     this.previousMousemoveEvent = event;
@@ -83,9 +86,9 @@ export default class ProgressBarComponent {
 
     // During a click (ie, no mousemove) this seek ends up being
     ///a dupe of the seek from mousedown
-    this.sendSeek(this.pointerRatio);
+    this.sendSeek();
 
-    this.hold.emit(false);
+    this.scrubbing.emit(false);
   }
 
   @HostListener('mouseout', ['$event'])
@@ -95,20 +98,16 @@ export default class ProgressBarComponent {
     }
   }
 
-  // Takes a ratio and emits the position
-  private sendSeek(ratio: number) {
-    this.seek.emit(ratio * this.maximum);
-  }
-
   private onBasicMousemove(event: MouseEvent) {
     const width = this.el.nativeElement.getBoundingClientRect().width;
-    this.pointerRatio = event.offsetX / width;
+    const ratio = event.offsetX / width;
+    this.provisionalValue = this.range * ratio;
   }
 
   private onVariableSpeedMousemove(event: MouseEvent) {
     let barRect = this.el.nativeElement.getBoundingClientRect();
 
-    const secondsPerPixel = this.maximum / barRect.width;
+    const secondsPerPixel = this.range / barRect.width;
 
     const max = 50;
     let factor: number;
@@ -125,27 +124,15 @@ export default class ProgressBarComponent {
 
     let rate = 1.0 - (0.95 * factor);
 
-    let deltaX = 0;
+    let mouseDeltaX = 0;
 
     if (this.previousMousemoveEvent) {
-      deltaX = event.offsetX - this.previousMousemoveEvent.offsetX;
+      mouseDeltaX = event.offsetX - this.previousMousemoveEvent.offsetX;
     }
 
-    let adjDeltaX = deltaX * rate;
-
-    let deltaPosition = adjDeltaX * secondsPerPixel;
-    console.log(deltaPosition);
-
-    let deltaRatio = deltaPosition / this.maximum;
-
-    let newPer = this.progressRatio + deltaRatio;
-
-    this.pointerRatio = newPer;
-
-
-    // TODO Add variable-speed scrubbing
-    // let garbageX = Math.min(Math.max(event.offsetX - barRect.left, 0), barRect.width);
-    // this.pointerRatio = garbageX / barRect.width;
+    let adjMouseDeltaX = mouseDeltaX * rate;
+    let deltaValue = adjMouseDeltaX * secondsPerPixel;
+    this.provisionalValue = this.value + deltaValue;
   }
 
   private onFancyMousemove(event: MouseEvent) {
@@ -156,10 +143,15 @@ export default class ProgressBarComponent {
     let inBar = inBarX && inBarY;
 
     if (inBar) {
-      let xOffsetInBar = event.offsetX - barRect.left;
-      this.pointerRatio = xOffsetInBar / barRect.width;
+      const xOffsetInBar = event.offsetX - barRect.left;
+      const ratio = xOffsetInBar / barRect.width;
+      this.provisionalValue = this.range * ratio;
     } else {
       this.onVariableSpeedMousemove(event);
     }
+  }
+
+  private sendSeek() {
+    this.seek.emit(this.provisionalValue);
   }
 }
