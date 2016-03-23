@@ -18,6 +18,7 @@
   </div>
   <div class="right">
     <progress-bar (seek)="onSeek($event)" (scrubbing)="onHold($event)"
+      (window:keydown)="handleHotkey($event)"
       [value]="currentTime | async" [maximum]="duration | async"></progress-bar>
     <time-indicator class="current-time" [seconds]="currentTime | async"></time-indicator>
     <time-indicator class="maximum-time" [seconds]="duration | async"></time-indicator>
