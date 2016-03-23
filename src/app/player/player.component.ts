@@ -77,7 +77,8 @@ export class PlayerComponent implements OnChanges, OnInit {
   }
 
   handleHotkey(event: KeyboardEvent): void {
-    switch (event.code) {
+    const key = event.code || event.key;
+    switch (key) {
       case 'Space':
         this.togglePlayPause();
         break;
