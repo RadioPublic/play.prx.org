@@ -63,11 +63,7 @@ export class PlayerComponent implements OnChanges, OnInit {
   }
 
   onSeek(position: number) {
-    this.player.currentTime = position;
-  }
-
-  onJump(seconds: number) {
-    this.player.currentTime = (this.player.currentTime + seconds);
+    this.seekTo(position);
   }
 
   onHold(hold: boolean) {
@@ -78,5 +74,97 @@ export class PlayerComponent implements OnChanges, OnInit {
       this.play();
       this.isHeld = false;
     }
+  }
+
+  handleHotkey(event: KeyboardEvent): void {
+    // console.log(event.code);
+    switch (event.code) {
+      case 'Space':
+        this.togglePlayPause();
+        break;
+      case 'KeyK':
+        this.togglePlayPause();
+        break;
+      case 'KeyJ':
+        this.seekBy(-10);
+        break;
+      case 'KeyL':
+        this.seekBy(10);
+        break;
+      case 'ArrowLeft':
+        this.seekBy(-5);
+        break;
+      case 'ArrowRight':
+        this.seekBy(5);
+        break;
+      case 'Comma':
+        this.seekBy(-0.0334);
+        break;
+      case 'Period':
+        this.seekBy(0.0334);
+        break;
+      case 'Home':
+        this.jumpToRelative(0);
+        break;
+      case 'End':
+        this.jumpToRelative(1);
+        break;
+      case 'Digit1':
+        this.jumpToRelative(0.1);
+        break;
+      case 'Digit2':
+        this.jumpToRelative(0.2);
+        break;
+      case 'Digit3':
+        this.jumpToRelative(0.3);
+        break;
+      case 'Digit4':
+        this.jumpToRelative(0.4);
+        break;
+      case 'Digit5':
+        this.jumpToRelative(0.5);
+        break;
+      case 'Digit6':
+        this.jumpToRelative(0.6);
+        break;
+      case 'Digit7':
+        this.jumpToRelative(0.7);
+        break;
+      case 'Digit8':
+        this.jumpToRelative(0.8);
+        break;
+      case 'Digit9':
+        this.jumpToRelative(0.9);
+        break;
+      case 'Digit0':
+        this.jumpToRelative(0);
+        break;
+      default:
+        break;
+    }
+  }
+
+  private togglePlayPause() {
+    if (this.paused) {
+        this.play();
+    } else {
+      this.pause();
+    }
+  }
+
+  private protectedTime(position: number) {
+    return Math.min(Math.max(0, position), this.player.duration);
+  }
+
+  private seekBy(seconds: number) {
+    this.player.currentTime = this.protectedTime(this.player.currentTime + seconds);
+  }
+
+  private seekTo(position: number) {
+    this.player.currentTime = this.protectedTime(position);
+  }
+
+  private jumpToRelative(ratio: number) {
+    this.seekTo(this.player.duration * ratio);
   }
 }
