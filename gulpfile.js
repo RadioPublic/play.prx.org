@@ -50,7 +50,10 @@ gulp.task('jspm:bundle:dist', () => {
 
 gulp.task('jspm:install', shell.task(['jspm install']));
 
-gulp.task('jspm:unbundle', shell.task(['jspm unbundle']));
+gulp.task('jspm:unbundle', shell.task([
+  `git diff --name-only --cached | grep config/systemjs.config.js > /dev/null &&
+   (jspm unbundle; git add config/systemjs.config.js)`
+]));
 
 // Jade compile tasks
 gulp.task('jade:index:dev', () => {

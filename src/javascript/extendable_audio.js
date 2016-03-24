@@ -2,9 +2,10 @@
 
 const SKIP_PROPERTIES = ['dispatchEvent', 'addEventListener', 'removeEventListener'];
 
-export class ExtendableAudio extends DocumentFragment {
+export class ExtendableAudio {
   constructor(url) {
     this._audio = new Audio();
+    // This is our proxy for DOM events
     this._documentFragment = document.createDocumentFragment();
     this._toSetUrl = url;
     var proto = Object.getPrototypeOf(this);

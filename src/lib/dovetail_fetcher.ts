@@ -1,4 +1,11 @@
 import {AdzerkRequest} from './adzerk';
+import {DovetailArrangementEntry} from './dovetail_arrangement';
+import {
+  DovetailFetchError,
+  CancelledError,
+  NonDovetailUrlError,
+  HttpRequestError
+} from './dovetail_errors';
 
 const GET = 'GET';
 const ACCEPT = 'Accept';
@@ -6,36 +13,13 @@ const MIME_TYPE = 'application/vnd.dovetail.v1+json';
 const CONTENT_TYPE = 'Content-Type';
 const APPLICATION_JSON = 'application/json';
 
-class NonDovetailUrlError extends Error {
-  constructor(public url: string) {
-    super(`Not a dovetail URL: ${url}`);
-  }
-}
-
-class HttpRequestError extends Error {
-  constructor(private statusText: string, public url: string) {
-    super(`${statusText}: ${url}`);
-  }
-}
-
-class CancelledError extends Error { }
-
-export type DovetailFetchError = NonDovetailUrlError | HttpRequestError | CancelledError;
-
-export interface ArrangementEntry {
-  id: string;
-  type: "original"|"ad"|"sonicId"|"billboard"|"houseAd";
-  duration?: number;
-  audioUrl?: string;
-}
-
 export interface DovetailResponse {
   program: {
     id: string;
     siteId: number;
     networkId: number;
   };
-  arrangement: ArrangementEntry[];
+  arrangement: DovetailArrangementEntry[];
   request: AdzerkRequest;
 }
 

@@ -1,7 +1,9 @@
 import {AdzerkRequest, AdzerkResponse} from './adzerk';
 import {AdzerkFetcher} from './adzerk_fetcher';
 import {ExtendableAudio} from '../javascript/extendable_audio';
-import {DovetailFetcher, DovetailResponse, ArrangementEntry} from './dovetail_fetcher';
+import {DovetailFetcher, DovetailResponse} from './dovetail_fetcher';
+import {DovetailAudioEvent} from './dovetail_audio_event';
+import {DovetailArrangement, DovetailArrangementEntry} from './dovetail_arrangement';
 
 type AllUnion = [
   DovetailResponse | PromiseLike<DovetailResponse>,
@@ -9,11 +11,6 @@ type AllUnion = [
 ];
 
 type AllResult = [DovetailResponse, AdzerkResponse];
-
-interface Arrangement {
-  entries: ArrangementEntry[];
-  duration?: number;
-}
 
 function sumDuration(collector: number, entry: {duration?: number}) {
   return collector + entry.duration || 0;
@@ -25,30 +22,8 @@ const ENDED = 'ended';
 const AD_START = 'adstart';
 const AD_END = 'adend';
 
-class DovetailEvent {
-  static build(eventName: string, audio: DovetailAudio, extras?: {}) {
-    let event = new Event(eventName);
-    Object.defineProperty(event, 'target', {
-      value: audio,
-      writable: false
-    });
-    Object.defineProperty(event, 'currentTarget', {
-      value: audio,
-      writable: false
-    });
-    if (extras) {
-      for (let property in extras) {
-        if (extras.hasOwnProperty(property)) {
-          event[property] = extras[property];
-        }
-      }
-    }
-    return event;
-  }
-}
-
 export class DovetailAudio extends ExtendableAudio {
-  private arrangement: Arrangement = {entries: []};
+  private arrangement: DovetailArrangement = {entries: []};
   private index: number = 0;
 
   private _dovetailLoading = false;
@@ -144,14 +119,17 @@ export class DovetailAudio extends ExtendableAudio {
       error => {
         if (this.currentAdzerkPromise == promise && retries > 0) {
           return this.getArrangement(adzerkRequestBody, retries - 1);
+        } else {
+          throw error;
         }
       }
     );
     return this.currentAdzerkPromise;
   }
 
-  private calculateArrangement(arrangementTemplate: ArrangementEntry[], response: AdzerkResponse) {
-    let result: ArrangementEntry[] = [];
+  private calculateArrangement(
+    arrangementTemplate: DovetailArrangementEntry[], response: AdzerkResponse) {
+    let result: DovetailArrangementEntry[] = [];
     for (let entry of arrangementTemplate) {
       if (response.decisions[entry.id]) {
         result.push(entry);
@@ -164,7 +142,7 @@ export class DovetailAudio extends ExtendableAudio {
     return result;
   }
 
-  private setSegments(segments: ArrangementEntry[]) {
+  private setSegments(segments: DovetailArrangementEntry[]) {
     this.arrangement = {entries: segments};
     this.skipToFile(0, this.resumeOnLoad);
   }
@@ -174,7 +152,7 @@ export class DovetailAudio extends ExtendableAudio {
     if (this._audio.src == this.arrangement.entries[this.index].audioUrl) {
       this.arrangement.entries[this.index].duration = this._audio.duration;
       this.arrangement.duration = undefined;
-      let e = DovetailEvent.build(DURATION_CHANGE, this);
+      let e = DovetailAudioEvent.build(DURATION_CHANGE, this);
       this.emit(e);
       if (this.ondurationchange) { this.ondurationchange(e); }
     }
@@ -184,7 +162,7 @@ export class DovetailAudio extends ExtendableAudio {
     event.stopImmediatePropagation();
     if (this._audio.src == this.arrangement.entries[this.index].audioUrl) {
       if (!this.skipToFile(this.index + 1, true)) {
-        let e = DovetailEvent.build(ENDED, this);
+        let e = DovetailAudioEvent.build(ENDED, this);
         this.emit(e);
       }
     }
@@ -192,7 +170,7 @@ export class DovetailAudio extends ExtendableAudio {
 
   private listenerOnTimeUpdate(event: Event) {
     event.stopImmediatePropagation();
-    let e = DovetailEvent.build(TIME_UPDATE, this);
+    let e = DovetailAudioEvent.build(TIME_UPDATE, this);
     this.emit(e);
     if (this.ontimeupdate) {
       this.ontimeupdate(e);
@@ -208,9 +186,9 @@ export class DovetailAudio extends ExtendableAudio {
       }
 
       if (this.arrangement.entries[index].type == 'ad') {
-        this.emit(DovetailEvent.build(AD_START, this));
+        this.emit(DovetailAudioEvent.build(AD_START, this));
       } else {
-        this.emit(DovetailEvent.build(AD_END, this));
+        this.emit(DovetailAudioEvent.build(AD_END, this));
       }
 
       return true;
