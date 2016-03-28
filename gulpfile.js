@@ -35,7 +35,7 @@ gulp.task('server:test', shell.task(['lite-server --config=config/test.bs.config
 
 // JSPM bundle tasks
 gulp.task('jspm:bundle:dev', shell.task([
-  'jspm bundle src/main - [src/app/**/*] ./.dev/vendor.js --inject'
+  'jspm bundle src - [src/app/**/*] - [src/lib/**/*] - [src/javascript/**/*] ./.dev/vendor.js --inject'
 ]));
 
 gulp.task('jspm:bundle:dist', () => {
@@ -50,7 +50,10 @@ gulp.task('jspm:bundle:dist', () => {
 
 gulp.task('jspm:install', shell.task(['jspm install']));
 
-gulp.task('jspm:unbundle', shell.task(['jspm unbundle']));
+gulp.task('jspm:unbundle', shell.task([
+  `(git diff --name-only --cached | grep config/systemjs.config.js > /dev/null &&
+   (jspm unbundle; git add config/systemjs.config.js)) || true`
+]));
 
 // Jade compile tasks
 gulp.task('jade:index:dev', () => {

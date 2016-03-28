@@ -1,6 +1,6 @@
 {
   "name": "embed.prx.org",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "keywords": [
     "PRX",
@@ -41,6 +41,7 @@
     "lite-server": "^2.1.0",
     "run-sequence": "^1.1.5",
     "rxjs": "^5.0.0-beta.2",
+    "typescript": "^1.8.9",
     "typings": "^0.7.3"
   },
   "engines": {
