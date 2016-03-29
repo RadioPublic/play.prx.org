@@ -16,6 +16,12 @@ html
       script(src='config/systemjs.config.js')
       script.
         System.import('src').then(null, console.error.bind(console));
+    
+    script.
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-164824-54', 'auto');
+      ga('send', 'pageview');
+    script(async src='https://www.google-analytics.com/analytics.js')
 
   body
     embed-app

@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, SimpleChange, OnInit} from 'angular2/core';
 import {RouteParams} from 'angular2/router';
 import {AsyncPipe} from 'angular2/common';
 import {DovetailAudio} from '../../lib/dovetail_audio';
+import {Logger} from '../../lib/logger';
 import {Observable, Observer} from 'rxjs/Rx';
 import 'rxjs/add/operator/share';
 import ProgressBarComponent from './progress_bar.component';
@@ -18,6 +19,7 @@ const AUDIO_URL = 'audioUrl';
 })
 export class PlayerComponent implements OnChanges, OnInit {
   private player: DovetailAudio;
+  private logger: Logger;
   private adPlaying = false;
 
   @Input() private audioUrl: string;
@@ -45,6 +47,9 @@ export class PlayerComponent implements OnChanges, OnInit {
     this.player.addEventListener('adstart', () => this.adPlaying = true);
     this.player.addEventListener('adend', () => this.adPlaying = false);
 
+    const title = decodeURIComponent(this.routeParams.get('title'));
+    this.logger = new Logger(this.player, title);
+
     this.duration = Observable.create((observer: Observer<number>) => {
       observer.next(0);
       this.player.ondurationchange = () => observer.next(this.player.duration);
@@ -61,6 +66,7 @@ export class PlayerComponent implements OnChanges, OnInit {
   ngOnChanges(changes: { [key: string]: SimpleChange }) {
     if (changes[AUDIO_URL]) {
       // TODO: fix this stupid thing.
+      // TODO make sure logger is updated
       console.error('if this were real, it would handle this.');
     }
   }
