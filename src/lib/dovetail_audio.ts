@@ -183,12 +183,13 @@ export class DovetailAudio extends ExtendableAudio {
   }
 
   private $$forwardEvent(eventType: string, event: Event) {
+    const handler = this[`on${eventType}`];
+    const e = DovetailAudioEvent.build(eventType, this, event);
+
     event.stopImmediatePropagation();
-    let e = DovetailAudioEvent.build(eventType, this, event);
+
     this.emit(e);
-    if (this[`on${eventType}`]) {
-      this[`on${eventType}`](e);
-    }
+    if (typeof handler === 'function') { this[`on${eventType}`](e); }
   }
 
   private skipToFile(index: number, resume = false) {
