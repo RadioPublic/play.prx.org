@@ -19,6 +19,9 @@ function sumDuration(collector: number, entry: {duration?: number}) {
 const DURATION_CHANGE = 'durationchange';
 const TIME_UPDATE = 'timeupdate';
 const ENDED = 'ended';
+const SEEKING = 'seeking';
+const SEEKED = 'seeked';
+const ERROR = 'error';
 const AD_START = 'adstart';
 const AD_END = 'adend';
 
@@ -40,6 +43,8 @@ export class DovetailAudio extends ExtendableAudio {
     this._audio.addEventListener(DURATION_CHANGE, this.listenerOnDurationChange.bind(this));
     this._audio.addEventListener(ENDED, this.listenerOnEnded.bind(this));
     this._audio.addEventListener(TIME_UPDATE, this.listenerOnTimeUpdate.bind(this));
+    this._audio.addEventListener(SEEKED, this.listenerOnSeeked.bind(this));
+    this._audio.addEventListener(ERROR, this.listenerOnError.bind(this));
     this.finishConstructor();
   }
 
@@ -72,17 +77,22 @@ export class DovetailAudio extends ExtendableAudio {
   }
 
   set currentTime(position: number) {
-    if (this.duration >= position) {
-      let soFar = 0, paused = this.paused;
-      for (let i = 0; i < this.arrangement.entries.length; i++) {
-        let duration = this.arrangement.entries[i].duration;
-        if (soFar + duration > position) {
-          this.skipToFile(i);
-          this._audio.currentTime = position - soFar;
-          if (!paused) { this.play(); }
-          return;
-        } else {
-          soFar += duration;
+    if (this.currentTime != position) {
+      let event = DovetailAudioEvent.build(SEEKING, this);
+      this.emit(event);
+      if (this.onseeking) { this.onseeking(event); }
+      if (this.duration >= position) {
+        let soFar = 0, paused = this.paused;
+        for (let i = 0; i < this.arrangement.entries.length; i++) {
+          let duration = this.arrangement.entries[i].duration;
+          if (soFar + duration > position) {
+            this.skipToFile(i);
+            this._audio.currentTime = position - soFar;
+            if (!paused) { this.play(); }
+            return;
+          } else {
+            soFar += duration;
+          }
         }
       }
     }
@@ -174,6 +184,24 @@ export class DovetailAudio extends ExtendableAudio {
     this.emit(e);
     if (this.ontimeupdate) {
       this.ontimeupdate(e);
+    }
+  }
+
+  private listenerOnError(event: Event) {
+    event.stopImmediatePropagation();
+    let e = DovetailAudioEvent.build(ERROR, this, event);
+    this.emit(e);
+    if (this.onerror) {
+      this.onerror(e);
+    }
+  }
+
+  private listenerOnSeeked(event: Event) {
+    event.stopImmediatePropagation();
+    let e = DovetailAudioEvent.build(SEEKED, this, event);
+    this.emit(e);
+    if (this.onseeked) {
+      this.onseeked(e);
     }
   }
 
