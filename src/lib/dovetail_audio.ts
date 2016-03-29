@@ -78,7 +78,9 @@ export class DovetailAudio extends ExtendableAudio {
 
   set currentTime(position: number) {
     if (this.currentTime != position) {
-      this.emit(DovetailAudioEvent.build(SEEKING, this));
+      let event = DovetailAudioEvent.build(SEEKING, this);
+      this.emit(event);
+      if (this.onseeking) { this.onseeking(event); }
       if (this.duration >= position) {
         let soFar = 0, paused = this.paused;
         for (let i = 0; i < this.arrangement.entries.length; i++) {
