@@ -42,9 +42,7 @@ export class DovetailAudio extends ExtendableAudio {
     super(url);
     this._audio.addEventListener(DURATION_CHANGE, this.listenerOnDurationChange.bind(this));
     this._audio.addEventListener(ENDED, this.listenerOnEnded.bind(this));
-    this._audio.addEventListener(TIME_UPDATE, this.listenerOnTimeUpdate.bind(this));
-    this._audio.addEventListener(SEEKED, this.listenerOnSeeked.bind(this));
-    this._audio.addEventListener(ERROR, this.listenerOnError.bind(this));
+    this.$$forwardEvents([TIME_UPDATE, SEEKED, ERROR]);
     this.finishConstructor();
   }
 
@@ -178,30 +176,18 @@ export class DovetailAudio extends ExtendableAudio {
     }
   }
 
-  private listenerOnTimeUpdate(event: Event) {
-    event.stopImmediatePropagation();
-    let e = DovetailAudioEvent.build(TIME_UPDATE, this);
-    this.emit(e);
-    if (this.ontimeupdate) {
-      this.ontimeupdate(e);
+  private $$forwardEvents(eventTypes: string[]) {
+    for (let type of eventTypes) {
+      this._audio.addEventListener(type, this.$$forwardEvent.bind(this, type));
     }
   }
 
-  private listenerOnError(event: Event) {
+  private $$forwardEvent(eventType: string, event: Event) {
     event.stopImmediatePropagation();
-    let e = DovetailAudioEvent.build(ERROR, this, event);
+    let e = DovetailAudioEvent.build(eventType, this, event);
     this.emit(e);
-    if (this.onerror) {
-      this.onerror(e);
-    }
-  }
-
-  private listenerOnSeeked(event: Event) {
-    event.stopImmediatePropagation();
-    let e = DovetailAudioEvent.build(SEEKED, this, event);
-    this.emit(e);
-    if (this.onseeked) {
-      this.onseeked(e);
+    if (this[`on${eventType}`]) {
+      this[`on${eventType}`](e);
     }
   }
 
