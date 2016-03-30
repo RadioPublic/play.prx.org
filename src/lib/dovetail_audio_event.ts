@@ -14,7 +14,9 @@ export class DovetailAudioEvent {
     if (extras) {
       for (let property in extras) {
         if (extras.hasOwnProperty(property)) {
-          event[property] = extras[property];
+          try {
+            event[property] = extras[property];
+          } catch (e) {}
         }
       }
     }
