@@ -90,9 +90,13 @@ export class DovetailAudio extends ExtendableAudio {
         for (let i = 0; i < this.arrangement.entries.length; i++) {
           let duration = this.arrangement.entries[i].duration;
           if (soFar + duration > position) {
-            this.skipToFile(i);
-            this._audio.currentTime = position - soFar;
-            if (!paused) { this.play(); }
+            if (this.index != i) {
+              this.skipToFile(i);
+              this._audio.currentTime = position - soFar;
+              if (!paused) { this.play(); }
+            } else {
+              this._audio.currentTime = position - soFar;
+            }
             return;
           } else {
             soFar += duration;
