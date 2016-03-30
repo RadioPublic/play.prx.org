@@ -45,11 +45,13 @@ export class DovetailAudio extends ExtendableAudio {
     super(url);
     this._audio.addEventListener(DURATION_CHANGE, this.listenerOnDurationChange.bind(this));
     this._audio.addEventListener(ENDED, this.listenerOnEnded.bind(this));
-    this.$$forwardEvents([TIME_UPDATE, SEEKED, ERROR, PLAY, PAUSE, PLAYING]);
+    this.$$forwardEvent = this.$$forwardEvent.bind(this);
+    this.$$forwardEvents([TIME_UPDATE, SEEKED, ERROR, PLAYING]);
     this.finishConstructor();
   }
 
   play() {
+    this.$$sendEvent(PLAY);
     if (this._dovetailLoading) {
       this.resumeOnLoad = true;
     } else {
@@ -58,6 +60,7 @@ export class DovetailAudio extends ExtendableAudio {
   }
 
   pause() {
+    this.$$sendEvent(PAUSE);
     if (this._dovetailLoading) {
       this.resumeOnLoad = false;
     } else {
@@ -163,9 +166,7 @@ export class DovetailAudio extends ExtendableAudio {
     if (this._audio.src == this.arrangement.entries[this.index].audioUrl) {
       this.arrangement.entries[this.index].duration = this._audio.duration;
       this.arrangement.duration = undefined;
-      let e = DovetailAudioEvent.build(DURATION_CHANGE, this);
-      this.emit(e);
-      if (this.ondurationchange) { this.ondurationchange(e); }
+      this.$$sendEvent(DURATION_CHANGE);
     }
   }
 
@@ -173,24 +174,25 @@ export class DovetailAudio extends ExtendableAudio {
     event.stopImmediatePropagation();
     if (this._audio.src == this.arrangement.entries[this.index].audioUrl) {
       if (!this.skipToFile(this.index + 1, true)) {
-        let e = DovetailAudioEvent.build(ENDED, this);
-        this.emit(e);
+        this.$$sendEvent(ENDED);
       }
     }
   }
 
   private $$forwardEvents(eventTypes: string[]) {
     for (let type of eventTypes) {
-      this._audio.addEventListener(type, this.$$forwardEvent.bind(this, type));
+      this._audio.addEventListener(type, this.$$forwardEvent);
     }
   }
 
-  private $$forwardEvent(eventType: string, event: Event) {
+  private $$forwardEvent(event: Event) {
+    event.stopImmediatePropagation();
+    this.$$sendEvent(event.type);
+  }
+
+  private $$sendEvent(eventType: string) {
     const handler = this[`on${eventType}`];
     const e = DovetailAudioEvent.build(eventType, this, event);
-
-    event.stopImmediatePropagation();
-
     this.emit(e);
     if (typeof handler === 'function') { this[`on${eventType}`](e); }
   }
