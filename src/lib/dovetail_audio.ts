@@ -194,7 +194,7 @@ export class DovetailAudio extends ExtendableAudio {
     this.$$sendEvent(event.type, event);
   }
 
-  private $$sendEvent(eventType: string, extras: {}) {
+  private $$sendEvent(eventType: string, extras?: {}) {
     const handler = this[`on${eventType}`];
     const e = DovetailAudioEvent.build(eventType, this, extras);
     this.emit(e);
@@ -202,7 +202,8 @@ export class DovetailAudio extends ExtendableAudio {
   }
 
   private skipToFile(index: number, resume = false) {
-    if (this.arrangement.entries.length > index) {
+    if (this.index != index && this.arrangement.entries.length > index) {
+      const was = this.arrangement.entries[this.index];
       this.index = index;
       this._audio.src = this.arrangement.entries[index].audioUrl;
       if (resume) {
@@ -210,9 +211,9 @@ export class DovetailAudio extends ExtendableAudio {
       }
 
       if (this.arrangement.entries[index].type == 'ad') {
-        this.emit(DovetailAudioEvent.build(AD_START, this));
-      } else {
-        this.emit(DovetailAudioEvent.build(AD_END, this));
+        this.$$sendEvent(AD_START, {ad: this.arrangement.entries[index]})
+      } else if (was.type == 'ad') {
+        this.$$sendEvent(AD_END, {ad: was});
       }
 
       return true;
