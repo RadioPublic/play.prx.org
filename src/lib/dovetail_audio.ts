@@ -211,7 +211,7 @@ export class DovetailAudio extends ExtendableAudio {
       }
 
       if (this.arrangement.entries[index].type == 'ad') {
-        this.$$sendEvent(AD_START, {ad: this.arrangement.entries[index]})
+        this.$$sendEvent(AD_START, {ad: this.arrangement.entries[index]});
       } else if (was.type == 'ad') {
         this.$$sendEvent(AD_END, {ad: was});
       }
