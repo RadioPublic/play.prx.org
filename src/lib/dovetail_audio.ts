@@ -24,6 +24,9 @@ const SEEKED = 'seeked';
 const ERROR = 'error';
 const AD_START = 'adstart';
 const AD_END = 'adend';
+const PLAY = 'play';
+const PAUSE = 'pause';
+const PLAYING = 'playing';
 
 export class DovetailAudio extends ExtendableAudio {
   private arrangement: DovetailArrangement = {entries: []};
@@ -42,7 +45,7 @@ export class DovetailAudio extends ExtendableAudio {
     super(url);
     this._audio.addEventListener(DURATION_CHANGE, this.listenerOnDurationChange.bind(this));
     this._audio.addEventListener(ENDED, this.listenerOnEnded.bind(this));
-    this.$$forwardEvents([TIME_UPDATE, SEEKED, ERROR]);
+    this.$$forwardEvents([TIME_UPDATE, SEEKED, ERROR, PLAY, PAUSE, PLAYING]);
     this.finishConstructor();
   }
 
