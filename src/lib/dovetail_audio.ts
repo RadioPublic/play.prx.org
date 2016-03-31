@@ -30,7 +30,7 @@ const PLAYING = 'playing';
 
 export class DovetailAudio extends ExtendableAudio {
   private arrangement: DovetailArrangement = {entries: []};
-  private index: number = 0;
+  private index: number;
 
   private _dovetailLoading = false;
 
@@ -113,6 +113,7 @@ export class DovetailAudio extends ExtendableAudio {
   }
 
   set src(url: string) {
+    this.index = -1;
     this._dovetailLoading = true;
     let promise = this.currentPromise = this.dovetailFetcher.fetch(url).then(
       result => {
