@@ -33,6 +33,7 @@ export default class ProgressBarComponent {
   private isScrubbing = false;
   private isHover = false;
   private didMove = false;
+  private isMousedown = false;
 
   constructor(private el: ElementRef) {}
 
@@ -61,9 +62,8 @@ export default class ProgressBarComponent {
 
   @HostListener('mousedown', ['$event'])
   onMousedown(event: MouseEvent) {
-    this.isScrubbing = true;
     this.didMove = false;
-    this.scrubbing.emit(true);
+    this.isMousedown = true;
 
     if (event.target === this.el.nativeElement) {
       const width = this.el.nativeElement.getBoundingClientRect().width;
@@ -75,7 +75,11 @@ export default class ProgressBarComponent {
 
   @HostListener('mousemove', ['$event'])
   onMousemove(event: MouseEvent) {
-    this.didMove = true;
+    if (!this.didMove && this.isMousedown) {
+      this.didMove = true;
+      this.isScrubbing = true;
+      this.scrubbing.emit(true);
+    }
 
     if (event.target === this.el.nativeElement) {
       this.onBasicMousemove(event);
@@ -92,13 +96,13 @@ export default class ProgressBarComponent {
 
   @HostListener('mouseup', ['$event'])
   onMouseup(event: MouseEvent) {
-    this.isScrubbing = false;
+    this.isMousedown = false;
 
     if (this.didMove) {
+      this.isScrubbing = false;
       this.sendSeek();
+      this.scrubbing.emit(false);
     }
-
-    this.scrubbing.emit(false);
   }
 
   @HostListener('mouseout', ['$event'])

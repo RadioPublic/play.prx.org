@@ -23,6 +23,7 @@ export class PlayerComponent implements OnChanges, OnInit {
 
   private adPlaying: boolean;
   private isUnrestricted: boolean;
+  private isScrubbing: boolean;
 
   // True if playback is being held until seeking is completed
   private isHeld: boolean;
@@ -32,18 +33,6 @@ export class PlayerComponent implements OnChanges, OnInit {
   private duration: Observable<number>;
 
   constructor(private routeParams: RouteParams) {}
-
-  play() {
-    this.player.play();
-  }
-
-  pause() {
-    this.player.pause();
-  }
-
-  get paused() {
-    return this.player.paused;
-  }
 
   ngOnInit() {
     this.player = new DovetailAudio(this.audioUrl);
@@ -79,11 +68,14 @@ export class PlayerComponent implements OnChanges, OnInit {
   }
 
   onScrub(scrubbing: boolean) {
-    if (scrubbing && !this.paused) {
-      this.pause();
+    this.isScrubbing = scrubbing;
+    this.logger.ignoreTimeupdates = scrubbing;
+
+    if (scrubbing && !this.player.paused) {
+      this.player.pause();
       this.isHeld = true;
     } else if (!scrubbing && this.isHeld) {
-      this.play();
+      this.player.play();
       this.isHeld = false;
     }
   }
@@ -119,10 +111,10 @@ export class PlayerComponent implements OnChanges, OnInit {
         this.seekBy(5);
         break;
       case 'Comma':
-        if (this.paused) { this.seekBy(-1 / 30); }
+        if (this.player.paused) { this.seekBy(-1 / 30); }
         break;
       case 'Period':
-        if (this.paused) { this.seekBy(1 / 30); }
+        if (this.player.paused) { this.seekBy(1 / 30); }
         break;
       case 'Home':
         this.seekTo(0);
@@ -174,10 +166,10 @@ export class PlayerComponent implements OnChanges, OnInit {
   }
 
   private togglePlayPause() {
-    if (this.paused) {
-      this.play();
+    if (this.player.paused) {
+      this.player.play();
     } else {
-      this.pause();
+      this.player.pause();
     }
   }
 
@@ -185,12 +177,14 @@ export class PlayerComponent implements OnChanges, OnInit {
     return Math.min(Math.max(0, time), this.player.duration);
   }
 
-  private seekBy(seconds: number) {
-    this.seekTo(this.boundedTime(this.player.currentTime + seconds))
+  private seekTo(time: number) {
+    if (!this.isScrubbing) { this.logger.ignoreTimeupdates = true; }
+    this.player.currentTime = this.boundedTime(time);
+    if (!this.isScrubbing) { this.logger.ignoreTimeupdates = false; }
   }
 
-  private seekTo(time: number) {
-    this.player.currentTime = this.boundedTime(time);
+  private seekBy(seconds: number) {
+    this.seekTo(this.player.currentTime + seconds)
   }
 
   private seekToRelative(ratio: number) {

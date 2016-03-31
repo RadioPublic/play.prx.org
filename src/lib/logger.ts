@@ -9,7 +9,28 @@ const METRIC_PLAYBACK = 'metric1';
 const BOUNDARY_SPACING = 10;
 
 export class Logger {
+  public _ignoreTimeupdates: boolean;
   private previousBoundary: number;
+
+  private listeningBlocks: number[][] = [[]];
+
+  get ignoreTimeupdates() {
+    return this._ignoreTimeupdates;
+  }
+
+  set ignoreTimeupdates(ignore: boolean) {
+    if (this._ignoreTimeupdates !== ignore) {
+      this._ignoreTimeupdates = ignore;
+
+      if (ignore) {
+        const lastBlock = this.listeningBlocks[this.listeningBlocks.length - 1];
+
+        if (lastBlock.length === 2) {
+          this.listeningBlocks.push([]);
+        }
+      }
+    }
+  }
 
   constructor(private player: DovetailAudio, private label: string) {
     player.addEventListener('adstart', () => console.log('>> adstart'));
@@ -19,13 +40,25 @@ export class Logger {
     player.addEventListener('playing', () => console.log('>> playing'));
     player.addEventListener('pause', () => console.log('>> pause'));
 
-    player.addEventListener('timeupdate', () => this.timeupdate());
+    player.addEventListener('timeupdate', () => this.onTimeupdate());
 
     // player.addEventListener('seeked', () => console.log('>> seeked'));
     // player.addEventListener('seeking', () => console.log('>> seeking'));
   }
 
-  timeupdate() {
+  onTimeupdate() {
+    const lastBlock = this.listeningBlocks[this.listeningBlocks.length - 1];
+
+    if (!this.ignoreTimeupdates && !this.player.paused) {
+      if (!lastBlock.length) {
+        lastBlock[0] = this.player.currentTime;
+      } else if (lastBlock[0] !== this.player.currentTime) {
+        lastBlock[1] = this.player.currentTime;
+      }
+    }
+  }
+
+  xtimeupdate() {
     // Only send heartbeats during playback
     if (this.player.paused) { return; }
 

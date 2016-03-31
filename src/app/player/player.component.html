@@ -9,13 +9,11 @@
       class="playPauseBtn"
       [style.color]="adPlaying ? 'yellow' : 'black'">
       <button
-        *ngIf="paused"
-        (click)="play()"
-        class="playPause playBtn"><i class="fa fa-play fa-4x"></i></button>
-      <button
-        *ngIf="!paused"
-        (click)="pause()"
-        class="playPause pauseBtn"><i class="fa fa-pause fa-4x"></i></button>
+        (click)="togglePlayPause()"
+        class="playPause">
+        <i *ngIf="player.paused" class="fa fa-play fa-4x"></i>
+        <i *ngIf="!player.paused" class="fa fa-pause fa-4x"></i>
+      </button>
     </div>
     <div
       class="speed"
