@@ -40,6 +40,7 @@ export class DovetailAudio extends ExtendableAudio {
   private currentPromise: Promise<any>;
   private currentAdzerkPromise: Promise<AdzerkResponse>;
   private resumeOnLoad = false;
+  private _playbackRate: number;
 
   constructor(url: string) {
     super(url);
@@ -66,6 +67,18 @@ export class DovetailAudio extends ExtendableAudio {
     } else {
       this._audio.pause();
     }
+  }
+
+  get playbackRate() {
+    if (!this._playbackRate) {
+      this._playbackRate = this._audio.playbackRate;
+    }
+    return this._playbackRate;
+  }
+
+  set playbackRate(rate: number) {
+    this._playbackRate = rate;
+    this._audio.playbackRate = this._playbackRate;
   }
 
   get duration() {
@@ -213,6 +226,7 @@ export class DovetailAudio extends ExtendableAudio {
       const was = this.arrangement.entries[this.index];
       this.index = index;
       this._audio.src = this.arrangement.entries[index].audioUrl;
+      this._audio.playbackRate = this.playbackRate;
       if (resume) {
         this.play();
       }
