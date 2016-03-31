@@ -92,7 +92,13 @@ export class DovetailAudio extends ExtendableAudio {
           if (soFar + duration > position) {
             if (this.index != i) {
               this.skipToFile(i);
-              this._audio.currentTime = position - soFar;
+              const newTime = position - soFar;
+              if (this._audio.currentTime != newTime) {
+                this._audio.currentTime = newTime;
+              } else {
+                // Still send out an event since the overall time has changed
+                this.$$sendEvent(TIME_UPDATE);
+              }
               if (!paused) { this.play(); }
             } else {
               this._audio.currentTime = position - soFar;
