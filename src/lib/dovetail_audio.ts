@@ -22,8 +22,8 @@ const ENDED = 'ended';
 const SEEKING = 'seeking';
 const SEEKED = 'seeked';
 const ERROR = 'error';
-const AD_START = 'adstart';
-const AD_END = 'adend';
+const SEGMENT_START = 'segmentsart';
+const SEGMENT_END = 'segmentend';
 const PLAY = 'play';
 const PAUSE = 'pause';
 const PLAYING = 'playing';
@@ -223,19 +223,21 @@ export class DovetailAudio extends ExtendableAudio {
 
   private skipToFile(index: number, resume = false) {
     if (this.index != index && this.arrangement.entries.length > index) {
-      const was = this.arrangement.entries[this.index];
+      if (this.index != -1) {
+        this.$$sendEvent(SEGMENT_END, {
+          segment: this.arrangement.entries[this.index],
+          segmentType: this.arrangement.entries[this.index].type
+        });
+      }
       this.index = index;
       this._audio.src = this.arrangement.entries[index].audioUrl;
       this._audio.playbackRate = this.playbackRate;
-      if (resume) {
-        this.play();
-      }
+      if (resume) { this._audio.play(); }
 
-      if (this.arrangement.entries[index].type == 'ad') {
-        this.$$sendEvent(AD_START, {ad: this.arrangement.entries[index]});
-      } else if (was && was.type == 'ad') {
-        this.$$sendEvent(AD_END, {ad: was});
-      }
+      this.$$sendEvent(SEGMENT_START, {
+        segment: this.arrangement.entries[index],
+        segmentType: this.arrangement.entries[index].type
+      });
 
       return true;
     } else {
