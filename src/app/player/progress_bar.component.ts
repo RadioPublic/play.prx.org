@@ -9,18 +9,20 @@ import {
   styleUrls: ['src/app/player/progress_bar.component.css'],
   template: `
     <bar
+      [class.disabled]="isDisabled"
       [style.width.%]="progress * 100.0"></bar>
     <highlight
-      *ngIf="isHover && !isScrubbing"
+      *ngIf="isHover && !isScrubbing && !isDisabled"
       [style.width.%]="provisionalProgress * 100.0"></highlight>
     <scrub-detector
-      [style.display]="isScrubbing ? 'block' : 'none'"></scrub-detector>
+      *ngIf="isScrubbing"></scrub-detector>
   `
 })
 export default class ProgressBarComponent {
   @Input() value: number = 0;
   @Input() minimum: number = 0;
   @Input() maximum: number = 1;
+  @Input() disabled = false;
 
   @Output() seek = new EventEmitter<number>();
   @Output() scrubbing = new EventEmitter<boolean>();
@@ -30,8 +32,13 @@ export default class ProgressBarComponent {
 
   private isScrubbing = false;
   private isHover = false;
+  private didMove = false;
 
   constructor(private el: ElementRef) {}
+
+  private get isDisabled() {
+    return this.disabled;
+  }
 
   private get range() {
     return this.maximum - this.minimum;
@@ -55,6 +62,7 @@ export default class ProgressBarComponent {
   @HostListener('mousedown', ['$event'])
   onMousedown(event: MouseEvent) {
     this.isScrubbing = true;
+    this.didMove = false;
     this.scrubbing.emit(true);
 
     if (event.target === this.el.nativeElement) {
@@ -67,6 +75,8 @@ export default class ProgressBarComponent {
 
   @HostListener('mousemove', ['$event'])
   onMousemove(event: MouseEvent) {
+    this.didMove = true;
+
     if (event.target === this.el.nativeElement) {
       this.onBasicMousemove(event);
     } else if (event.target === this.el.nativeElement.querySelector('scrub-detector')) {
@@ -84,9 +94,9 @@ export default class ProgressBarComponent {
   onMouseup(event: MouseEvent) {
     this.isScrubbing = false;
 
-    // During a click (ie, no mousemove) this seek ends up being
-    ///a dupe of the seek from mousedown
-    this.sendSeek();
+    if (this.didMove) {
+      this.sendSeek();
+    }
 
     this.scrubbing.emit(false);
   }

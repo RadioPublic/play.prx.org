@@ -41,16 +41,16 @@ System.config({
   },
 
   map: {
-    "angular2": "npm:angular2@2.0.0-beta.12",
+    "angular2": "npm:angular2@2.0.0-beta.13",
     "es6-shim": "github:es-shims/es6-shim@0.34.4",
-    "plugin-typescript": "github:frankwallis/plugin-typescript@4.0.2",
+    "plugin-typescript": "github:frankwallis/plugin-typescript@4.0.5",
     "reflect-metadata": "npm:reflect-metadata@0.1.3",
-    "rxjs": "npm:rxjs@5.0.0-beta.2",
-    "ts": "github:frankwallis/plugin-typescript@4.0.2",
-    "typescript": "npm:typescript@1.8.7",
-    "zone.js": "npm:zone.js@0.5.15",
-    "github:frankwallis/plugin-typescript@4.0.2": {
-      "typescript": "npm:typescript@1.8.7"
+    "rxjs": "npm:rxjs@5.0.0-beta.4",
+    "ts": "github:frankwallis/plugin-typescript@4.0.5",
+    "typescript": "npm:typescript@1.8.9",
+    "zone.js": "npm:zone.js@0.6.8",
+    "github:frankwallis/plugin-typescript@4.0.5": {
+      "typescript": "npm:typescript@1.8.9"
     },
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
@@ -64,10 +64,10 @@ System.config({
     "github:jspm/nodelibs-util@0.1.0": {
       "util": "npm:util@0.10.3"
     },
-    "npm:angular2@2.0.0-beta.12": {
+    "npm:angular2@2.0.0-beta.13": {
       "reflect-metadata": "npm:reflect-metadata@0.1.2",
-      "rxjs": "npm:rxjs@5.0.0-beta.2",
-      "zone.js": "npm:zone.js@0.6.6"
+      "rxjs": "npm:rxjs@5.0.0-beta.4",
+      "zone.js": "npm:zone.js@0.6.8"
     },
     "npm:assert@1.3.0": {
       "util": "npm:util@0.10.3"
@@ -78,9 +78,6 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "ieee754": "npm:ieee754@1.1.6",
       "isarray": "npm:isarray@1.0.0",
-      "process": "github:jspm/nodelibs-process@0.1.2"
-    },
-    "npm:es6-promise@3.1.2": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:inherits@2.0.1": {
@@ -97,7 +94,7 @@ System.config({
       "assert": "github:jspm/nodelibs-assert@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:rxjs@5.0.0-beta.2": {
+    "npm:rxjs@5.0.0-beta.4": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
@@ -105,11 +102,7 @@ System.config({
       "inherits": "npm:inherits@2.0.1",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:zone.js@0.5.15": {
-      "es6-promise": "npm:es6-promise@3.1.2",
-      "process": "github:jspm/nodelibs-process@0.1.2"
-    },
-    "npm:zone.js@0.6.6": {
+    "npm:zone.js@0.6.8": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     }
   }

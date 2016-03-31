@@ -12,6 +12,9 @@ bar {
   height: 100%;
   pointer-events: none;
 }
+bar.disabled {
+  background: rgb(235, 255, 0);
+}
 
 highlight {
   position: absolute;

@@ -20,13 +20,16 @@ const AUDIO_URL = 'audioUrl';
 export class PlayerComponent implements OnChanges, OnInit {
   private player: DovetailAudio;
   private logger: Logger;
-  private adPlaying = false;
+
+  private adPlaying: boolean;
+  private isUnrestricted: boolean;
+
+  // True if playback is being held until seeking is completed
+  private isHeld: boolean;
 
   @Input() private audioUrl: string;
   private currentTime: Observable<number>;
   private duration: Observable<number>;
-
-  private isHeld: boolean;
 
   constructor(private routeParams: RouteParams) {}
 
@@ -75,11 +78,11 @@ export class PlayerComponent implements OnChanges, OnInit {
     this.seekTo(position);
   }
 
-  onHold(hold: boolean) {
-    if (hold && !this.paused) {
+  onScrub(scrubbing: boolean) {
+    if (scrubbing && !this.paused) {
       this.pause();
       this.isHeld = true;
-    } else if (!hold && this.isHeld) {
+    } else if (!scrubbing && this.isHeld) {
       this.play();
       this.isHeld = false;
     }
@@ -88,6 +91,15 @@ export class PlayerComponent implements OnChanges, OnInit {
   handleHotkey(event: KeyboardEvent): void {
     const key = event.code || event.key;
     switch (key) {
+      case 'KeyQ':
+        this.isUnrestricted = !this.isUnrestricted;
+        break;
+      case 'KeyS':
+        this.player.playbackRate = (3 - this.player.playbackRate);
+        break;
+      case 'KeyM':
+        this.toggleMute();
+        break;
       case 'Space':
         this.togglePlayPause();
         break;
@@ -153,24 +165,32 @@ export class PlayerComponent implements OnChanges, OnInit {
     }
   }
 
+  private toggleMute() {
+    if (this.player.volume === 0) {
+      this.player.volume = 1;
+    } else {
+      this.player.volume = 0;
+    }
+  }
+
   private togglePlayPause() {
     if (this.paused) {
-        this.play();
+      this.play();
     } else {
       this.pause();
     }
   }
 
-  private protectedTime(position: number) {
-    return Math.min(Math.max(0, position), this.player.duration);
+  private boundedTime(time: number) {
+    return Math.min(Math.max(0, time), this.player.duration);
   }
 
   private seekBy(seconds: number) {
-    this.player.currentTime = this.protectedTime(this.player.currentTime + seconds);
+    this.seekTo(this.boundedTime(this.player.currentTime + seconds))
   }
 
-  private seekTo(position: number) {
-    this.player.currentTime = this.protectedTime(position);
+  private seekTo(time: number) {
+    this.player.currentTime = this.boundedTime(time);
   }
 
   private seekToRelative(ratio: number) {
