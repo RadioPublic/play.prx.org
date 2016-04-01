@@ -85,6 +85,7 @@ progress-bar {
   height: 65px;
   display: block;
   position: relative;
+  cursor: pointer;
 
   --progress-track-background: #333;
 }

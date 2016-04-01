@@ -39,8 +39,9 @@ export class PlayerComponent implements OnChanges, OnInit {
     this.player.addEventListener('adstart', () => this.adPlaying = true);
     this.player.addEventListener('adend', () => this.adPlaying = false);
 
+    const artist = decodeURIComponent(this.routeParams.get('artist'));
     const title = decodeURIComponent(this.routeParams.get('title'));
-    this.logger = new Logger(this.player, title);
+    this.logger = new Logger(this.player, title, artist);
 
     this.duration = Observable.create((observer: Observer<number>) => {
       observer.next(0);
@@ -69,7 +70,6 @@ export class PlayerComponent implements OnChanges, OnInit {
 
   onScrub(scrubbing: boolean) {
     this.isScrubbing = scrubbing;
-    this.logger.ignoreTimeupdates = scrubbing;
 
     if (scrubbing && !this.player.paused) {
       this.player.pause();
@@ -178,13 +178,11 @@ export class PlayerComponent implements OnChanges, OnInit {
   }
 
   private seekTo(time: number) {
-    if (!this.isScrubbing) { this.logger.ignoreTimeupdates = true; }
     this.player.currentTime = this.boundedTime(time);
-    if (!this.isScrubbing) { this.logger.ignoreTimeupdates = false; }
   }
 
   private seekBy(seconds: number) {
-    this.seekTo(this.player.currentTime + seconds)
+    this.seekTo(this.player.currentTime + seconds);
   }
 
   private seekToRelative(ratio: number) {
