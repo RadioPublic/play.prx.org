@@ -27,6 +27,7 @@ const SEGMENT_END = 'segmentend';
 const PLAY = 'play';
 const PAUSE = 'pause';
 const PLAYING = 'playing';
+const RATE_CHANGE = 'ratechange';
 
 export class DovetailAudio extends ExtendableAudio {
   private arrangement: DovetailArrangement = {entries: []};
@@ -77,8 +78,11 @@ export class DovetailAudio extends ExtendableAudio {
   }
 
   set playbackRate(rate: number) {
-    this._playbackRate = rate;
-    this._audio.playbackRate = this._playbackRate;
+    if (this._playbackRate != rate) {
+      this._playbackRate = rate;
+      this._audio.playbackRate = this._playbackRate;
+      this.$$sendEvent(RATE_CHANGE);
+    }
   }
 
   get duration() {
