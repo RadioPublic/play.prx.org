@@ -8,7 +8,8 @@ const EVENT_ACTION_PLAYBACK = 'playback';
 const METRIC_PLAYBACK = 'metric1';
 const DIMENSION_SHOW_NAME = 'dimension1';
 const DIMENSION_EPISODE_TITLE = 'dimension2';
-const DIMENSION_PLAYBACK_BOUNDARIES = 'dimension3';
+const DIMENSION_PLAYBACK_BOUNDARIES_10S = 'dimension3';
+const DIMENSION_PLAYBACK_BOUNDARIES_PERCENT = 'dimension4';
 const HEARTBEAT_INTERVAL = 10;
 const FLUSH_INTERVAL = 20;
 
@@ -68,7 +69,7 @@ export class Logger {
         [DIMENSION_SHOW_NAME]: this.artist,
         eventLabel: this.label,
         hitType: HIT_TYPE_EVENT,
-        [DIMENSION_PLAYBACK_BOUNDARIES]: `000000${heartbeat}`.slice(-5)
+        [DIMENSION_PLAYBACK_BOUNDARIES_10S]: `000000${heartbeat}`.slice(-5)
       };
       window.ga('send', fields);
 
