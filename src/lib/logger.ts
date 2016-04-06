@@ -72,6 +72,15 @@ export class Logger {
         [DIMENSION_PLAYBACK_BOUNDARIES_10S]: `000000${heartbeat}`.slice(-5)
       };
       window.ga('send', fields);
+      // Figure out if this heartbeat crosses a 10% boundary, and add that
+      ///dimension to the event if it does
+      const secondsPer10Percent = (this.player.duration / 10);
+      const perBlock = secondsPer10Percent * Math.ceil(heartbeat / secondsPer10Percent);
+      if (perBlock >= heartbeat && perBlock <= (heartbeat + HEARTBEAT_INTERVAL)) {
+        const percent = perBlock / this.player.duration;
+        fields[DIMENSION_PLAYBACK_BOUNDARIES_PERCENT] = `${percent * 100}%`;
+      }
+
 
       heartbeat += HEARTBEAT_INTERVAL;
     }
