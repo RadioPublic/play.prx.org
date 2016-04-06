@@ -28,6 +28,13 @@ const PLAY = 'play';
 const PAUSE = 'pause';
 const PLAYING = 'playing';
 const RATE_CHANGE = 'ratechange';
+const ABORT = 'abort';
+const CAN_PLAY = 'canplay';
+const CAN_PLAY_THROUGH = 'canplaythrough';
+
+const PROXIED_EVENTS = [
+  TIME_UPDATE, SEEKED, ERROR, PLAYING, ABORT, CAN_PLAY, CAN_PLAY_THROUGH
+];
 
 export class DovetailAudio extends ExtendableAudio {
   private arrangement: DovetailArrangement = {entries: []};
@@ -48,7 +55,7 @@ export class DovetailAudio extends ExtendableAudio {
     this._audio.addEventListener(DURATION_CHANGE, this.listenerOnDurationChange.bind(this));
     this._audio.addEventListener(ENDED, this.listenerOnEnded.bind(this));
     this.$$forwardEvent = this.$$forwardEvent.bind(this);
-    this.$$forwardEvents([TIME_UPDATE, SEEKED, ERROR, PLAYING]);
+    this.$$forwardEvents(PROXIED_EVENTS);
     this.finishConstructor();
   }
 
