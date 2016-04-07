@@ -9,6 +9,7 @@ import ProgressBarComponent from './progress_bar.component';
 import TimeIndicatorComponent from './time_indicator.component';
 
 const AUDIO_URL = 'audioUrl';
+const SEGMENT_TYPE = 'segmentType';
 
 @Component({
   directives: [ProgressBarComponent, TimeIndicatorComponent],
@@ -21,7 +22,7 @@ export class PlayerComponent implements OnChanges, OnInit {
   private player: DovetailAudio;
   private logger: Logger;
 
-  private adPlaying: boolean;
+  private currentSegmentType: string; // TODO Maybe this should be an enum
   private isUnrestricted: boolean;
   private isScrubbing: boolean;
 
@@ -36,8 +37,7 @@ export class PlayerComponent implements OnChanges, OnInit {
 
   ngOnInit() {
     this.player = new DovetailAudio(this.audioUrl);
-    this.player.addEventListener('adstart', () => this.adPlaying = true);
-    this.player.addEventListener('adend', () => this.adPlaying = false);
+    this.player.addEventListener('segmentstart', e => this.currentSegmentType = e[SEGMENT_TYPE]);
 
     const artist = decodeURIComponent(this.routeParams.get('artist'));
     const title = decodeURIComponent(this.routeParams.get('title'));

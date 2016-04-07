@@ -7,7 +7,7 @@
   <div class="left">
     <div
       class="playPauseBtn"
-      [style.color]="adPlaying ? 'yellow' : 'black'">
+      [style.color]="currentSegmentType === 'ad' ? 'yellow' : 'black'">
       <button
         (click)="togglePlayPause()"
         class="playPause">
