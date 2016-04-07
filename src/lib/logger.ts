@@ -3,6 +3,8 @@ import {DovetailAudio} from './dovetail_audio';
 // UA-164824-54
 
 const GA_SEND = 'send';
+const GA_TRANSPORT = 'transport';
+const GA_BEACON = 'beacon';
 const HIT_TYPE_EVENT = 'event';
 const EVENT_CATEGORY_AUDIO = 'Audio';
 const EVENT_ACTION_PLAYBACK = 'playback';
@@ -19,6 +21,7 @@ export class Logger {
   private listeningBlocks: number[][] = [[]];
   private isSeeking: boolean;
   private waitingSince: Date;
+  private isUnloading: boolean;
 
   get currentBlock() {
     return this.listeningBlocks[this.listeningBlocks.length - 1];
@@ -85,6 +88,10 @@ export class Logger {
       if (perBlock >= heartbeat && perBlock <= (heartbeat + HEARTBEAT_INTERVAL)) {
         const percent = perBlock / this.player.duration;
         fields[DIMENSION_PLAYBACK_BOUNDARIES_PERCENT] = `${percent * 100}%`;
+      }
+
+      if (this.isUnloading) {
+        fields[GA_TRANSPORT] = GA_BEACON;
       }
 
       ga(GA_SEND, fields);
@@ -157,6 +164,7 @@ export class Logger {
   }
 
   private onUnload() {
+    this.isUnloading = true;
     this.player.pause();
     this.flushListeningBlocks();
   }
