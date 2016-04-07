@@ -16,7 +16,7 @@ export class DovetailAudioEvent {
         if (extras.hasOwnProperty(property)) {
           try {
             event[property] = extras[property];
-          } catch (e) {}
+          } catch (e) {/* Noop */}
         }
       }
     }

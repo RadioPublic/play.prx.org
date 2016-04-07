@@ -22,11 +22,19 @@ const ENDED = 'ended';
 const SEEKING = 'seeking';
 const SEEKED = 'seeked';
 const ERROR = 'error';
-const AD_START = 'adstart';
-const AD_END = 'adend';
+const SEGMENT_START = 'segmentstart';
+const SEGMENT_END = 'segmentend';
 const PLAY = 'play';
 const PAUSE = 'pause';
 const PLAYING = 'playing';
+const RATE_CHANGE = 'ratechange';
+const ABORT = 'abort';
+const CAN_PLAY = 'canplay';
+const CAN_PLAY_THROUGH = 'canplaythrough';
+
+const PROXIED_EVENTS = [
+  TIME_UPDATE, SEEKED, ERROR, PLAYING, ABORT, CAN_PLAY, CAN_PLAY_THROUGH
+];
 
 export class DovetailAudio extends ExtendableAudio {
   private arrangement: DovetailArrangement = {entries: []};
@@ -47,7 +55,7 @@ export class DovetailAudio extends ExtendableAudio {
     this._audio.addEventListener(DURATION_CHANGE, this.listenerOnDurationChange.bind(this));
     this._audio.addEventListener(ENDED, this.listenerOnEnded.bind(this));
     this.$$forwardEvent = this.$$forwardEvent.bind(this);
-    this.$$forwardEvents([TIME_UPDATE, SEEKED, ERROR, PLAYING]);
+    this.$$forwardEvents(PROXIED_EVENTS);
     this.finishConstructor();
   }
 
@@ -77,8 +85,11 @@ export class DovetailAudio extends ExtendableAudio {
   }
 
   set playbackRate(rate: number) {
-    this._playbackRate = rate;
-    this._audio.playbackRate = this._playbackRate;
+    if (this._playbackRate != rate) {
+      this._playbackRate = rate;
+      this._audio.playbackRate = this._playbackRate;
+      this.$$sendEvent(RATE_CHANGE);
+    }
   }
 
   get duration() {
@@ -223,19 +234,21 @@ export class DovetailAudio extends ExtendableAudio {
 
   private skipToFile(index: number, resume = false) {
     if (this.index != index && this.arrangement.entries.length > index) {
-      const was = this.arrangement.entries[this.index];
+      if (this.index != -1) {
+        this.$$sendEvent(SEGMENT_END, {
+          segment: this.arrangement.entries[this.index],
+          segmentType: this.arrangement.entries[this.index].type
+        });
+      }
       this.index = index;
       this._audio.src = this.arrangement.entries[index].audioUrl;
       this._audio.playbackRate = this.playbackRate;
-      if (resume) {
-        this.play();
-      }
+      if (resume) { this._audio.play(); }
 
-      if (this.arrangement.entries[index].type == 'ad') {
-        this.$$sendEvent(AD_START, {ad: this.arrangement.entries[index]});
-      } else if (was && was.type == 'ad') {
-        this.$$sendEvent(AD_END, {ad: was});
-      }
+      this.$$sendEvent(SEGMENT_START, {
+        segment: this.arrangement.entries[index],
+        segmentType: this.arrangement.entries[index].type
+      });
 
       return true;
     } else {
