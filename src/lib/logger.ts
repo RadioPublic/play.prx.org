@@ -140,7 +140,7 @@ export class Logger {
   private onCanplay() {
     if (this.waitingSince) {
       const now = new Date();
-      const wait: number = (+now - +this.waitingSince) / 1000.0;
+      const wait: number = ((+now) - (+this.waitingSince)) / 1000.0;
       this.waitingSince = undefined;
 
       ga(GA_SEND, {
