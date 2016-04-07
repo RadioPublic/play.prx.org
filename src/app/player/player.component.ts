@@ -59,7 +59,7 @@ export class PlayerComponent implements OnChanges, OnInit {
   ngOnChanges(changes: { [key: string]: SimpleChange }) {
     if (changes[AUDIO_URL]) {
       // TODO: fix this stupid thing.
-      // TODO make sure logger is updated
+      // TODO make sure logger is updated (make a new logger)
       console.error('if this were real, it would handle this.');
     }
   }
