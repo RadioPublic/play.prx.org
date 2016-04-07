@@ -6,7 +6,9 @@ const GA_SEND = 'send';
 const HIT_TYPE_EVENT = 'event';
 const EVENT_CATEGORY_AUDIO = 'Audio';
 const EVENT_ACTION_PLAYBACK = 'playback';
+const EVENT_ACTION_WAITING = 'waiting';
 const METRIC_PLAYBACK = 'metric1';
+const METRIC_WAITING = 'metric2';
 const DIMENSION_SHOW_NAME = 'dimension1';
 const DIMENSION_EPISODE_TITLE = 'dimension2';
 const DIMENSION_PLAYBACK_BOUNDARIES_10S = 'dimension3';
@@ -17,14 +19,16 @@ const FLUSH_INTERVAL = 20;
 export class Logger {
   private listeningBlocks: number[][] = [[]];
   private isSeeking: boolean;
+  private waitingSince: Date;
 
   get currentBlock() {
     return this.listeningBlocks[this.listeningBlocks.length - 1];
   }
 
   constructor(private player: DovetailAudio, private label: string, private artist: string) {
+    player.addEventListener('segmentstart',() => this.onSegmentstart());
+    player.addEventListener('canplay', () => this.onCanplay());
     player.addEventListener('timeupdate', () => this.onTimeupdate());
-
     player.addEventListener('seeking', () => this.onSeeking());
     player.addEventListener('seeked', () => this.onSeeked());
 
@@ -125,6 +129,29 @@ export class Logger {
           && this.player.currentTime - this.currentBlock[0] > 1.0) {
         this.currentBlock[1] = this.player.currentTime;
       }
+    }
+  }
+
+  private onSegmentstart() {
+    this.waitingSince = new Date();
+  }
+
+  //
+  private onCanplay() {
+    if (this.waitingSince) {
+      const now = new Date();
+      const wait: number = (+now - +this.waitingSince) / 1000.0;
+      this.waitingSince = undefined;
+
+      ga(GA_SEND, {
+        eventAction: EVENT_ACTION_WAITING,
+        eventCategory: EVENT_CATEGORY_AUDIO,
+        [DIMENSION_EPISODE_TITLE]: this.label,
+        [DIMENSION_SHOW_NAME]: this.artist,
+        [METRIC_WAITING]: wait,
+        eventLabel: this.label,
+        hitType: HIT_TYPE_EVENT
+      });
     }
   }
 }
