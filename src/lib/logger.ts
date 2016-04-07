@@ -8,7 +8,6 @@ const EVENT_CATEGORY_AUDIO = 'Audio';
 const EVENT_ACTION_PLAYBACK = 'playback';
 const EVENT_ACTION_WAITING = 'waiting';
 const METRIC_PLAYBACK = 'metric1';
-const METRIC_WAITING = 'metric2';
 const DIMENSION_SHOW_NAME = 'dimension1';
 const DIMENSION_EPISODE_TITLE = 'dimension2';
 const DIMENSION_PLAYBACK_BOUNDARIES_10S = 'dimension3';
@@ -148,8 +147,8 @@ export class Logger {
         eventCategory: EVENT_CATEGORY_AUDIO,
         [DIMENSION_EPISODE_TITLE]: this.label,
         [DIMENSION_SHOW_NAME]: this.artist,
-        [METRIC_WAITING]: wait,
         eventLabel: this.label,
+        eventValue: wait,
         hitType: HIT_TYPE_EVENT
       });
     }
