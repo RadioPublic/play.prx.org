@@ -32,6 +32,8 @@ export class Logger {
     player.addEventListener('seeked', () => this.onSeeked());
 
     setInterval(this.flushListeningBlocks.bind(this), (FLUSH_INTERVAL * 1000));
+
+    window.addEventListener('unload', () => this.onUnload());
   }
 
   // On a periodic basis, listening blocks are flushed to GA. All blocks,
@@ -152,5 +154,10 @@ export class Logger {
         hitType: HIT_TYPE_EVENT
       });
     }
+  }
+
+  private onUnload() {
+    this.player.pause();
+    this.flushListeningBlocks();
   }
 }
