@@ -149,6 +149,7 @@ export class Logger {
     if (this.waitingSince) {
       const now = new Date();
       const wait: number = ((+now) - (+this.waitingSince)) / 1000.0;
+      const value = Math.max(0, Math.min(wait, 10));
       this.waitingSince = undefined;
 
       ga(GA_SEND, {
@@ -157,7 +158,7 @@ export class Logger {
         [DIMENSION_EPISODE_TITLE]: this.label,
         [DIMENSION_SHOW_NAME]: this.artist,
         eventLabel: this.label,
-        eventValue: wait,
+        eventValue: value,
         hitType: HIT_TYPE_EVENT
       });
     }
