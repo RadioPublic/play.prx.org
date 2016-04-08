@@ -183,7 +183,7 @@ export class DovetailAudio extends ExtendableAudio {
       if (response.decisions[entry.id]) {
         result.push(entry);
         entry.audioUrl = response.decisions[entry.id].contents[0].data.imageUrl;
-        entry.duration = 0;
+        entry.duration = 10;
       } else if (entry.type == 'original') {
         result.push(entry);
       }

@@ -15,8 +15,10 @@ export class MainPlayerComponent {
     let audioUrlInput = routeParams.get('audioUrl');
     if (!audioUrlInput) {
       router.navigate(['Player', {
+        artist: 'Serial',
         audioUrl: 'https%3A%2F%2Fdovetail.prxu.org%2Fserial%2Fb2e8cc39-1' +
-          'bea-4246-9205-775f7c1152ad%2Fserial-s02-e09.mp3'
+          'bea-4246-9205-775f7c1152ad%2Fserial-s02-e09.mp3',
+        title: 'Trade Secrets'
       }]);
     } else {
       this.audioUrl = decodeURIComponent(audioUrlInput);
