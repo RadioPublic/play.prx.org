@@ -3,6 +3,7 @@ export interface DovetailArrangementEntry {
   type: 'original'|'ad'|'sonicId'|'billboard'|'houseAd'|'fallback';
   duration?: number;
   audioUrl?: string;
+  impressionUrl: string;
 }
 
 export interface DovetailArrangement {
