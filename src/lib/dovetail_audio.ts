@@ -16,6 +16,11 @@ function sumDuration(collector: number, entry: {duration?: number}) {
   return collector + entry.duration || 0;
 }
 
+export interface SegmentEventData {
+  segmentType: string;
+  segment: DovetailArrangementEntry;
+}
+
 const DURATION_CHANGE = 'durationchange';
 const TIME_UPDATE = 'timeupdate';
 const ENDED = 'ended';
@@ -50,6 +55,8 @@ export class DovetailAudio extends ExtendableAudio {
   private resumeOnLoad = false;
   private _playbackRate: number;
 
+  private _imgElem: HTMLImageElement;
+
   constructor(url: string) {
     super(url);
     this._audio.addEventListener(DURATION_CHANGE, this.listenerOnDurationChange.bind(this));
@@ -57,6 +64,7 @@ export class DovetailAudio extends ExtendableAudio {
     this.$$forwardEvent = this.$$forwardEvent.bind(this);
     this.$$forwardEvents(PROXIED_EVENTS);
     this.finishConstructor();
+    this.addEventListener(SEGMENT_END, this.$$logImpression.bind(this));
   }
 
   play() {
@@ -184,6 +192,7 @@ export class DovetailAudio extends ExtendableAudio {
         result.push(entry);
         entry.audioUrl = response.decisions[entry.id].contents[0].data.imageUrl;
         entry.duration = 10;
+        entry.impressionUrl = response.decisions[entry.id].impressionUrl;
       } else if (entry.type == 'original') {
         result.push(entry);
       }
@@ -235,10 +244,11 @@ export class DovetailAudio extends ExtendableAudio {
   private skipToFile(index: number, resume = false) {
     if (this.index != index && this.arrangement.entries.length > index) {
       if (this.index != -1) {
-        this.$$sendEvent(SEGMENT_END, {
+        const eventData: SegmentEventData = {
           segment: this.arrangement.entries[this.index],
           segmentType: this.arrangement.entries[this.index].type
-        });
+        };
+        this.$$sendEvent(SEGMENT_END, eventData);
       }
       this.index = index;
       this._audio.src = this.arrangement.entries[index].audioUrl;
@@ -253,6 +263,22 @@ export class DovetailAudio extends ExtendableAudio {
       return true;
     } else {
       return false;
+    }
+  }
+
+  private $$logImpression(event: Event, data: SegmentEventData) {
+    const type: string = data.segmentType;
+    const segment: DovetailArrangementEntry = data.segment;
+
+    if (type == 'ad' || type == 'houseAd') {
+      if (typeof this._imgElem == 'undefined') {
+          this._imgElem = document.createElement('img');
+          this._imgElem.width = 1;
+          this._imgElem.height = 1;
+          this._imgElem.style.position = 'absolute';
+          document.body.appendChild(this._imgElem);
+      }
+      this._imgElem.src = segment.impressionUrl;
     }
   }
 }
