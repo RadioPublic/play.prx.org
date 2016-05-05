@@ -1,0 +1,29 @@
+<metadata>
+  <artwork [style.background-image]="artworkUrl"></artwork>
+  <section>
+    <header>
+      <h1 [title]="title">{{title}}</h1>
+      <h2 [title]="subtitle">{{subtitle}}</h2>
+    </header>
+    <nav>
+      <a href="#">Share</a>
+      <a [href]="subscribeUrl">Subscribe</a>
+    </nav>
+  </section>
+</metadata>
+<controls (window:keydown)="handleHotkey($event)">
+  <buttons>
+    <button (click)="seekBy(-10)"></button>
+    <button (click)="togglePlayPause()"></button>
+    <button></button>
+  </buttons>
+  <scrubber>
+    <progress-bar
+      [value]="currentTime | async"
+      [maximum]="duration | async"
+      (seek)="onSeek($event)"
+      (scrubbing)="onScrub($event)"></progress-bar>
+    <playback-progress>{{currentTime | async | duration}}</playback-progress>
+    <duration>{{duration | async | duration}}</duration>
+  </scrubber>
+</controls>

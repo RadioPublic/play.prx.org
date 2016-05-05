@@ -6,19 +6,10 @@ import {
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'progress-bar',
-  styleUrls: ['src/app/player/progress_bar.component.css'],
-  template: `
-    <bar
-      [class.disabled]="isDisabled"
-      [style.width.%]="progress * 100.0"></bar>
-    <highlight
-      *ngIf="isHover && !isScrubbing && !isDisabled"
-      [style.width.%]="provisionalProgress * 100.0"></highlight>
-    <scrub-detector
-      *ngIf="isScrubbing"></scrub-detector>
-  `
+  styleUrls: ['app/+player/shared/progress-bar/progress-bar.component.css'],
+  templateUrl: 'app/+player/shared/progress-bar/progress-bar.component.html'
 })
-export default class ProgressBarComponent {
+export class ProgressBarComponent {
   @Input() value: number = 0;
   @Input() minimum: number = 0;
   @Input() maximum: number = 1;

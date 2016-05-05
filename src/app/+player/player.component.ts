@@ -1,22 +1,23 @@
 import {Component, Input, OnChanges, SimpleChange, OnInit} from 'angular2/core';
 import {RouteParams} from 'angular2/router';
 import {AsyncPipe} from 'angular2/common';
-import {DovetailAudio} from '../../lib/dovetail_audio';
-import {Logger} from '../../lib/logger';
 import {Observable, Observer} from 'rxjs/Rx';
 import 'rxjs/add/operator/share';
-import ProgressBarComponent from './progress_bar.component';
-import TimeIndicatorComponent from './time_indicator.component';
+
+import {DovetailAudio} from '../../lib/dovetail_audio';
+import {Logger} from '../../lib/logger';
+import {ProgressBarComponent} from './shared/index';
+import {DurationPipe} from '../shared/index';
 
 const AUDIO_URL = 'audioUrl';
 const SEGMENT_TYPE = 'segmentType';
 
 @Component({
-  directives: [ProgressBarComponent, TimeIndicatorComponent],
-  pipes: [AsyncPipe],
+  directives: [ProgressBarComponent],
+  pipes: [AsyncPipe, DurationPipe],
   selector: 'player',
-  styleUrls: ['src/app/player/player.component.css'],
-  templateUrl: 'src/app/player/player.component.html'
+  styleUrls: ['app/+player/player.component.css'],
+  templateUrl: 'app/+player/player.component.html'
 })
 export class PlayerComponent implements OnChanges, OnInit {
   private player: DovetailAudio;
@@ -33,15 +34,23 @@ export class PlayerComponent implements OnChanges, OnInit {
   private currentTime: Observable<number>;
   private duration: Observable<number>;
 
+  private title: string;
+  private subtitle: string;
+  private subscribeUrl: string;
+  private artworkUrl: string;
+
   constructor(private routeParams: RouteParams) {}
 
   ngOnInit() {
     this.player = new DovetailAudio(this.audioUrl);
     this.player.addEventListener('segmentstart', e => this.currentSegmentType = e[SEGMENT_TYPE]);
 
-    const artist = decodeURIComponent(this.routeParams.get('artist'));
-    const title = decodeURIComponent(this.routeParams.get('title'));
-    this.logger = new Logger(this.player, title, artist);
+    this.title = decodeURIComponent(this.routeParams.get('title'));
+    this.subtitle = decodeURIComponent(this.routeParams.get('subtitle'));
+    this.subscribeUrl = decodeURIComponent(this.routeParams.get('subscribeUrl'));
+    this.artworkUrl = `url(${decodeURIComponent(this.routeParams.get('artworkUrl'))})`;
+
+    this.logger = new Logger(this.player, this.title, this.subtitle);
 
     this.duration = Observable.create((observer: Observer<number>) => {
       observer.next(0);
@@ -60,7 +69,7 @@ export class PlayerComponent implements OnChanges, OnInit {
     if (changes[AUDIO_URL]) {
       // TODO: fix this stupid thing.
       // TODO make sure logger is updated (make a new logger)
-      console.error('if this were real, it would handle this.');
+      // console.error('if this were real, it would handle this.');
     }
   }
 

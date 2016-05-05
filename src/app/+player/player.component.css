@@ -1,0 +1,211 @@
+metadata,
+controls {
+  flex-grow: 1;
+}
+
+metadata {
+  display: flex;
+  align-items: stretch;
+  align-content: stretch;
+  position: relative;
+}
+
+artwork,
+section {
+  flex-grow: 1;
+}
+
+artwork {
+  width: 128px;
+  height: 128px;
+  min-width: 128px;
+  max-width: 128px;
+  margin: 6px;
+  /*background-image: url('https://media.www.bailey.dog/images/full/0003.jpg');*/
+  background-size: cover;
+}
+
+section {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: stretch;
+  align-content: stretch;;
+  min-width: 0; /* Allows child text nodes to overflow properly */
+}
+
+header,
+nav {
+  flex-grow: 1;
+}
+
+header {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  min-width: 0; /* Allows child text nodes to overflow properly */
+}
+
+nav {
+  max-height: 30px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+  align-items: center;
+  align-content: center;
+  padding: 0 6px;
+}
+
+nav a {
+  display: block;
+  padding: 2px 10px;
+  text-decoration: none;
+  color: #368aa2;
+  cursor: pointer;
+}
+nav a:hover {
+  color: #1e4e5c;
+}
+
+h1,
+h2 {
+  flex-basis: 100%;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  color: #383838;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+h1 {
+  font-size: 18px;
+  font-weight: normal;
+  padding: 6px 6px 2px;
+}
+
+h2 {
+  font-size: 16px;
+  padding: 0 6px;
+}
+
+controls {
+  height: 60px;
+  display: flex;
+}
+
+buttons,
+scrubber {
+  flex-grow: 1;
+}
+
+buttons {
+  max-width: 200px;
+  border-top: 1px solid #95989A;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+button {
+  background: red;
+  min-width: 50px;
+  min-height: 50px;
+}
+
+scrubber {
+  background: #cccccc;
+  position: relative;
+  cursor: col-resize;
+}
+
+progress-bar {
+  display: block;
+  height: 60px;
+}
+
+playback-progress,
+duration {
+  position: absolute;
+  bottom: 0;
+  background: #e6e6e6;
+  padding: 1px;
+}
+
+playback-progress {
+  left: 0;
+}
+
+duration {
+  right: 0;
+}
+
+@media (max-height: 199px) {
+  * {
+    display: none !important;
+  }
+}
+
+@media (min-height: 201px) {
+  artwork {
+    position: absolute;
+    width: auto;
+    height: auto;
+    max-width: none;
+    margin: 0;
+    top: 68px;
+    right: 0;
+    bottom: -60px;
+    left: 0;
+    z-index: 0;
+    background-position: center center;
+  }
+
+  header {
+    max-height: 47px;
+  }
+
+  nav {
+    padding: 0 6px;
+    max-height: 21px;
+  }
+
+  nav a {
+    padding: 0 10px;
+    text-transform: uppercase;
+    font-size: 13px;
+  }
+
+  controls {
+    height: auto;
+    max-height: 102px;
+    flex-direction: column;
+    align-items: stretch;
+    align-content: stretch;
+  }
+
+  buttons,
+  scrubber {
+    position: relative;
+    flex-grow: 0;
+    width: 100vw;
+    border-top: none;
+    z-index: 1;
+  }
+
+  buttons {
+    max-width: none;
+    max-height: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.8);
+  }
+
+  scrubber {
+    max-height: 42px;
+  }
+
+  progress-bar {
+    height: 42px;
+  }
+}

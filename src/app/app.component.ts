@@ -1,7 +1,8 @@
 import {Component} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 
-import {MainPlayerComponent} from '../player/main_player.component';
+import {EmbedComponent} from './+embed/index.ts';
+import {DemoComponent} from './+demo/index.ts';
 
 @Component({
   directives: [ROUTER_DIRECTIVES],
@@ -9,10 +10,7 @@ import {MainPlayerComponent} from '../player/main_player.component';
   template: '<router-outlet></router-outlet>'
 })
 @RouteConfig([
-  { component: MainPlayerComponent, name: 'Player', path: '/' }
+  { component: EmbedComponent, name: 'Embed', path: '/' },
+  { component: DemoComponent, name: 'Demo', path: '/demo' }
 ])
-export class AppComponent {
-  constructor() {
-    console.log("WAT");
-  }
-}
+export class AppComponent {}

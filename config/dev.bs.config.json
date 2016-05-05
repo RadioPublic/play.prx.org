@@ -2,7 +2,12 @@
   "server": {
     "baseDir": "./src",
     "routes": {
-      "/": "./"
+      "/jspm_packages": "./jspm_packages",
+      "/node_modules": "./node_modules",
+      "/config": "./config",
+      "/src": "./src",
+      "/tsconfig.json": "./tsconfig.json",
+      "/.dev/vendor.js": "./.dev/vendor.js"
     }
   }
 }
