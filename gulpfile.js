@@ -43,6 +43,13 @@ gulp.task('jspm:unbundle', shell.task([
    (jspm unbundle; git add config/systemjs.config.js)) || true`
 ]));
 
+// Testing tasks
+gulp.task('tdd', function (done) {
+  new KarmaServer({
+    configFile: __dirname + '/config/karma.dev.js'
+  }, done).start();
+});
+
 // Utility tasks
 const loc = ['#!/bin/sh', 'PATH="/usr/local/bin:$PATH"', 'npm run git:hooks:pre-commit'];
 gulp.task('git:hooks:install', shell.task([
