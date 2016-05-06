@@ -8,13 +8,10 @@ const shell         = require('gulp-shell');
 const sourcemaps    = require('gulp-sourcemaps');
 
 // Public tasks (serial)
-gulp.task('start:dev', cb => run('build:dev', 'server:dev', cb));
-gulp.task('start:dist', cb => run('build:dist', 'server:dist', cb));
-
-
 gulp.task('git:hooks:pre-commit', cb => run('jspm:unbundle', cb));
 gulp.task('postinstall', cb => run(['jspm:install', 'typings:install', 'git:hooks:install'], cb));
-// gulp.task('start', cb => run('build:dev', 'server:dev', cb));
+gulp.task('start:dev', cb => run('build:dev', 'server:dev', cb));
+gulp.task('start:dist', cb => run('build:dist', 'server:dist', cb));
 
 // Build tasks (parallel)
 gulp.task('build:dev', cb => run(['jspm:bundle:dev'], cb));
@@ -45,34 +42,6 @@ gulp.task('jspm:unbundle', shell.task([
   `(git diff --name-only --cached | grep config/systemjs.config.js > /dev/null &&
    (jspm unbundle; git add config/systemjs.config.js)) || true`
 ]));
-
-// Jade compile tasks
-// gulp.task('jade:index:dev', () => {
-//   return gulp
-//     .src('./src/index.jade')
-//     .pipe(jade({ locals: { dist: false } }))
-//     .pipe(gulp.dest('./src/'));
-// });
-
-// gulp.task('jade:index:dist', () => {
-//   return gulp
-//     .src('./src/index.jade')
-//     .pipe(jade({ locals: { dist: true } }))
-//     .pipe(gulp.dest('./.dist/'));
-// });
-
-// Copy tasks
-gulp.task('copy:assets:dist', () => {
-  return gulp
-    .src(['./src/**/*.html', '!./src/index.html', './src/**/*.css', './src/images/**/*'], { base: 'src' })
-    .pipe(gulp.dest('./.dist/'));
-});
-
-gulp.task('copy:vendor:dist', () => {
-  return gulp
-    .src('./node_modules/angular2/bundles/angular2-polyfills.js')
-    .pipe(gulp.dest('./.dist/scripts/'));
-});
 
 // Utility tasks
 const loc = ['#!/bin/sh', 'PATH="/usr/local/bin:$PATH"', 'npm run git:hooks:pre-commit'];
