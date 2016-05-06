@@ -6,7 +6,7 @@ import {DemoComponent} from './+demo/index.ts';
 
 @Component({
   directives: [ROUTER_DIRECTIVES],
-  selector: 'embed-app',
+  selector: 'app',
   template: '<router-outlet></router-outlet>'
 })
 @RouteConfig([

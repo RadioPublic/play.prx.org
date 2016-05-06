@@ -1,6 +1,6 @@
 {
   "name": "embed.prx.org",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "",
   "keywords": [
     "PRX",
@@ -16,30 +16,26 @@
   ],
   "repository": "https://github.com/PRX/embed.prx.org.git",
   "scripts": {
-    "deploy": "gulp deploy",
-    "git:hooks:pre-commit": "gulp git:hooks:pre-commit",
-    "start": "gulp start",
+    "build:dist": "gulp build:dist",
+    "server:dist": "gulp server:dist",
+    "start:dev": "gulp start:dev",
     "start:dist": "gulp start:dist",
-    "test": "gulp test",
+    "git:hooks:pre-commit": "gulp git:hooks:pre-commit",
     "postinstall": "gulp postinstall"
   },
-  "dependencies": {},
-  "devDependencies": {
-    "angular2": "^2.0.0-beta.17",
+  "dependencies": {
+    "express": "^4.13.4",
     "gulp": "^3.9.1",
-    "gulp-bump": "^2.1.0",
-    "gulp-file": "^0.2.0",
-    "gulp-jade": "^1.1.0",
-    "gulp-jspm": "^0.5.7",
+    "gulp-jspm": "^0.5.10",
     "gulp-rename": "^1.2.2",
-    "gulp-s3": "^0.3.0",
-    "gulp-s3-upload": "^1.5.1",
     "gulp-shell": "^0.5.2",
     "gulp-sourcemaps": "^1.6.0",
-    "jasmine-core": "^2.4.1",
+    "jade": "^1.11.0",
+    "run-sequence": "^1.1.5"
+  },
+  "devDependencies": {
     "jspm": "^0.16.30",
-    "lite-server": "^2.1.0",
-    "run-sequence": "^1.1.5",
+    "pug": "^2.0.0-alpha6",
     "rxjs": "^5.0.0-beta.2",
     "typescript": "^1.8.9",
     "typings": "^0.7.3"

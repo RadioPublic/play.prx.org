@@ -6,22 +6,21 @@ html(lang='en')
     //- link(rel='icon' href='/images/favicon.png')
 
     link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css')
-    link(rel="stylesheet", href='/stylesheets/main.css')
-    
-    if locals.release
-      script(src='/scripts/angular2-polyfills.js')
-      script(src='/scripts/backsaw.min.js')
-    else
-      script(src='node_modules/angular2/bundles/angular2-polyfills.js')
-      script(src='jspm_packages/system.js')
-      script(src='config/systemjs.config.js')
+    link(rel='stylesheet', href='/stylesheets/main.css')
+
+    if !locals.dist
+      script(src='/node_modules/angular2/bundles/angular2-polyfills.js')
+      script(src='/jspm_packages/system.js')
+      script(src='/config/systemjs.config.js')
       script.
-        System.import('src').then(null, console.error.bind(console));
-    
+        System.import('src/app/main').then(null, console.error.bind(console));
+
     script.
       window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
       ga('create', 'UA-164824-54', 'auto');
     script(async src='https://www.google-analytics.com/analytics.js')
 
   body
-    embed-app
+    app
+    if locals.dist
+      script(src='/scripts/embed.min.js')
