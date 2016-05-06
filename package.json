@@ -18,6 +18,7 @@
   "scripts": {
     "build:dist": "gulp build:dist",
     "server:dist": "gulp server:dist",
+    "start": "gulp start:dev",
     "start:dev": "gulp start:dev",
     "start:dist": "gulp start:dist",
     "git:hooks:pre-commit": "gulp git:hooks:pre-commit",
