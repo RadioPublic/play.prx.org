@@ -13,6 +13,9 @@ gulp.task('git:hooks:pre-commit', cb => run('jspm:unbundle', cb));
 gulp.task('postinstall', cb => run(['jspm:install', 'typings:install', 'git:hooks:install'], cb));
 gulp.task('start:dev', cb => run('build:dev', 'server:dev', cb));
 gulp.task('start:dist', cb => run('build:dist', 'server:dist', cb));
+gulp.task('test:ci', cb => run('karma:ci', cb));
+gulp.task('test:once', cb => run(cb));
+gulp.task('test:watch', cb => run(cb));
 
 // Build tasks (parallel)
 gulp.task('build:dev', cb => run(['jspm:bundle:dev'], cb));
@@ -44,12 +47,14 @@ gulp.task('jspm:unbundle', shell.task([
    (jspm unbundle; git add config/systemjs.config.js)) || true`
 ]));
 
-// Testing tasks
-gulp.task('tdd', function (done) {
-  new karma({
-    configFile: __dirname + '/config/karma.dev.js'
-  }, done).start();
-});
+// Karma tasks
+gulp.task('karma:ci', () => {});
+
+// gulp.task('tdd', function (done) {
+//   new karma({
+//     configFile: __dirname + '/config/karma.dev.js'
+//   }, done).start();
+// });
 
 // Utility tasks
 const loc = ['#!/bin/sh', 'PATH="/usr/local/bin:$PATH"', 'npm run git:hooks:pre-commit'];

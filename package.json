@@ -23,7 +23,10 @@
     "start:dist": "gulp start:dist",
     "git:hooks:pre-commit": "gulp git:hooks:pre-commit",
     "postinstall": "gulp postinstall",
-    "test": "gulp tdd"
+    "test": "gulp test:watch",
+    "test:ci": "gulp test:ci",
+    "test:once": "gulp test:once",
+    "test:watch": "gulp test:watch"
   },
   "dependencies": {
     "express": "^4.13.4",
