@@ -2,6 +2,7 @@
 
 const gulp          = require('gulp');
 const jspm          = require('gulp-jspm');
+const karma         = require('karma').Server
 const rename        = require('gulp-rename');
 const run           = require('run-sequence');
 const shell         = require('gulp-shell');
@@ -45,7 +46,7 @@ gulp.task('jspm:unbundle', shell.task([
 
 // Testing tasks
 gulp.task('tdd', function (done) {
-  new KarmaServer({
+  new karma({
     configFile: __dirname + '/config/karma.dev.js'
   }, done).start();
 });

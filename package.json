@@ -23,7 +23,7 @@
     "start:dist": "gulp start:dist",
     "git:hooks:pre-commit": "gulp git:hooks:pre-commit",
     "postinstall": "gulp postinstall",
-    "test": "gulp test"
+    "test": "gulp tdd"
   },
   "dependencies": {
     "express": "^4.13.4",
@@ -32,8 +32,8 @@
     "gulp-rename": "^1.2.2",
     "gulp-shell": "^0.5.2",
     "gulp-sourcemaps": "^1.6.0",
-    "jade": "^1.11.0",
-    "run-sequence": "^1.1.5"
+    "run-sequence": "^1.1.5",
+    "pug": "^2.0.0-alpha6"
   },
   "devDependencies": {
     "jasmine-core": "^2.4.1",
@@ -43,7 +43,6 @@
     "karma-jasmine": "^1.0.2",
     "karma-jspm": "^2.1.0",
     "karma-spec-reporter": "0.0.26",
-    "pug": "^2.0.0-alpha6",
     "rxjs": "^5.0.0-beta.2",
     "typescript": "^1.8.9",
     "typings": "^0.7.3"
