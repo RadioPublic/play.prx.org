@@ -9,16 +9,17 @@ RUN chmod +x /tini
 WORKDIR /app
 EXPOSE 3000
 
+ENV NODE_ENV production
+
 ENTRYPOINT ["/tini", "--", "npm", "run"]
-CMD ["server:dist"]
+CMD ["start"]
 
 ADD . ./
 
 RUN apk --update add --virtual build-dependencies git && \
     npm set progress=false && \
-    npm install --ignore-scripts --production --no-optional --unsafe-perm --loglevel error && \
-    npm run build:dist && \
-    npm prune --production --loglevel error && npm cache clean && \
+    npm install --only=development --ignore-scripts
+    npm install --no-optional --unsafe-perm --loglevel error && \
     rm -rf jspm_packages typings .dev && \
     apk del build-dependencies && \
     ((find / -type f -iname \*.apk-new -delete || true); \

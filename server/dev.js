@@ -1,7 +1,7 @@
 'use strict';
 
 const express   = require('express');
-const jade      = require('jade');
+const pug       = require('pug');
 // const config    = require('./config');
 
 const CONTENT_TYPE = 'Content-Type';

@@ -16,29 +16,21 @@
   ],
   "repository": "https://github.com/PRX/embed.prx.org.git",
   "scripts": {
-    "build:dist": "gulp build:dist",
-    "server:dist": "gulp server:dist",
-    "start": "gulp start:dev",
-    "start:dev": "gulp start:dev",
-    "start:dist": "gulp start:dist",
     "git:hooks:pre-commit": "gulp git:hooks:pre-commit",
+    "prestart": "gulp prestart",
+    "start": "gulp start",
     "postinstall": "gulp postinstall",
-    "test": "gulp test:watch",
-    "test:ci": "gulp test:ci",
-    "test:once": "gulp test:once",
-    "test:watch": "gulp test:watch"
+    "test": "gulp test"
   },
   "dependencies": {
-    "express": "^4.13.4",
+    "express": "^4.13.4"
+  },
+  "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-jspm": "^0.5.10",
     "gulp-rename": "^1.2.2",
     "gulp-shell": "^0.5.2",
     "gulp-sourcemaps": "^1.6.0",
-    "run-sequence": "^1.1.5",
-    "pug": "^2.0.0-alpha6"
-  },
-  "devDependencies": {
     "jasmine-core": "^2.4.1",
     "jspm": "^0.16.30",
     "karma": "^0.13.22",
@@ -46,6 +38,8 @@
     "karma-jasmine": "^1.0.2",
     "karma-jspm": "^2.1.0",
     "karma-spec-reporter": "0.0.26",
+    "pug": "^2.0.0-alpha7",
+    "run-sequence": "^1.1.5",
     "rxjs": "^5.0.0-beta.2",
     "typescript": "^1.8.9",
     "typings": "^0.7.3"
