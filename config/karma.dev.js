@@ -20,9 +20,7 @@ module.exports = (config) => {
     jspm: {
       config: "config/systemjs.config.js",
       // useBundles: true,
-      loadFiles: process.env.TESTONLY ?
-        ['**/' + process.env.TESTONLY + '.spec.ts'] :
-        ['src/app/**/*.spec.ts'],
+      loadFiles: ['src/app/**/*.spec.ts'],
       serveFiles: [
         'src/app/**/*!(*.spec).ts',
         'src/app/**/*.css',
