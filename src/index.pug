@@ -3,13 +3,11 @@ html(lang='en')
     title Embed
     meta(name='viewport', content='width=device-width, initial-scale=1')
     base(href='/')
-    //- link(rel='icon' href='/images/favicon.png')
 
     link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css')
     link(rel='stylesheet', href='/stylesheets/main.css')
 
     if !locals.dist
-      script(src='/node_modules/angular2/bundles/angular2-polyfills.js')
       script(src='/jspm_packages/system.js')
       script(src='/config/systemjs.config.js')
       script.

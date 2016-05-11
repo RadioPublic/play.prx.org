@@ -15,27 +15,30 @@ module.exports = (config) => {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jspm', 'jasmine'],
+    frameworks: ['jasmine'],
+    // frameworks: ['jspm', 'jasmine'],
 
-    jspm: {
-      config: "config/systemjs.config.js",
-      useBundles: true,
-      loadFiles: ['src/app/**/*.spec.ts'],
-      serveFiles: [
-        'src/app/**/*!(*.spec).ts',
-        'src/app/**/*.css',
-        'tsconfig.json'
-      ]
-    }
+    // jspm: {
+    //   config: "config/systemjs.config.js",
+    //   useBundles: true,
+    //   loadFiles: ['src/app/**/*.spec.ts'],
+    //   serveFiles: [
+    //     'src/app/**/*!(*.spec).ts',
+    //     'src/app/**/*.css',
+    //     'tsconfig.json'
+    //   ]
+    // },
 
     proxies: {
-      '/.dist/': '/base/.dist/',
+      '/.ci/': '/base/.ci/',
       '/src/': '/base/src/',
       '/config/': '/base/config/',
       '/jspm_packages/': '/base/jspm_packages/',
       '/tsconfig.json': '/base/tsconfig.json'
     },
 
-    files: []
+    files: [
+      '.ci/bundle.js'
+    ]
   });
 };
