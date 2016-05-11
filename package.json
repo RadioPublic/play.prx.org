@@ -1,20 +1,20 @@
 {
-  "name": "embed.prx.org",
+  "name": "play.prx.org",
   "version": "0.1.0",
-  "description": "",
+  "description": "PRX embed audio player",
   "keywords": [
     "PRX",
-    "Embed"
+    "Play"
   ],
-  "homepage": "http://embed.prx.org",
-  "bugs": "https://github.com/PRX/embed.prx.org/issues",
+  "homepage": "http://play.prx.org",
+  "bugs": "https://github.com/PRX/play.prx.org/issues",
   "license": "MIT",
   "author": "PRX, Inc. <help@prx.org> (http://www.prx.org)",
   "contributors": [
     "Chris Kalafarski <chris.kalafarski@prx.org>",
     "Chris Rhoden <chris@prx.org>"
   ],
-  "repository": "https://github.com/PRX/embed.prx.org.git",
+  "repository": "https://github.com/PRX/play.prx.org.git",
   "scripts": {
     "clean": "rm -Rf ./.ci ./.dev ./.dist ./jspm_packages ./node_modules ./typings",
     "jspm:bundle": "if [ $NODE_ENV = 'development' ]; then npm run jspm:bundle:dev; else npm run jspm:bundle:dist; fi",
