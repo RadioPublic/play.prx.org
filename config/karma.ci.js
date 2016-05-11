@@ -37,8 +37,6 @@ module.exports = (config) => {
       '/tsconfig.json': '/base/tsconfig.json'
     },
 
-    files: [
-      '.ci/bundle.js'
-    ]
+    files: []
   });
 };
