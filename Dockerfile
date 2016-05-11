@@ -18,9 +18,8 @@ ADD . ./
 
 RUN apk --update add --virtual build-dependencies git && \
     npm set progress=false && \
-    npm install --only=development --ignore-scripts
     npm install --no-optional --unsafe-perm --loglevel error && \
-    rm -rf jspm_packages typings .dev && \
+    rm -rf jspm_packages typings && \
     apk del build-dependencies && \
     ((find / -type f -iname \*.apk-new -delete || true); \
     rm -rf /var/cache/apk/* /tmp/* /var/tmp/* ; \
