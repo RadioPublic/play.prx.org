@@ -4,7 +4,6 @@
 .git/
 coverage/
 node_modules/
-jspm_packages/
 tmp/
 typings/
 
