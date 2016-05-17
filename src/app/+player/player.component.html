@@ -13,9 +13,9 @@
 </metadata>
 <controls (window:keydown)="handleHotkey($event)">
   <buttons>
-    <button (click)="seekBy(-10)"></button>
-    <button (click)="togglePlayPause()"></button>
-    <button></button>
+    <button (click)="seekBy(-10)">-10</button>
+    <button (click)="togglePlayPause()">&gt;</button>
+    <button>1x</button>
   </buttons>
   <scrubber>
     <progress-bar
