@@ -6,6 +6,10 @@ import 'rxjs/Rx';
 
 import {AppComponent} from './app.component';
 
+if (window.location.host !== 'localhost') {
+  enableProdMode();
+}
+
 bootstrap(
   AppComponent,
   [
