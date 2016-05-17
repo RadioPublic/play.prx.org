@@ -19,7 +19,7 @@
     "clean": "rm -Rf ./.ci ./.dev ./.dist ./jspm_packages ./node_modules ./typings",
     "jspm:bundle": "if [ $NODE_ENV = 'development' ]; then npm run jspm:bundle:dev; else npm run jspm:bundle:dist; fi",
     "jspm:bundle:dev": "jspm bundle src/app/main - [src/app/**/*] - [src/lib/**/*] - [src/javascript/**/*] ./.dev/vendor.js --inject",
-    "jspm:bundle:dist": "jspm bundle-sfx src/app/main ./.dist/embed.min.js --inject --minify --no-mangle",
+    "jspm:bundle:dist": "jspm bundle-sfx src/app/main ./.dist/scripts/embed.min.js --inject --minify --no-mangle",
     "jspm:install": "jspm install",
     "npm:cache:clean": "npm cache clean",
     "postinstall": "if [ $NODE_ENV = 'development' ]; then npm run postinstall:dev; else npm run postinstall:dist; fi",
