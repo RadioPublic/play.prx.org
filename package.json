@@ -24,7 +24,7 @@
     "npm:cache:clean": "npm cache clean",
     "postinstall": "if [ $NODE_ENV = 'development' ]; then npm run postinstall:dev; else npm run postinstall:dist; fi",
     "postinstall:dev": "npm run jspm:install && npm run typings:install",
-    "postinstall:dist": "npm run jspm:install && npm run jspm:bundle && npm run npm:cache:clean",
+    "postinstall:dist": "npm run jspm:bundle && npm run npm:cache:clean",
     "prestart:dev": "npm run jspm:bundle",
     "prestart:dist": "",
     "start": "if [ $NODE_ENV = 'development' ]; then npm run start:dev; else npm run start:dist; fi",
