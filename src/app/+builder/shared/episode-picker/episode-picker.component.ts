@@ -22,7 +22,7 @@ export class Episode {
 
 @Component({
   selector: 'episode-picker',
-  templateUrl: 'src/app/+builder/shared/episode-picker/episode-picker.component.html'
+  templateUrl: 'app/+builder/shared/episode-picker/episode-picker.component.html'
 })
 export class EpisodePickerComponent {
   @Output() select = new EventEmitter<Episode>();
