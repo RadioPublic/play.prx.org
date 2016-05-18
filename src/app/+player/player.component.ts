@@ -8,6 +8,7 @@ import {DovetailAudio} from '../../lib/dovetail_audio';
 import {Logger} from '../../lib/logger';
 import {ProgressBarComponent} from './shared/index';
 import {DurationPipe} from '../shared/index';
+import * as constants from '../+embed/shared/embed-constants/embed-constants';
 
 const AUDIO_URL = 'audioUrl';
 const SEGMENT_TYPE = 'segmentType';
@@ -45,10 +46,10 @@ export class PlayerComponent implements OnChanges, OnInit {
     this.player = new DovetailAudio(this.audioUrl);
     this.player.addEventListener('segmentstart', e => this.currentSegmentType = e[SEGMENT_TYPE]);
 
-    this.title = decodeURIComponent(this.routeParams.get('title'));
-    this.subtitle = decodeURIComponent(this.routeParams.get('subtitle'));
-    this.subscribeUrl = decodeURIComponent(this.routeParams.get('subscribeUrl'));
-    this.artworkUrl = `url(${decodeURIComponent(this.routeParams.get('artworkUrl'))})`;
+    this.title = decodeURIComponent(this.routeParams.get(constants.EMBED_TITLE_PARAM));
+    this.subtitle = decodeURIComponent(this.routeParams.get(constants.EMBED_SUBTITLE_PARAM));
+    this.subscribeUrl = decodeURIComponent(this.routeParams.get(constants.EMBED_SUBSCRIBE_URL_PARAM));
+    this.artworkUrl = `url(${decodeURIComponent(this.routeParams.get(constants.EMBED_IMAGE_URL_PARAM))})`;
 
     this.logger = new Logger(this.player, this.title, this.subtitle);
 

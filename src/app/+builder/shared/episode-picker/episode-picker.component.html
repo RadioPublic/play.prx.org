@@ -1,0 +1,5 @@
+<ul>
+  <li *ngFor="let ep of episodes | async" (click)="selectEpisode(ep)">
+    {{ep.title}} {{ep.guid}}
+  </li>
+</ul>
