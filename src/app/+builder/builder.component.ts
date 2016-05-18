@@ -40,8 +40,8 @@ export class BuilderSpecs {
 @Component({
   directives: [NgForm, EpisodePickerComponent],
   selector: 'player',
-  styleUrls: ['src/app/+builder/builder.component.css'],
-  templateUrl: 'src/app/+builder/builder.component.html'
+  styleUrls: ['app/+builder/builder.component.css'],
+  templateUrl: 'app/+builder/builder.component.html'
 })
 export class BuilderComponent {
   private feedUrl: string;
