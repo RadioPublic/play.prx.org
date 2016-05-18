@@ -1,18 +1,17 @@
-<h1>Builder</h1>
+<section>
+  <form id="feed-selector" (ngSubmit)="onSubmit(searchFeedUrl.value)" #searchFeedUrlForm="ngForm">
+    <h1>Embed Builder</h1>
 
-<form (ngSubmit)="onSubmit(searchFeedUrl.value)" #searchFeedUrlForm="ngForm">
-  <label for="url">Podcast Feed URL (RSS)</label>
-  <input type="url" id="url" #searchFeedUrl ngControl="url" required pattern="^http.*" style="width: 400px;">
-  <button type="submit" [disabled]="!searchFeedUrlForm.form.valid">Submit</button>
-</form>
+    <label for="url">Podcast Feed URL (RSS)</label>
+    <input type="url" id="url" #searchFeedUrl ngControl="url" required pattern="^http.*" style="width: 400px;">
+    <button type="submit" [disabled]="!searchFeedUrlForm.form.valid">Submit</button>
+  </form>
 
-<div style="width: 40%; float: left;">
   <episode-picker
     (select)="onEpisodeSelect($event)"
     [feedUrl]="feedUrl"></episode-picker>
-</div>
-<div style="width: 40%; float: left;">
-  <form *ngIf="specs" #specsForm="ngForm">
+
+  <form id="embed-details" *ngIf="specs" #specsForm="ngForm">
     <fieldset>
       <label for="title">Title</label>
       <input type="text" [(ngModel)]="specs.title" ngControl="title" id="title">
@@ -53,4 +52,4 @@
       <br><a href="/e?{{specs.paramString}}">Open Preview</a>
     </fieldset>
   </form>
-</div>
+</section>

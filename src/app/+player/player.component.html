@@ -13,8 +13,13 @@
 </metadata>
 <controls (window:keydown)="handleHotkey($event)">
   <buttons>
-    <button (click)="seekBy(-10)">-10</button>
-    <button (click)="togglePlayPause()">&gt;</button>
+    <button (click)="seekBy(-10)">
+      <img src="/images/back10.svg" alt="">
+    </button>
+    <button (click)="togglePlayPause()" id="playback-control-button">
+      <img src="/images/play.svg" alt="" *ngIf="player.paused">
+      <img src="/images/pause.svg" alt="" *ngIf="!player.paused">
+    </button>
     <button>1x</button>
   </buttons>
   <scrubber>

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-110 556.75 32 35.25">
+  <defs>
+    <style>
+      .cls-1, .cls-6 {
+        fill: none;
+      }
+
+      .cls-1 {
+        stroke: #fff;
+        stroke-width: 2px;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-3, .cls-4 {
+        fill: #fff;
+      }
+
+      .cls-4 {
+        font-size: 16px;
+        font-family: Helvetica-Bold, Helvetica;
+        font-weight: 700;
+        letter-spacing: -0.1em;
+      }
+
+      .cls-5 {
+        stroke: none;
+      }
+    </style>
+  </defs>
+  <g id="group-53" transform="translate(-136 396)">
+    <g id="ellipse-1" class="cls-1" transform="translate(26 164)">
+      <circle class="cls-5" cx="16" cy="16" r="16"/>
+      <circle class="cls-6" cx="16" cy="16" r="15"/>
+    </g>
+    <rect id="rectangle-6" class="cls-2" width="16" height="16" transform="translate(26 163.394)"/>
+    <path id="path" class="cls-3" d="M0,0V8.425L7.021,4.291Z" transform="translate(42.127 169.175) rotate(180)"/>
+    <text id="_10" data-name="10" class="cls-4" transform="translate(33.5 186.281)"><tspan x="0" y="0">10</tspan></text>
+  </g>
+</svg>

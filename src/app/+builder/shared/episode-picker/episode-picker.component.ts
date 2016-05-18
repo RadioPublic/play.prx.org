@@ -22,6 +22,7 @@ export class Episode {
 
 @Component({
   selector: 'episode-picker',
+  styleUrls: ['app/+builder/shared/episode-picker/episode-picker.component.css'],
   templateUrl: 'app/+builder/shared/episode-picker/episode-picker.component.html'
 })
 export class EpisodePickerComponent {

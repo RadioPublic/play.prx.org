@@ -1,0 +1,23 @@
+section {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100vw;
+  height: 100vh;
+  align-items: stretch;
+  align-content: stretch;
+}
+
+#feed-selector {
+  flex-basis: 100%;
+  margin: 0;
+}
+
+episode-picker,
+#embed-details {
+  overflow: scroll;
+  flex-basis: 50%;
+}
+
+
+#embed-details {
+}

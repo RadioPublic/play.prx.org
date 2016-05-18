@@ -22,6 +22,7 @@ function listen(port) {
   app.use('/config',        express.static('./config'));
   app.use('/.dev',          express.static('./.dev'));
   app.use('/stylesheets',   express.static('./src/stylesheets'));
+  app.use('/images',        express.static('./src/images'));
   app.use('/app',           express.static('./src/app'));
   app.use('/src',           express.static('./src'));
   app.use('/tsconfig.json', express.static('./tsconfig.json'));
