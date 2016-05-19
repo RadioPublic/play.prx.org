@@ -11,45 +11,47 @@
     (select)="onEpisodeSelect($event)"
     [feedUrl]="feedUrl"></episode-picker>
 
-  <form id="embed-details" *ngIf="specs" #specsForm="ngForm">
-    <fieldset>
-      <label for="title">Title</label>
-      <input type="text" [(ngModel)]="specs.title" ngControl="title" id="title">
-    </fieldset>
+  <div id="embed-details">
+    <form *ngIf="specs" #specsForm="ngForm">
+      <fieldset>
+        <label for="title">Title</label>
+        <input type="text" [(ngModel)]="specs.title" ngControl="title" id="title">
+      </fieldset>
 
-    <fieldset>
-      <label for="subtitle">Subtitle</label>
-      <input type="text" [(ngModel)]="specs.subtitle" ngControl="subtitle" id="subtitle">
-    </fieldset>
+      <fieldset>
+        <label for="subtitle">Subtitle</label>
+        <input type="text" [(ngModel)]="specs.subtitle" ngControl="subtitle" id="subtitle">
+      </fieldset>
 
-    <fieldset>
-      <label for="subscribeUrl">Subscription URL</label>
-      <input type="text" [(ngModel)]="specs.subscribeUrl" ngControl="subscribeUrl" id="subscribeUrl">
-    </fieldset>
+      <fieldset>
+        <label for="subscribeUrl">Subscription URL</label>
+        <input type="text" [(ngModel)]="specs.subscribeUrl" ngControl="subscribeUrl" id="subscribeUrl">
+      </fieldset>
 
-    <fieldset>
-      <label for="ctaUrl">CTA Title</label>
-      <input type="text" [(ngModel)]="specs.ctaUrl" ngControl="ctaUrl" id="ctaUrl">
+      <fieldset>
+        <label for="ctaUrl">CTA Title</label>
+        <input type="text" [(ngModel)]="specs.ctaUrl" ngControl="ctaUrl" id="ctaUrl">
 
-      <label for="ctaTitle">CTA URL</label>
-      <input type="text" [(ngModel)]="specs.ctaTitle" ngControl="ctaTitle" id="ctaTitle">
-    </fieldset>
+        <label for="ctaTitle">CTA URL</label>
+        <input type="text" [(ngModel)]="specs.ctaTitle" ngControl="ctaTitle" id="ctaTitle">
+      </fieldset>
 
-    <fieldset>
-      <label>Audio URL</label>
-      <p>{{specs.audioUrl}}</p>
-    </fieldset>
+      <fieldset>
+        <label>Audio URL</label>
+        <p>{{specs.audioUrl}}</p>
+      </fieldset>
 
-    <fieldset>
-      <img src="{{specs.imageUrl}}" style="width: 200px; height: 200px;">
-      <br>
-      <input type="text" [(ngModel)]="specs.imageUrl" ngControl="imageUrl" id="imageUrl">
-    </fieldset>
+      <fieldset>
+        <img src="{{specs.imageUrl}}" style="width: 200px; height: 200px;">
+        <br>
+        <input type="text" [(ngModel)]="specs.imageUrl" ngControl="imageUrl" id="imageUrl">
+      </fieldset>
 
-    <fieldset>
-      <label for="">Embeddable URL</label>
-      <textarea style="width: 440px; height: 250px;">{{specs.embeddableUrl}}</textarea>
-      <br><a href="/e?{{specs.paramString}}">Open Preview</a>
-    </fieldset>
-  </form>
+      <fieldset>
+        <label for="">Embeddable URL</label>
+        <textarea style="width: 440px; height: 250px;">{{specs.embeddableUrl}}</textarea>
+        <br><a href="/e?{{specs.paramString}}">Open Preview</a>
+      </fieldset>
+    </form>
+  </div>
 </section>

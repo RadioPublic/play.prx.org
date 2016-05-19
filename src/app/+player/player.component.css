@@ -117,20 +117,34 @@ button {
   padding: 0;
   background: none;
   cursor: pointer;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
 }
 
-buttom img {
+button img {
   background: none;
 }
-/*
-#playback-control-button {
+
+#rewind-control-button img { width: 30px; }
+#playback-control-button img { width: 40px; }
+
+#playback-rate-control-button div {
+  border: 2px solid #000;
+  border-radius: 4px;
+  padding: 4px 2px;
+  font-weight: bold;
+  font-family: Helvetica;
+  letter-spacing: -1px;
 }
 
-#playback-control-button img {
-  display: block;
-  width: 100%;
-  height: 100%;
-}*/
+#playback-rate-control-button span {
+  display: inline-block;
+  font-weight: bold;
+  font-size: 10px;
+  margin-left: 2px;
+}
 
 scrubber {
   background: #cccccc;

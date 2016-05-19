@@ -90,6 +90,18 @@ export class PlayerComponent implements OnChanges, OnInit {
     }
   }
 
+  cyclePlaybackRate(): void {
+    if (this.player.playbackRate === 1) {
+      this.player.playbackRate = 1.25;
+    } else if (this.player.playbackRate === 1.25) {
+      this.player.playbackRate = 1.5;
+    } else if (this.player.playbackRate === 1.5) {
+      this.player.playbackRate = 2;
+    } else if (this.player.playbackRate === 2) {
+      this.player.playbackRate = 1;
+    }
+  }
+
   handleHotkey(event: KeyboardEvent): void {
     const key = event.code || event.key;
     switch (key) {

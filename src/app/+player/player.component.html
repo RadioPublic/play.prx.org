@@ -13,14 +13,19 @@
 </metadata>
 <controls (window:keydown)="handleHotkey($event)">
   <buttons>
-    <button (click)="seekBy(-10)">
+    <button (click)="seekBy(-10)" id="rewind-control-button">
       <img src="/images/back10.svg" alt="">
     </button>
     <button (click)="togglePlayPause()" id="playback-control-button">
       <img src="/images/play.svg" alt="" *ngIf="player.paused">
       <img src="/images/pause.svg" alt="" *ngIf="!player.paused">
     </button>
-    <button>1x</button>
+    <button (click)="cyclePlaybackRate()" id="playback-rate-control-button">
+      <div *ngIf="player.playbackRate === 1">1<span>✕</span></div>
+      <div *ngIf="player.playbackRate === 1.25">1.25<span>✕</span></div>
+      <div *ngIf="player.playbackRate === 1.5">1.5<span>✕</span></div>
+      <div *ngIf="player.playbackRate === 2">2<span>✕</span></div>
+    </button>
   </buttons>
   <scrubber>
     <progress-bar
