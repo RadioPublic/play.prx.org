@@ -22,6 +22,7 @@ function listen(port) {
 
   app.use('/scripts',       express.static('./.dist/scripts'));
   app.use('/stylesheets',   express.static('./src/stylesheets'));
+  app.use('/images',        express.static('./src/images'));
   app.use('/app',           express.static('./src/app'));
 
   // Return 404 for anything with a file extension
