@@ -1,4 +1,12 @@
-import {Component, Input, OnChanges, SimpleChange, OnInit} from 'angular2/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChange
+} from 'angular2/core';
 import {RouteParams} from 'angular2/router';
 import {AsyncPipe} from 'angular2/common';
 import {Observable, Observer} from 'rxjs/Rx';
@@ -21,6 +29,7 @@ const SEGMENT_TYPE = 'segmentType';
   templateUrl: 'app/+player/player.component.html'
 })
 export class PlayerComponent implements OnChanges, OnInit {
+  @Output() toggleShareModal = new EventEmitter<boolean>();
   private player: DovetailAudio;
   private logger: Logger;
 
@@ -38,6 +47,7 @@ export class PlayerComponent implements OnChanges, OnInit {
   private title: string;
   private subtitle: string;
   private subscribeUrl: string;
+  private subscribeTarget: string;
   private artworkUrl: string;
 
   constructor(private routeParams: RouteParams) {}
@@ -49,6 +59,7 @@ export class PlayerComponent implements OnChanges, OnInit {
     this.title = decodeURIComponent(this.routeParams.get(constants.EMBED_TITLE_PARAM));
     this.subtitle = decodeURIComponent(this.routeParams.get(constants.EMBED_SUBTITLE_PARAM));
     this.subscribeUrl = decodeURIComponent(this.routeParams.get(constants.EMBED_SUBSCRIBE_URL_PARAM));
+    this.subscribeTarget = decodeURIComponent(this.routeParams.get(constants.EMBED_SUBSCRIBE_TARGET));
     this.artworkUrl = `url(${decodeURIComponent(this.routeParams.get(constants.EMBED_IMAGE_URL_PARAM))})`;
 
     this.logger = new Logger(this.player, this.title, this.subtitle);
@@ -72,6 +83,10 @@ export class PlayerComponent implements OnChanges, OnInit {
       // TODO make sure logger is updated (make a new logger)
       // console.error('if this were real, it would handle this.');
     }
+  }
+
+  showShareModal() {
+    this.toggleShareModal.emit(true);
   }
 
   onSeek(position: number) {

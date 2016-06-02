@@ -6,8 +6,8 @@
       <h2 [title]="subtitle">{{subtitle}}</h2>
     </header>
     <nav>
-      <a href="#">Share</a>
-      <a [href]="subscribeUrl">Subscribe</a>
+      <a (click)="showShareModal()">Share</a>
+      <a [href]="subscribeUrl" *ngIf="subscribeUrl" [target]="subscribeTarget">Subscribe</a>
     </nav>
   </section>
 </metadata>

@@ -14,7 +14,8 @@ export class BuilderSpecs {
     public imageUrl?: string,
     public feedUrl?: string,
     public ctaUrl?: string,
-    public subscribeUrl?: string
+    public subscribeUrl?: string,
+    public subscribeTarget?: string
   ) {}
 
   get paramString() {
@@ -28,6 +29,7 @@ export class BuilderSpecs {
     str.push(`${constants.EMBED_FEED_URL_PARAM}=${encodeURIComponent(this.feedUrl)}`);
     str.push(`${constants.EMBED_CTA_URL_PARAM}=${encodeURIComponent(this.ctaUrl)}`);
     str.push(`${constants.EMBED_SUBSCRIBE_URL_PARAM}=${encodeURIComponent(this.subscribeUrl)}`);
+    str.push(`${constants.EMBED_SUBSCRIBE_TARGET}=${encodeURIComponent(this.subscribeTarget)}`);
 
     return str.join('&');
   }
@@ -70,7 +72,8 @@ export class BuilderComponent {
       episode.imageUrl,
       this.feedUrl,
       '',
-      ''
+      '',
+      '_blank'
     );
   }
 };
