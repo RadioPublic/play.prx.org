@@ -1,60 +1,118 @@
-<section>
-  <form id="feed-selector" (ngSubmit)="onSubmit(searchFeedUrl.value)" #searchFeedUrlForm="ngForm">
-    <h1>Embed Builder</h1>
+<header>
+  <h1>PRX Podcast Player for Web Pages</h1>
+  <p>The PRX Podcast player can be used any website to let users listen to episodes from any podcast, regardless of where or how the podcast is hosted.</p>
+  <p>Enter the URL of a podcast feed below, select which episode you'd like to build a player for, and then customize the player as necessary. Put the resulting <code>iframe</code> code on any webpage to display the player.</p>
+</header>
 
-    <label for="url">Podcast Feed URL (RSS)</label>
-    <input type="url" id="url" #searchFeedUrl ngControl="url" required pattern="^http.*" style="width: 400px;">
+<section>
+  <form id="feed-selector" (ngSubmit)="onFeedUrlSubmit(searchFeedUrl.value)" #searchFeedUrlForm="ngForm">
+    <strong>Step 1: <em>Feed URL</em></strong>
+    <input type="url" id="url" #searchFeedUrl ngControl="url" required pattern="^http.*" style="width: 400px;" [(ngModel)]="feedUrl">
     <button type="submit" [disabled]="!searchFeedUrlForm.form.valid">Submit</button>
   </form>
+</section>
 
+<section *ngIf="feedUrl">
+  <strong>Step 2: <em>Choose Episode</em></strong>
   <episode-picker
     (select)="onEpisodeSelect($event)"
     [feedUrl]="feedUrl"></episode-picker>
-
-  <div id="embed-details">
-    <form *ngIf="specs" #specsForm="ngForm">
-      <fieldset>
-        <label for="title">Title</label>
-        <input type="text" [(ngModel)]="specs.title" ngControl="title" id="title">
-      </fieldset>
-
-      <fieldset>
-        <label for="subtitle">Subtitle</label>
-        <input type="text" [(ngModel)]="specs.subtitle" ngControl="subtitle" id="subtitle">
-      </fieldset>
-
-      <fieldset>
-        <label for="subscribeUrl">Subscription URL</label>
-        <input type="text" [(ngModel)]="specs.subscribeUrl" ngControl="subscribeUrl" id="subscribeUrl">
-
-        <label for="subscribeTarget">Subscribe Target</label>
-        <input type="text" [(ngModel)]="specs.subscribeTarget" ngControl="subscribeTarget" id="subscribeTarget">
-      </fieldset>
-
-      <fieldset>
-        <label for="ctaUrl">CTA Title</label>
-        <input type="text" [(ngModel)]="specs.ctaUrl" ngControl="ctaUrl" id="ctaUrl">
-
-        <label for="ctaTitle">CTA URL</label>
-        <input type="text" [(ngModel)]="specs.ctaTitle" ngControl="ctaTitle" id="ctaTitle">
-      </fieldset>
-
-      <fieldset>
-        <label>Audio URL</label>
-        <p>{{specs.audioUrl}}</p>
-      </fieldset>
-
-      <fieldset>
-        <img src="{{specs.imageUrl}}" style="width: 200px; height: 200px;">
-        <br>
-        <input type="text" [(ngModel)]="specs.imageUrl" ngControl="imageUrl" id="imageUrl">
-      </fieldset>
-
-      <fieldset>
-        <label for="">Embeddable URL</label>
-        <textarea style="width: 440px; height: 250px;">{{specs.embeddableUrl}}</textarea>
-        <br><a href="/e?{{specs.paramString}}">Open Preview</a>
-      </fieldset>
-    </form>
-  </div>
 </section>
+
+<section *ngIf="embedProps">
+  <strong>Step 3: <em>Customize Player</em></strong>
+  <form [ngFormModel]="specsForm" #specsFormNg="ngForm" id="builder-form">
+    <fieldset>
+      <label for="title">Title</label>
+      <input type="text" [(ngModel)]="embedProps.title" [ngFormControl]="specsForm.controls.title" ngControl="title" id="title">
+    </fieldset>
+
+    <fieldset>
+      <label for="subtitle">Subtitle</label>
+      <input type="text" [(ngModel)]="embedProps.subtitle" [ngFormControl]="specsForm.controls.subtitle" ngControl="subtitle" id="subtitle">
+    </fieldset>
+
+    <fieldset>
+      <label for="subscribeUrl">Subscription URL</label>
+      <input type="text" [(ngModel)]="embedProps.subscribeUrl" [ngFormControl]="specsForm.controls.subscribeUrl" ngControl="subscribeUrl" id="subscribeUrl">
+      <br>
+      <label for="subscribeTarget">Subscribe Target</label>
+      <input type="text" [(ngModel)]="embedProps.subscribeTarget" [ngFormControl]="specsForm.controls.subscribeTarget" ngControl="subscribeTarget" id="subscribeTarget">
+      <small>Leave this as "_blank" if you don't know what it is</small>
+    </fieldset>
+
+    <!-- <fieldset>
+      <label for="ctaUrl">CTA Title</label>
+      <input type="text" [(ngModel)]="embedProps.ctaUrl" [ngFormControl]="specsForm.controls.ctaUrl" ngControl="ctaUrl" id="ctaUrl">
+      <br>
+      <label for="ctaTitle">CTA URL</label>
+      <input type="text" [(ngModel)]="embedProps.ctaTitle" [ngFormControl]="specsForm.controls.ctaTitle" ngControl="ctaTitle" id="ctaTitle">
+    </fieldset> -->
+
+    <fieldset>
+      <label>Audio URL</label>
+      <input type="text" [(ngModel)]="embedProps.audioUrl" [ngFormControl]="specsForm.controls.audioUrl" ngControl="audioUrl" id="audioUrl" readonly>
+    </fieldset>
+
+    <fieldset>
+      <label>Artwork URL</label>
+      <input type="text" [(ngModel)]="embedProps.imageUrl" [ngFormControl]="specsForm.controls.imageUrl" ngControl="imageUrl" id="imageUrl">
+      <br>
+      <img src="{{embedProps.imageUrl}}" style="width: 200px; height: 200px; display: block; margin: 5px auto;">
+    </fieldset>
+
+    <fieldset>
+      <label for="">Embeddable URL</label>
+      <input type="text" readonly [value]="embedProps.embeddableUrl">
+    </fieldset>
+
+    <fieldset>
+      <label for="">Horizontal Player</label>
+      <input
+        type="text"
+        readonly
+        [value]="embedProps.horizontalIframeHtml"
+        id="embed-code-horizontal"
+        #codeInputHorizontal>
+      <button
+        (mouseover)="resetCopyButton(copyBtnHorizontal)"
+        (click)="copyCode(codeInputHorizontal, copyBtnHorizontal)"
+        #copyBtnHorizontal>Copy</button>
+    </fieldset>
+
+    <fieldset>
+      <label for="">Square Player</label>
+      <input
+        type="text"
+        readonly
+        [value]="embedProps.squareIframeHtml"
+        id="embed-code-square"
+        #codeInputSquare>
+      <button
+        (mouseover)="resetCopyButton(copyBtnSquare)"
+        (click)="copyCode(codeInputSquare, copyBtnSquare)"
+        #copyBtnSquare>Copy</button>
+    </fieldset>
+  </form>
+</section>
+
+<div class="preview-container">
+  <h4>Preview</h4>
+  <p>(Will reload automatically)</p>
+  <iframe
+    #previewSquare
+    *ngIf="previewIframeSrc"
+    frameborder="0"
+    height="500"
+    id="preview-square"
+    width="500"
+    [src]="previewIframeSrc"></iframe>
+  <iframe
+    #previewHorizontal
+    *ngIf="previewIframeSrc"
+    frameborder="0"
+    height="200"
+    id="preview-horizontal"
+    width="95%"
+    [src]="previewIframeSrc"></iframe>
+</div>

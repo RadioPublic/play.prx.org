@@ -1,70 +1,84 @@
 import {Component} from 'angular2/core';
-import {NgForm} from 'angular2/common';
+import {
+  NgForm,
+  FormBuilder,
+  FORM_DIRECTIVES,
+  Control,
+  ControlGroup
+} from 'angular2/common';
 import {Router, RouteParams} from 'angular2/router';
 
 import {EpisodePickerComponent, Episode} from './shared/index';
-import * as constants from '../+embed/shared/embed-constants/embed-constants';
-
-export class BuilderSpecs {
-  constructor(
-    public title?: string,
-    public subtitle?: string,
-    public ctaTitle?: string,
-    public audioUrl?: string,
-    public imageUrl?: string,
-    public feedUrl?: string,
-    public ctaUrl?: string,
-    public subscribeUrl?: string,
-    public subscribeTarget?: string
-  ) {}
-
-  get paramString() {
-    let str: string[] = [];
-
-    str.push(`${constants.EMBED_TITLE_PARAM}=${encodeURIComponent(this.title)}`);
-    str.push(`${constants.EMBED_SUBTITLE_PARAM}=${encodeURIComponent(this.subtitle)}`);
-    str.push(`${constants.EMBED_CTA_TITLE_PARAM}=${encodeURIComponent(this.ctaTitle)}`);
-    str.push(`${constants.EMBED_AUDIO_URL_PARAM}=${encodeURIComponent(this.audioUrl)}`);
-    str.push(`${constants.EMBED_IMAGE_URL_PARAM}=${encodeURIComponent(this.imageUrl)}`);
-    str.push(`${constants.EMBED_FEED_URL_PARAM}=${encodeURIComponent(this.feedUrl)}`);
-    str.push(`${constants.EMBED_CTA_URL_PARAM}=${encodeURIComponent(this.ctaUrl)}`);
-    str.push(`${constants.EMBED_SUBSCRIBE_URL_PARAM}=${encodeURIComponent(this.subscribeUrl)}`);
-    str.push(`${constants.EMBED_SUBSCRIBE_TARGET}=${encodeURIComponent(this.subscribeTarget)}`);
-
-    return str.join('&');
-  }
-
-  get embeddableUrl() {
-    return `https://play.prx.org/e?${this.paramString}`;
-  }
-}
+import {EmbedProperties} from '../+embed/shared/index';
 
 @Component({
-  directives: [NgForm, EpisodePickerComponent],
+  directives: [NgForm, EpisodePickerComponent, FORM_DIRECTIVES],
   selector: 'player',
   styleUrls: ['app/+builder/builder.component.css'],
   templateUrl: 'app/+builder/builder.component.html'
 })
 export class BuilderComponent {
   private feedUrl: string;
-  private specs: BuilderSpecs;
+  private embedProps: EmbedProperties;
+  private previewIframeSrc: string;
+  private specsForm: ControlGroup;
 
   constructor(
     private router: Router,
-    private routeParams: RouteParams
+    private routeParams: RouteParams,
+    private formBuilder: FormBuilder
   ) {
+    this.specsForm = new ControlGroup({
+      title: new Control(''),
+      subtitle: new Control(''),
+      subscribeUrl: new Control(''),
+      subscribeTarget: new Control(''),
+      ctaUrl: new Control(''),
+      ctaTitle: new Control(''),
+      imageUrl: new Control(''),
+      audioUrl: new Control('')
+    });
+
+    this.specsForm.valueChanges
+    .debounceTime(3500)
+    .subscribe(d => this.previewIframeSrc = this._previewIframeSrc);
+
     if (this.routeParams.get('feedUrl')) {
       this.feedUrl = decodeURIComponent(this.routeParams.get('feedUrl'));
     }
   }
 
-  onSubmit(url: string): void {
+  get _previewIframeSrc() {
+    return `/e?${this.embedProps.paramString}`;
+  }
+
+  onFeedUrlSubmit(url: string): void {
     let encodedUrl = encodeURIComponent(url);
     this.router.navigate(['Builder', { feedUrl: encodedUrl }]);
   }
 
+  resetCopyButton(el: Element) {
+    el.innerHTML = 'Copy';
+  }
+
+  // Copies the HTML code in an input associated with the element (<button>)
+  // that is passed in
+  copyCode(inp: Element, button: Element) {
+    if (inp && inp.select) {
+      inp.select();
+
+      try {
+        document.execCommand('copy');
+        inp.blur();
+        el.innerHTML = 'Copied';
+      } catch (err) {
+        alert('please press Ctrl/Cmd+C to copy');
+      }
+    }
+  }
+
   private onEpisodeSelect(episode: Episode) {
-    this.specs = new BuilderSpecs(
+    this.embedProps = new EmbedProperties(
       episode.title,
       episode.artist,
       '',

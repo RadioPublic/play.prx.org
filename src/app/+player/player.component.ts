@@ -130,6 +130,7 @@ export class PlayerComponent implements OnChanges, OnInit {
         this.toggleMute();
         break;
       case 'Space':
+        event.preventDefault();
         this.togglePlayPause();
         break;
       case 'KeyK':

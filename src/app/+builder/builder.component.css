@@ -1,4 +1,73 @@
+header {
+ margin: 0;
+ boder: 0;
+ padding: 10px;
+ max-width: 50vw;
+}
+
+header h1 {
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+header p {
+  font-size: 14px;
+}
+
+.preview-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 48vw;
+  background: #ddd;
+}
+
+.preview-container iframe {
+  background: white;
+  margin: 10px;
+}
+
 section {
+  padding: 10px;
+  max-width: 50vw;
+}
+
+section strong em {
+  font-style: normal;
+  font-weight: normal;
+}
+
+#builder-form {
+  margin: 20px;
+}
+
+#builder-form fieldset {
+  margin: 8px 0;
+  border: 0;
+  padding: 0;
+  background: #e0e0e0;
+}
+
+#builder-form fieldset label {
+  display: inline-block;
+  width: 175px;
+  padding: 8px;
+}
+
+#builder-form fieldset input[type='text'] {
+  font-size: 16px;
+  margin: 5px 0;
+  padding: 6px;
+  width: 400px;
+}
+
+#builder-form fieldset iframe {
+  border: 5px solid red;
+  margin: 10px 0;
+  background: white;
+}
+
+/*section {
   display: flex;
   flex-wrap: wrap;
   width: 100vw;
@@ -16,4 +85,4 @@ episode-picker,
 #embed-details {
   overflow: scroll;
   flex-basis: 50%;
-}
+}*/

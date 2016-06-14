@@ -30,6 +30,7 @@ export class EpisodePickerComponent {
   @Input() private feedUrl: string;
 
   private episodes: Observable<Episode[]>;
+  private _episodes: Episode[];
 
   constructor (private http: Http) {}
 
@@ -44,12 +45,15 @@ export class EpisodePickerComponent {
     }
   }
 
-  private selectEpisode(episode: Episode) {
+  private selectEpisode(guid: string) {
+    const episode = this._episodes.find(e => e.guid === guid);
     this.select.emit(episode);
   }
 
   private getEpisodes() {
-     this.episodes = this.http.get(this.feedUrl).map((res: Response) => {
+    const encUrl = decodeURIComponent(this.feedUrl);
+    const proxyUrl = `/proxy?url=${encUrl}`;
+    this.episodes = this.http.get(proxyUrl).map((res: Response) => {
       let episodes: Episode[] = [];
 
       let xml = res.text();
@@ -83,6 +87,7 @@ export class EpisodePickerComponent {
         episodes.push(new Episode(encUrl, guid, title, artist, img));
       }
 
+      this._episodes = episodes;
       return episodes;
     });
   }

@@ -1,7 +1,10 @@
 'use strict';
 
 const express   = require('express');
+const http      = require('http');
+const https     = require('https');
 const pug       = require('pug');
+const url       = require('url');
 // const config    = require('./config');
 
 const CONTENT_TYPE = 'Content-Type';
@@ -16,6 +19,26 @@ function listen(port) {
 
   app.set('view engine', 'pug');
   app.set('views', './');
+
+  app.get('/proxy', (req, res) => {
+    let feedUrl = url.parse(decodeURIComponent(req.query.url));
+
+    let requester = (feedUrl.protocol === 'http:' ? http : https);
+    let proxyReq = requester.request(feedUrl.href, (proxyRes) => {
+      proxyRes.setEncoding('utf8');
+
+      proxyRes.on('data', (chunk) => res.write(chunk));
+      proxyRes.on('close', () => res.end());
+      proxyRes.on('end', () => res.end());
+
+    }).on('error', (e) => {
+      console.log(e.message);
+      res.writeHead(500);
+      res.end();
+    });
+
+    proxyReq.end();
+  });
 
   app.use('/node_modules',  express.static('./node_modules'));
   app.use('/jspm_packages', express.static('./jspm_packages'));

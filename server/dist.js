@@ -20,6 +20,26 @@ const server = listen(PORT);
 function listen(port) {
   const app = express();
 
+  app.get('/proxy', (req, res) => {
+    let feedUrl = url.parse(decodeURIComponent(req.query.url));
+
+    let requester = (feedUrl.protocol === 'http:' ? http : https);
+    let proxyReq = requester.request(feedUrl.href, (proxyRes) => {
+      proxyRes.setEncoding('utf8');
+
+      proxyRes.on('data', (chunk) => res.write(chunk));
+      proxyRes.on('close', () => res.end());
+      proxyRes.on('end', () => res.end());
+
+    }).on('error', (e) => {
+      console.log(e.message);
+      res.writeHead(500);
+      res.end();
+    });
+
+    proxyReq.end();
+  });
+
   app.use('/scripts',       express.static('./.dist/scripts'));
   app.use('/stylesheets',   express.static('./src/stylesheets'));
   app.use('/images',        express.static('./src/images'));
