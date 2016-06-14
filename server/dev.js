@@ -30,7 +30,6 @@ function listen(port) {
       proxyRes.on('data', (chunk) => res.write(chunk));
       proxyRes.on('close', () => res.end());
       proxyRes.on('end', () => res.end());
-
     }).on('error', (e) => {
       console.log(e.message);
       res.writeHead(500);
