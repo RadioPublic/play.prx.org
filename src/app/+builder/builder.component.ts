@@ -40,8 +40,8 @@ export class BuilderComponent {
     });
 
     this.specsForm.valueChanges
-    .debounceTime(3500)
-    .subscribe(d => this.previewIframeSrc = this._previewIframeSrc);
+      .debounceTime(3500)
+      .subscribe(d => this.previewIframeSrc = this._previewIframeSrc);
 
     if (this.routeParams.get('feedUrl')) {
       this.feedUrl = decodeURIComponent(this.routeParams.get('feedUrl'));
@@ -49,6 +49,8 @@ export class BuilderComponent {
   }
 
   get _previewIframeSrc() {
+    console.log(this.embedProps);
+    console.log(this.embedProps.paramString);
     return `/e?${this.embedProps.paramString}`;
   }
 
@@ -86,7 +88,7 @@ export class BuilderComponent {
       episode.imageUrl,
       this.feedUrl,
       '',
-      '',
+      this.feedUrl,
       '_blank'
     );
   }

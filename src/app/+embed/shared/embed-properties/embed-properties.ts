@@ -13,18 +13,23 @@ export class EmbedProperties {
     public subscribeTarget?: string
   ) {}
 
+  private encode (str: string) {
+    return encodeURIComponent(str)
+      .replace(/[!'()*]/g, (c) => (`%${c.charCodeAt(0).toString(16)}`));
+  }
+
   get paramString() {
     let str: string[] = [];
 
-    str.push(`${constants.EMBED_TITLE_PARAM}=${encodeURIComponent(this.title)}`);
-    str.push(`${constants.EMBED_SUBTITLE_PARAM}=${encodeURIComponent(this.subtitle)}`);
-    str.push(`${constants.EMBED_CTA_TITLE_PARAM}=${encodeURIComponent(this.ctaTitle)}`);
-    str.push(`${constants.EMBED_AUDIO_URL_PARAM}=${encodeURIComponent(this.audioUrl)}`);
-    str.push(`${constants.EMBED_IMAGE_URL_PARAM}=${encodeURIComponent(this.imageUrl)}`);
-    str.push(`${constants.EMBED_FEED_URL_PARAM}=${encodeURIComponent(this.feedUrl)}`);
-    str.push(`${constants.EMBED_CTA_URL_PARAM}=${encodeURIComponent(this.ctaUrl)}`);
-    str.push(`${constants.EMBED_SUBSCRIBE_URL_PARAM}=${encodeURIComponent(this.subscribeUrl)}`);
-    str.push(`${constants.EMBED_SUBSCRIBE_TARGET}=${encodeURIComponent(this.subscribeTarget)}`);
+    str.push(`${constants.EMBED_TITLE_PARAM}=${this.encode(this.title)}`);
+    str.push(`${constants.EMBED_SUBTITLE_PARAM}=${this.encode(this.subtitle)}`);
+    str.push(`${constants.EMBED_CTA_TITLE_PARAM}=${this.encode(this.ctaTitle)}`);
+    str.push(`${constants.EMBED_AUDIO_URL_PARAM}=${this.encode(this.audioUrl)}`);
+    str.push(`${constants.EMBED_IMAGE_URL_PARAM}=${this.encode(this.imageUrl)}`);
+    str.push(`${constants.EMBED_FEED_URL_PARAM}=${this.encode(this.feedUrl)}`);
+    str.push(`${constants.EMBED_CTA_URL_PARAM}=${this.encode(this.ctaUrl)}`);
+    str.push(`${constants.EMBED_SUBSCRIBE_URL_PARAM}=${this.encode(this.subscribeUrl)}`);
+    str.push(`${constants.EMBED_SUBSCRIBE_TARGET}=${this.encode(this.subscribeTarget)}`);
 
     return str.join('&');
   }

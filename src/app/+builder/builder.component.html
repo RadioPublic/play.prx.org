@@ -19,7 +19,7 @@
     [feedUrl]="feedUrl"></episode-picker>
 </section>
 
-<section *ngIf="embedProps">
+<section *ngIf="feedUrl && embedProps">
   <strong>Step 3: <em>Customize Player</em></strong>
   <form [ngFormModel]="specsForm" #specsFormNg="ngForm" id="builder-form">
     <fieldset>
