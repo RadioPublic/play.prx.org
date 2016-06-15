@@ -51,8 +51,8 @@ export class EpisodePickerComponent {
   }
 
   private getEpisodes() {
-    const encUrl = decodeURIComponent(this.feedUrl);
-    const proxyUrl = `/proxy?url=${encUrl}`;
+    const feedUrl = decodeURIComponent(this.feedUrl);
+    const proxyUrl = `/proxy?url=${feedUrl}`;
     this.episodes = this.http.get(proxyUrl).map((res: Response) => {
       let episodes: Episode[] = [];
 
@@ -81,6 +81,11 @@ export class EpisodePickerComponent {
         }(item.querySelector('title').innerHTML);
 
         let encUrl = item.querySelector('enclosure').getAttribute('url');
+
+        let fbOrigEncUrl = item.querySelector('origEnclosureLink');
+        if (fbOrigEncUrl) {
+          encUrl = fbOrigEncUrl.innerHTML;
+        }
 
         let guid = item.querySelector('guid').innerHTML;
 

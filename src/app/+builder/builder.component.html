@@ -36,6 +36,8 @@
       <label for="subscribeUrl">Subscription URL</label>
       <input type="text" [(ngModel)]="embedProps.subscribeUrl" [ngFormControl]="specsForm.controls.subscribeUrl" ngControl="subscribeUrl" id="subscribeUrl">
       <br>
+      <small>You may want to replace this with an iTunes URL</small>
+      <br>
       <label for="subscribeTarget">Subscribe Target</label>
       <input type="text" [(ngModel)]="embedProps.subscribeTarget" [ngFormControl]="specsForm.controls.subscribeTarget" ngControl="subscribeTarget" id="subscribeTarget">
       <small>Leave this as "_blank" if you don't know what it is</small>

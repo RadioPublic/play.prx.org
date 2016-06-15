@@ -49,8 +49,6 @@ export class BuilderComponent {
   }
 
   get _previewIframeSrc() {
-    console.log(this.embedProps);
-    console.log(this.embedProps.paramString);
     return `/e?${this.embedProps.paramString}`;
   }
 
@@ -65,14 +63,14 @@ export class BuilderComponent {
 
   // Copies the HTML code in an input associated with the element (<button>)
   // that is passed in
-  copyCode(inp: Element, button: Element) {
+  copyCode(inp: HTMLInputElement, button: Element) {
     if (inp && inp.select) {
       inp.select();
 
       try {
         document.execCommand('copy');
         inp.blur();
-        el.innerHTML = 'Copied';
+        button.innerHTML = 'Copied';
       } catch (err) {
         alert('please press Ctrl/Cmd+C to copy');
       }
