@@ -31,7 +31,7 @@ export class DovetailFetcher {
   private toReject: (reason?: DovetailFetchError) => any;
 
   public fetch(url: string) {
-    url = url.replace(/([^\/]*\/\/)[^/]*podtrac.com\/[^/]*/, '$1');
+    url = url.replace('www.podtrac.com/pts/redirect.mp3/', '');
     if (this.currentUrl !== url) {
       this.cancel();
       this.currentUrl = url;
