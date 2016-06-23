@@ -7,7 +7,7 @@
 <section>
   <form id="feed-selector" (ngSubmit)="onFeedUrlSubmit(searchFeedUrl.value)" #searchFeedUrlForm="ngForm">
     <strong>Step 1: <em>Feed URL</em></strong>
-    <input type="url" id="url" #searchFeedUrl ngControl="url" required pattern="^http.*" style="width: 400px;" [(ngModel)]="feedUrl">
+    <input type="url" id="url" #searchFeedUrl ngControl="url" required pattern="^http.*" style="width: 400px;" [(ngModel)]="feedUrl" name="feedUrl">
     <button type="submit" [disabled]="!searchFeedUrlForm.form.valid">Submit</button>
   </form>
 </section>

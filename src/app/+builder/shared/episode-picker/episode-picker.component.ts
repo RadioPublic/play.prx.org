@@ -1,7 +1,8 @@
 import {Component, Input, OnChanges, OnInit, SimpleChange,
-  Output, EventEmitter} from 'angular2/core';
-import {Router, RouteParams} from 'angular2/router';
-import {Http, Response} from 'angular2/http';
+  Output, EventEmitter} from '@angular/core';
+// import {Router, RouteParams} from '@angular/router-deprecated';
+import {Router} from '@angular/router';
+import {Http, Response} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 
 const FEED_URL = 'feedUrl'

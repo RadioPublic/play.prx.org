@@ -1,12 +1,13 @@
-import {Component} from 'angular2/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
   NgForm,
   FormBuilder,
   FORM_DIRECTIVES,
   Control,
   ControlGroup
-} from 'angular2/common';
-import {Router, RouteParams} from 'angular2/router';
+} from '@angular/common';
+// import {Router, RouteParams} from '@angular/router-deprecated';
+import {Router} from '@angular/router';
 
 import {EpisodePickerComponent, Episode} from './shared/index';
 import {EmbedProperties} from '../+embed/shared/index';
@@ -17,15 +18,16 @@ import {EmbedProperties} from '../+embed/shared/index';
   styleUrls: ['app/+builder/builder.component.css'],
   templateUrl: 'app/+builder/builder.component.html'
 })
-export class BuilderComponent {
+export class BuilderComponent implements OnInit, OnDestroy {
   private feedUrl: string;
   private embedProps: EmbedProperties;
   private previewIframeSrc: string;
   private specsForm: ControlGroup;
+  private sub: any;
 
   constructor(
     private router: Router,
-    private routeParams: RouteParams,
+    // private routeParams: RouteParams,
     private formBuilder: FormBuilder
   ) {
     this.specsForm = new ControlGroup({
@@ -43,9 +45,23 @@ export class BuilderComponent {
       .debounceTime(3500)
       .subscribe(d => this.previewIframeSrc = this._previewIframeSrc);
 
-    if (this.routeParams.get('feedUrl')) {
-      this.feedUrl = decodeURIComponent(this.routeParams.get('feedUrl'));
-    }
+    // if (this.routeParams.get('feedUrl')) {
+    //   this.feedUrl = decodeURIComponent(this.routeParams.get('feedUrl'));
+    // }
+  }
+
+  ngOnInit() {
+    this.sub = this.router
+      .routerState
+      .queryParams
+      .subscribe(params => {
+        const feedUrlKey = 'feedUrl';
+        this.feedUrl = decodeURIComponent(params[feedUrlKey]);
+      });
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   get _previewIframeSrc() {
@@ -53,8 +69,9 @@ export class BuilderComponent {
   }
 
   onFeedUrlSubmit(url: string): void {
+    console.log(1, url);
     let encodedUrl = encodeURIComponent(url);
-    this.router.navigate(['Builder', { feedUrl: encodedUrl }]);
+    this.router.navigate(['builder'], { queryParams: { feedUrl: encodedUrl } });
   }
 
   resetCopyButton(el: Element) {

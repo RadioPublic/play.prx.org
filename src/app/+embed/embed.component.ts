@@ -1,5 +1,5 @@
-import {Component} from 'angular2/core';
-import {Router, RouteParams} from 'angular2/router';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
 import {ShareModalComponent} from './shared/index';
 import {PlayerComponent} from '../+player/index.ts';
@@ -13,18 +13,30 @@ import * as constants from './shared/index';
     <player [audioUrl]="audioUrl" (toggleShareModal)="toggleShareModal($event)"></player>
   `
 })
-export class EmbedComponent {
+export class EmbedComponent implements OnInit {
   private audioUrl: string;
   private showShareModal: boolean;
+  private routerParams: any;
 
-  constructor(router: Router, routeParams: RouteParams) {
+  constructor(private router: Router) {
     this.showShareModal = false;
+  }
 
-    const audioUrlInput = routeParams.get(constants.EMBED_AUDIO_URL_PARAM);
+  ngOnInit() {
+    this.routerParams = this.router
+      .routerState
+      .queryParams
+      .subscribe(params => {
+        const audioUrlInput = params[constants.EMBED_AUDIO_URL_PARAM];
 
-    if (audioUrlInput) {
-      this.audioUrl = decodeURIComponent(audioUrlInput);
-    }
+        if (audioUrlInput) {
+          this.audioUrl = decodeURIComponent(audioUrlInput);
+        }
+      });
+  }
+
+  ngOnDestroy() {
+    this.routerParams.unsubscribe();
   }
 
   toggleShareModal(show: boolean) {

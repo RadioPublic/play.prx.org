@@ -6,9 +6,9 @@ import {
   OnInit,
   Output,
   SimpleChange
-} from 'angular2/core';
-import {RouteParams} from 'angular2/router';
-import {AsyncPipe} from 'angular2/common';
+} from '@angular/core';
+import {Router} from '@angular/router';
+import {AsyncPipe} from '@angular/common';
 import {Observable, Observer} from 'rxjs/Rx';
 import 'rxjs/add/operator/share';
 
@@ -50,19 +50,26 @@ export class PlayerComponent implements OnChanges, OnInit {
   private subscribeTarget: string;
   private artworkUrl: string;
 
-  constructor(private routeParams: RouteParams) {}
+  private routerParams: any;
+
+  constructor(private router: Router) {}
 
   ngOnInit() {
     this.player = new DovetailAudio(this.audioUrl);
     this.player.addEventListener('segmentstart', e => this.currentSegmentType = e[SEGMENT_TYPE]);
 
-    this.title = decodeURIComponent(this.routeParams.get(constants.EMBED_TITLE_PARAM));
-    this.subtitle = decodeURIComponent(this.routeParams.get(constants.EMBED_SUBTITLE_PARAM));
-    this.subscribeUrl = decodeURIComponent(this.routeParams.get(constants.EMBED_SUBSCRIBE_URL_PARAM));
-    this.subscribeTarget = decodeURIComponent(this.routeParams.get(constants.EMBED_SUBSCRIBE_TARGET));
-    this.artworkUrl = `url(${decodeURIComponent(this.routeParams.get(constants.EMBED_IMAGE_URL_PARAM))})`;
+    this.routerParams = this.router
+      .routerState
+      .queryParams
+      .subscribe(params => {
+        this.title = decodeURIComponent(params[constants.EMBED_TITLE_PARAM]);
+        this.subtitle = decodeURIComponent(params[constants.EMBED_SUBTITLE_PARAM]);
+        this.subscribeUrl = decodeURIComponent(params[constants.EMBED_SUBSCRIBE_URL_PARAM]);
+        this.subscribeTarget = decodeURIComponent(params[constants.EMBED_SUBSCRIBE_TARGET]);
+        this.artworkUrl = `url(${decodeURIComponent(params[constants.EMBED_IMAGE_URL_PARAM])})`;
 
-    this.logger = new Logger(this.player, this.title, this.subtitle);
+        this.logger = new Logger(this.player, this.title, this.subtitle);
+      });
 
     this.duration = Observable.create((observer: Observer<number>) => {
       observer.next(0);
@@ -83,6 +90,10 @@ export class PlayerComponent implements OnChanges, OnInit {
       // TODO make sure logger is updated (make a new logger)
       // console.error('if this were real, it would handle this.');
     }
+  }
+
+  ngOnDestroy() {
+    this.routerParams.unsubscribe();
   }
 
   showShareModal() {

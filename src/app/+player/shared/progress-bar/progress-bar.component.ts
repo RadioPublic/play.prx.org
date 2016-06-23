@@ -1,7 +1,7 @@
 import {
   Component, Input, Output, EventEmitter, ElementRef,
   HostListener, ChangeDetectionStrategy
-} from 'angular2/core';
+} from '@angular/core';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
