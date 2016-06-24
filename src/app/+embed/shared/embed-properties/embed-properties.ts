@@ -1,4 +1,5 @@
 import * as constants from '../embed-constants/embed-constants';
+import {SafeResourceUrl} from '@angular/platform-browser';
 
 export class EmbedProperties {
   constructor(
@@ -6,7 +7,7 @@ export class EmbedProperties {
     public subtitle?: string,
     public ctaTitle?: string,
     public audioUrl?: string,
-    public imageUrl?: string,
+    public imageUrl?: SafeResourceUrl,
     public feedUrl?: string,
     public ctaUrl?: string,
     public subscribeUrl?: string,

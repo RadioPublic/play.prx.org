@@ -1,6 +1,12 @@
-import {Component, Input, OnChanges, OnInit, SimpleChange,
-  Output, EventEmitter} from '@angular/core';
-// import {Router, RouteParams} from '@angular/router-deprecated';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChange
+} from '@angular/core';
 import {Router} from '@angular/router';
 import {Http, Response} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
@@ -26,7 +32,7 @@ export class Episode {
   styleUrls: ['app/+builder/shared/episode-picker/episode-picker.component.css'],
   templateUrl: 'app/+builder/shared/episode-picker/episode-picker.component.html'
 })
-export class EpisodePickerComponent {
+export class EpisodePickerComponent implements OnChanges, OnInit {
   @Output() select = new EventEmitter<Episode>();
   @Input() private feedUrl: string;
 

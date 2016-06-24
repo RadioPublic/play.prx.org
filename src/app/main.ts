@@ -1,6 +1,6 @@
+import 'core-js';
 import 'reflect-metadata';
 import 'zone.js';
-import 'core-js';
 import {enableProdMode} from '@angular/core';
 import {bootstrap} from '@angular/platform-browser-dynamic';
 import {disableDeprecatedForms, provideForms} from '@angular/forms';
@@ -19,6 +19,5 @@ bootstrap(AppComponent, [
   disableDeprecatedForms(),
   provideForms(),
   APP_ROUTER_PROVIDERS
-  // ROUTER_PROVIDERS,
 ])
 .catch(err => console.error(err));

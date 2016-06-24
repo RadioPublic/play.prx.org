@@ -5,10 +5,16 @@
 </header>
 
 <section>
-  <form id="feed-selector" (ngSubmit)="onFeedUrlSubmit(searchFeedUrl.value)" #searchFeedUrlForm="ngForm">
+  <form id="feed-selector">
     <strong>Step 1: <em>Feed URL</em></strong>
-    <input type="url" id="url" #searchFeedUrl ngControl="url" required pattern="^http.*" style="width: 400px;" [(ngModel)]="feedUrl" name="feedUrl">
-    <button type="submit" [disabled]="!searchFeedUrlForm.form.valid">Submit</button>
+    <input
+      type="url"
+      #feedUrlInput
+      required
+      pattern="^http.*"
+      style="width: 400px;"
+      name="theFeedUrl">
+    <button type="submit" (click)="onFeedUrlSubmit(feedUrlInput.value)">Submit</button>
   </form>
 </section>
 
@@ -21,25 +27,53 @@
 
 <section *ngIf="feedUrl && embedProps">
   <strong>Step 3: <em>Customize Player</em></strong>
-  <form [ngFormModel]="specsForm" #specsFormNg="ngForm" id="builder-form">
+  <form
+    [ngFormModel]="propsForm"
+    #propsFormNg="ngForm"
+    id="builder-form">
+
     <fieldset>
       <label for="title">Title</label>
-      <input type="text" [(ngModel)]="embedProps.title" [ngFormControl]="specsForm.controls.title" ngControl="title" id="title">
+      <input
+        type="text"
+        [(ngModel)]="embedProps.title"
+        [ngFormControl]="propsForm.controls.title"
+        ngControl="title"
+        id="title"
+        name="title">
     </fieldset>
 
     <fieldset>
       <label for="subtitle">Subtitle</label>
-      <input type="text" [(ngModel)]="embedProps.subtitle" [ngFormControl]="specsForm.controls.subtitle" ngControl="subtitle" id="subtitle">
+      <input
+        type="text"
+        [(ngModel)]="embedProps.subtitle"
+        [ngFormControl]="propsForm.controls.subtitle"
+        ngControl="subtitle"
+        id="subtitle"
+        name="subtitle">
     </fieldset>
 
     <fieldset>
       <label for="subscribeUrl">Subscription URL</label>
-      <input type="text" [(ngModel)]="embedProps.subscribeUrl" [ngFormControl]="specsForm.controls.subscribeUrl" ngControl="subscribeUrl" id="subscribeUrl">
+      <input
+        type="text"
+        [(ngModel)]="embedProps.subscribeUrl"
+        [ngFormControl]="propsForm.controls.subscribeUrl"
+        ngControl="subscribeUrl"
+        id="subscribeUrl"
+        name="subscribeUrl">
       <br>
       <small>You may want to replace this with an iTunes URL</small>
       <br>
       <label for="subscribeTarget">Subscribe Target</label>
-      <input type="text" [(ngModel)]="embedProps.subscribeTarget" [ngFormControl]="specsForm.controls.subscribeTarget" ngControl="subscribeTarget" id="subscribeTarget">
+      <input
+        type="text"
+        [(ngModel)]="embedProps.subscribeTarget"
+        [ngFormControl]="propsForm.controls.subscribeTarget"
+        ngControl="subscribeTarget"
+        id="subscribeTarget"
+        name="subscribeTarget">
       <small>Leave this as "_blank" if you don't know what it is</small>
     </fieldset>
 
@@ -53,19 +87,34 @@
 
     <fieldset>
       <label>Audio URL</label>
-      <input type="text" [(ngModel)]="embedProps.audioUrl" [ngFormControl]="specsForm.controls.audioUrl" ngControl="audioUrl" id="audioUrl" readonly>
+      <input
+        type="text"
+        [(ngModel)]="embedProps.audioUrl"
+        [ngFormControl]="propsForm.controls.audioUrl"
+        ngControl="audioUrl"
+        id="audioUrl"
+        name="audioUrl">
     </fieldset>
 
     <fieldset>
       <label>Artwork URL</label>
-      <input type="text" [(ngModel)]="embedProps.imageUrl" [ngFormControl]="specsForm.controls.imageUrl" ngControl="imageUrl" id="imageUrl">
+      <input
+        type="text"
+        [(ngModel)]="embedProps.imageUrl"
+        [ngFormControl]="propsForm.controls.imageUrl"
+        ngControl="imageUrl"
+        id="imageUrl"
+        name="imageUrl">
       <br>
       <img src="{{embedProps.imageUrl}}" style="width: 200px; height: 200px; display: block; margin: 5px auto;">
     </fieldset>
 
     <fieldset>
       <label for="">Embeddable URL</label>
-      <input type="text" readonly [value]="embedProps.embeddableUrl">
+      <input
+        type="text"
+        readonly
+        [value]="embedProps.embeddableUrl">
     </fieldset>
 
     <fieldset>

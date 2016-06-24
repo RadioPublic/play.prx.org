@@ -6,7 +6,10 @@ import {
   Control,
   ControlGroup
 } from '@angular/common';
-// import {Router, RouteParams} from '@angular/router-deprecated';
+import {
+  DomSanitizationService,
+  SafeResourceUrl
+} from '@angular/platform-browser';
 import {Router} from '@angular/router';
 
 import {EpisodePickerComponent, Episode} from './shared/index';
@@ -21,16 +24,16 @@ import {EmbedProperties} from '../+embed/shared/index';
 export class BuilderComponent implements OnInit, OnDestroy {
   private feedUrl: string;
   private embedProps: EmbedProperties;
-  private previewIframeSrc: string;
-  private specsForm: ControlGroup;
+  private previewIframeSrc: SafeResourceUrl;
+  private propsForm: ControlGroup;
   private sub: any;
 
   constructor(
     private router: Router,
-    // private routeParams: RouteParams,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private sanitationService: DomSanitizationService
   ) {
-    this.specsForm = new ControlGroup({
+    this.propsForm = new ControlGroup({
       title: new Control(''),
       subtitle: new Control(''),
       subscribeUrl: new Control(''),
@@ -41,13 +44,9 @@ export class BuilderComponent implements OnInit, OnDestroy {
       audioUrl: new Control('')
     });
 
-    this.specsForm.valueChanges
+    this.propsForm.valueChanges
       .debounceTime(3500)
       .subscribe(d => this.previewIframeSrc = this._previewIframeSrc);
-
-    // if (this.routeParams.get('feedUrl')) {
-    //   this.feedUrl = decodeURIComponent(this.routeParams.get('feedUrl'));
-    // }
   }
 
   ngOnInit() {
@@ -56,7 +55,10 @@ export class BuilderComponent implements OnInit, OnDestroy {
       .queryParams
       .subscribe(params => {
         const feedUrlKey = 'feedUrl';
-        this.feedUrl = decodeURIComponent(params[feedUrlKey]);
+
+        if (params[feedUrlKey]) {
+          this.feedUrl = decodeURIComponent(params[feedUrlKey]);
+        }
       });
   }
 
@@ -65,11 +67,12 @@ export class BuilderComponent implements OnInit, OnDestroy {
   }
 
   get _previewIframeSrc() {
-    return `/e?${this.embedProps.paramString}`;
+    return this
+            .sanitationService
+            .bypassSecurityTrustResourceUrl(`/e?${this.embedProps.paramString}`);
   }
 
   onFeedUrlSubmit(url: string): void {
-    console.log(1, url);
     let encodedUrl = encodeURIComponent(url);
     this.router.navigate(['builder'], { queryParams: { feedUrl: encodedUrl } });
   }

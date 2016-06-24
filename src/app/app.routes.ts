@@ -5,8 +5,10 @@ import {DemoComponent} from './+demo/index.ts';
 import {BuilderComponent} from './+builder/index.ts';
 
 export const routes: RouterConfig = [
+  // { path: '', redirectTo: '/designer', terminal: true },
+  // { path: 'builder', redirectTo: '/designer', terminal: true },
   { component: EmbedComponent, path: 'e'},
-  { component: BuilderComponent, path: 'builder'},
+  { component: BuilderComponent, path: ''},
   { component: DemoComponent, path: 'demo'}
 ];
 

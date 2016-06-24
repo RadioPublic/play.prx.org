@@ -3,6 +3,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChange
@@ -28,7 +29,7 @@ const SEGMENT_TYPE = 'segmentType';
   styleUrls: ['app/+player/player.component.css'],
   templateUrl: 'app/+player/player.component.html'
 })
-export class PlayerComponent implements OnChanges, OnInit {
+export class PlayerComponent implements OnChanges, OnDestroy, OnInit {
   @Output() toggleShareModal = new EventEmitter<boolean>();
   private player: DovetailAudio;
   private logger: Logger;
