@@ -34,14 +34,14 @@ export class BuilderComponent implements OnInit, OnDestroy {
     private sanitationService: DomSanitizationService
   ) {
     this.propsForm = new ControlGroup({
-      title: new Control(''),
-      subtitle: new Control(''),
-      subscribeUrl: new Control(''),
-      subscribeTarget: new Control(''),
-      ctaUrl: new Control(''),
+      audioUrl: new Control(''),
       ctaTitle: new Control(''),
+      ctaUrl: new Control(''),
       imageUrl: new Control(''),
-      audioUrl: new Control('')
+      subscribeTarget: new Control(''),
+      subscribeUrl: new Control(''),
+      subtitle: new Control(''),
+      title: new Control('')
     });
 
     this.propsForm.valueChanges

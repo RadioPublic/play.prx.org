@@ -1,5 +1,4 @@
 import * as constants from '../embed-constants/embed-constants';
-import {SafeResourceUrl} from '@angular/platform-browser';
 
 export class EmbedProperties {
   constructor(
@@ -7,17 +6,12 @@ export class EmbedProperties {
     public subtitle?: string,
     public ctaTitle?: string,
     public audioUrl?: string,
-    public imageUrl?: SafeResourceUrl,
+    public imageUrl?: string,
     public feedUrl?: string,
     public ctaUrl?: string,
     public subscribeUrl?: string,
     public subscribeTarget?: string
   ) {}
-
-  private encode (str: string) {
-    return encodeURIComponent(str)
-      .replace(/[!'()*]/g, (c) => (`%${c.charCodeAt(0).toString(16)}`));
-  }
 
   get paramString() {
     let str: string[] = [];
@@ -50,5 +44,10 @@ export class EmbedProperties {
 
   get horizontalIframeHtml() {
     return this.iframeHtml('100%', '200');
+  }
+
+  private encode (str: string) {
+    return encodeURIComponent(str)
+      .replace(/[!'()*]/g, (c) => (`%${c.charCodeAt(0).toString(16)}`));
   }
 }
