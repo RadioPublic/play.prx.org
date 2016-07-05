@@ -8,15 +8,15 @@ import {
   Output,
   SimpleChange
 } from '@angular/core';
-import {Router} from '@angular/router';
-import {AsyncPipe} from '@angular/common';
-import {Observable, Observer} from 'rxjs/Rx';
+import { Router } from '@angular/router';
+import { AsyncPipe } from '@angular/common';
+import { Observable, Observer } from 'rxjs/Rx';
 import 'rxjs/add/operator/share';
 
-import {DovetailAudio} from '../../lib/dovetail_audio';
-import {Logger} from '../../lib/logger';
-import {ProgressBarComponent} from './shared/index';
-import {DurationPipe} from '../shared/index';
+import { DovetailAudio } from '../../lib/dovetail_audio';
+import { Logger } from '../../lib/logger';
+import { ProgressBarComponent } from './shared/index';
+import { DurationPipe } from '../shared/index';
 import * as constants from '../+embed/shared/embed-constants/embed-constants';
 
 const AUDIO_URL = 'audioUrl';

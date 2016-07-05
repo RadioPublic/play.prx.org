@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   NgForm,
   FormBuilder,
@@ -10,10 +10,10 @@ import {
   DomSanitizationService,
   SafeResourceUrl
 } from '@angular/platform-browser';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 
-import {EpisodePickerComponent, Episode} from './shared/index';
-import {EmbedProperties} from '../+embed/shared/index';
+import { EpisodePickerComponent, Episode } from './shared/index';
+import { EmbedProperties } from '../+embed/shared/index';
 
 @Component({
   directives: [NgForm, EpisodePickerComponent, FORM_DIRECTIVES],

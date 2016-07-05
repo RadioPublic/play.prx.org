@@ -1,8 +1,8 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-import {ShareModalComponent} from './shared/index';
-import {PlayerComponent} from '../+player/index.ts';
+import { ShareModalComponent } from './shared/index';
+import { PlayerComponent } from '../+player/index.ts';
 import * as constants from './shared/index';
 
 @Component({

@@ -1,6 +1,11 @@
 import {
-  Component, Input, Output, EventEmitter, ElementRef,
-  HostListener, ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output
 } from '@angular/core';
 
 @Component({

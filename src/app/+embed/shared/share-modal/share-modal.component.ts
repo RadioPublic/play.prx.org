@@ -1,6 +1,8 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { ROUTER_DIRECTIVES } from '@angular/router';
 
 @Component({
+  directives: [ROUTER_DIRECTIVES],
   selector: 'share-modal',
   styleUrls: ['app/+embed/shared/share-modal/share-modal.component.css'],
   templateUrl: 'app/+embed/shared/share-modal/share-modal.component.html'

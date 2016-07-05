@@ -1,10 +1,10 @@
-import {AdzerkRequest} from './adzerk';
-import {DovetailArrangementEntry} from './dovetail_arrangement';
+import { AdzerkRequest } from './adzerk';
+import { DovetailArrangementEntry } from './dovetail_arrangement';
 import {
-  DovetailFetchError,
   CancelledError,
-  NonDovetailUrlError,
-  HttpRequestError
+  DovetailFetchError,
+  HttpRequestError,
+  NonDovetailUrlError
 } from './dovetail_errors';
 
 const GET = 'GET';

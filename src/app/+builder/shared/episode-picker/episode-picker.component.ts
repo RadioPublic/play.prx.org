@@ -7,9 +7,9 @@ import {
   Output,
   SimpleChange
 } from '@angular/core';
-import {Router} from '@angular/router';
-import {Http, Response} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
+import { Router } from '@angular/router';
+import { Http, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 
 const FEED_URL = 'feedUrl'
 
