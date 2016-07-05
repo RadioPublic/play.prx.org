@@ -32,6 +32,8 @@
     #propsFormNg="ngForm"
     id="builder-form">
 
+    <h4>Basics</h4>
+
     <fieldset>
       <label for="title">Title</label>
       <input
@@ -55,6 +57,32 @@
     </fieldset>
 
     <fieldset>
+      <label>Artwork URL</label>
+      <input
+        type="text"
+        [(ngModel)]="embedProps.imageUrl"
+        [ngFormControl]="propsForm.controls.imageUrl"
+        ngControl="imageUrl"
+        id="imageUrl"
+        name="imageUrl">
+      <br>
+      <img src="{{embedProps.imageUrl}}" style="width: 200px; height: 200px; display: block; margin: 5px auto;">
+    </fieldset>
+
+    <fieldset>
+      <label>Audio URL</label>
+      <input
+        type="text"
+        [(ngModel)]="embedProps.audioUrl"
+        [ngFormControl]="propsForm.controls.audioUrl"
+        ngControl="audioUrl"
+        id="audioUrl"
+        name="audioUrl">
+    </fieldset>
+
+    <h4>Advanced Options</h4>
+
+    <fieldset>
       <label for="subscribeUrl">Subscription URL</label>
       <input
         type="text"
@@ -64,7 +92,7 @@
         id="subscribeUrl"
         name="subscribeUrl">
       <br>
-      <small>You may want to replace this with an iTunes URL</small>
+      <small>If you provide a URL for this, a "Subscribe" button will appear in the player. You could point it at a landing page, the iTunes page for your show, or another page that helps people subscribe to your show.</small>
       <br>
       <label for="subscribeTarget">Subscribe Target</label>
       <input
@@ -85,37 +113,9 @@
       <input type="text" [(ngModel)]="embedProps.ctaTitle" [ngFormControl]="specsForm.controls.ctaTitle" ngControl="ctaTitle" id="ctaTitle">
     </fieldset> -->
 
-    <fieldset>
-      <label>Audio URL</label>
-      <input
-        type="text"
-        [(ngModel)]="embedProps.audioUrl"
-        [ngFormControl]="propsForm.controls.audioUrl"
-        ngControl="audioUrl"
-        id="audioUrl"
-        name="audioUrl">
-    </fieldset>
+    <h4>Embed Code</h4>
 
-    <fieldset>
-      <label>Artwork URL</label>
-      <input
-        type="text"
-        [(ngModel)]="embedProps.imageUrl"
-        [ngFormControl]="propsForm.controls.imageUrl"
-        ngControl="imageUrl"
-        id="imageUrl"
-        name="imageUrl">
-      <br>
-      <img src="{{embedProps.imageUrl}}" style="width: 200px; height: 200px; display: block; margin: 5px auto;">
-    </fieldset>
-
-    <fieldset>
-      <label for="">Embeddable URL</label>
-      <input
-        type="text"
-        readonly
-        [value]="embedProps.embeddableUrl">
-    </fieldset>
+    <p>Copy the code for either size player to use on your site..</p>
 
     <fieldset>
       <label for="">Horizontal Player</label>
@@ -129,6 +129,7 @@
         (mouseover)="resetCopyButton(copyBtnHorizontal)"
         (click)="copyCode(codeInputHorizontal, copyBtnHorizontal)"
         #copyBtnHorizontal>Copy</button>
+    <small>This player is 200 pixels tall and fills any available width on the page it's included on.</small>
     </fieldset>
 
     <fieldset>
@@ -143,6 +144,18 @@
         (mouseover)="resetCopyButton(copyBtnSquare)"
         (click)="copyCode(codeInputSquare, copyBtnSquare)"
         #copyBtnSquare>Copy</button>
+    <small>A 500 by 500 pixel square player that displays the artwork is large, prominent format.</small>
+    </fieldset>
+
+    <h4>More</h4>
+
+    <fieldset>
+      <label for="">Embeddable URL</label>
+      <input
+        type="text"
+        readonly
+        [value]="embedProps.embeddableUrl">
+    <small>This is the URL for your customized player. You can use it to build your own iframe to display the player on your site.</small>
     </fieldset>
   </form>
 </section>
