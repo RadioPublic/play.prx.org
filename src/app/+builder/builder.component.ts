@@ -74,7 +74,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
 
   onFeedUrlSubmit(url: string): void {
     let encodedUrl = encodeURIComponent(url);
-    this.router.navigate(['builder'], { queryParams: { feedUrl: encodedUrl } });
+    this.router.navigate([], { queryParams: { feedUrl: encodedUrl } });
   }
 
   resetCopyButton(el: Element) {
