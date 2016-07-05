@@ -113,7 +113,7 @@
       <input type="text" [(ngModel)]="embedProps.ctaTitle" [ngFormControl]="specsForm.controls.ctaTitle" ngControl="ctaTitle" id="ctaTitle">
     </fieldset> -->
 
-    <h4>Embed Code</h4>
+    <h4>Step 4: Embed Code</h4>
 
     <p>Copy the code for either size player to use on your site..</p>
 
@@ -164,19 +164,19 @@
   <h4>Preview</h4>
   <p>(Will reload automatically)</p>
   <iframe
-    #previewSquare
-    *ngIf="previewIframeSrc"
-    frameborder="0"
-    height="500"
-    id="preview-square"
-    width="500"
-    [src]="previewIframeSrc"></iframe>
-  <iframe
     #previewHorizontal
     *ngIf="previewIframeSrc"
     frameborder="0"
     height="200"
     id="preview-horizontal"
     width="95%"
+    [src]="previewIframeSrc"></iframe>
+  <iframe
+    #previewSquare
+    *ngIf="previewIframeSrc"
+    frameborder="0"
+    height="500"
+    id="preview-square"
+    width="500"
     [src]="previewIframeSrc"></iframe>
 </div>
