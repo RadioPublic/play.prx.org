@@ -5,6 +5,8 @@ export class DurationPipe implements PipeTransform {
   transform(value: number, args: string[]): any {
     if (!value) { return '00:00'; }
 
+    value = Math.floor(value);
+
     let hours = Math.floor(value / 3600);
     let hh = `${hours}:`;
     if (hours < 1) { hh = ''; }
