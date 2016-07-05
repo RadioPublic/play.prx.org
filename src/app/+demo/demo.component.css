@@ -1,8 +1,6 @@
 #toolbar {
   background: #333;
   border-bottom: 1px solid black;
-  z-index: 10;
-  position: relative;
 }
 
 label {
@@ -11,18 +9,7 @@ label {
   padding: 8px;
 }
 
-#color {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 0;
-}
-
 p {
-  z-index: 10;
-  position: relative;
   margin: 0 auto;
   max-width: 50%;
   padding: 20px 0;

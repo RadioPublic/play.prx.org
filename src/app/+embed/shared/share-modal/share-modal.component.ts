@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
+import { Router, ROUTER_DIRECTIVES } from '@angular/router';
 
 @Component({
   directives: [ROUTER_DIRECTIVES],
@@ -9,6 +9,10 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
 })
 export class ShareModalComponent {
   @Output() toggleShareModal = new EventEmitter<boolean>();
+
+  constructor(
+    private router: Router
+  ) {}
 
   get horizontalCode() {
     const href = window.location.href;
@@ -22,6 +26,10 @@ export class ShareModalComponent {
     const iframe = `<iframe frameborder="0" height="500" scrolling="no" src="${href}" width="500"></iframe>`;
 
     return iframe;
+  }
+
+  get customizeHref() {
+    return `/${window.location.search}`;
   }
 
   close() {

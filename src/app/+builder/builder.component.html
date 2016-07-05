@@ -25,7 +25,7 @@
     [feedUrl]="feedUrl"></episode-picker>
 </section>
 
-<section *ngIf="feedUrl && embedProps">
+<section *ngIf="(feedUrl && embedProps) || (editMode && embedProps)">
   <strong>Step 3: <em>Customize Player</em></strong>
   <form
     [ngFormModel]="propsForm"

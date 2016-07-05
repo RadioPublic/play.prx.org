@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 
 import { EpisodePickerComponent, Episode } from './shared/index';
 import { EmbedProperties } from '../+embed/shared/index';
+import * as constants from '../+embed/shared/embed-constants/embed-constants';
 
 @Component({
   directives: [NgForm, EpisodePickerComponent, FORM_DIRECTIVES],
@@ -27,6 +28,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
   private previewIframeSrc: SafeResourceUrl;
   private propsForm: ControlGroup;
   private sub: any;
+  private editMode = false;
 
   constructor(
     private router: Router,
@@ -58,6 +60,20 @@ export class BuilderComponent implements OnInit, OnDestroy {
 
         if (params[feedUrlKey]) {
           this.feedUrl = decodeURIComponent(params[feedUrlKey]);
+        } else if (params[constants.EMBED_TITLE_PARAM]) {
+          this.editMode = true;
+
+          this.embedProps = new EmbedProperties(
+            decodeURIComponent(params[constants.EMBED_TITLE_PARAM]),
+            decodeURIComponent(params[constants.EMBED_SUBTITLE_PARAM]),
+            decodeURIComponent(params[constants.EMBED_CTA_TITLE_PARAM]),
+            decodeURIComponent(params[constants.EMBED_AUDIO_URL_PARAM]),
+            decodeURIComponent(params[constants.EMBED_IMAGE_URL_PARAM]),
+            decodeURIComponent(params[constants.EMBED_FEED_URL_PARAM]),
+            decodeURIComponent(params[constants.EMBED_CTA_URL_PARAM]),
+            decodeURIComponent(params[constants.EMBED_SUBSCRIBE_URL_PARAM]),
+            decodeURIComponent(params[constants.EMBED_SUBSCRIBE_TARGET])
+          );
         }
       });
   }
