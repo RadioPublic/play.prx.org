@@ -69,6 +69,7 @@ export class EpisodePickerComponent implements OnChanges, OnInit {
       let doc = <XMLDocument> parser.parseFromString(xml, 'application/xml');
 
       let img: string;
+
       let _img = Array.from(doc.querySelectorAll('channel > *[href]')).filter(e => e.nodeName === 'itunes:image')[0];
       if (_img) {
         img = _img.getAttribute('href');
@@ -88,6 +89,11 @@ export class EpisodePickerComponent implements OnChanges, OnInit {
         }(item.querySelector('title').innerHTML);
 
         let encUrl = item.querySelector('enclosure').getAttribute('url');
+
+        let __img = Array.from(item.querySelectorAll('*[href]')).filter(e => e.nodeName === 'itunes:image')[0];
+        if (__img) {
+          img = __img.getAttribute('href');
+        }
 
         let fbOrigEncUrl = item.querySelector('origEnclosureLink');
         if (fbOrigEncUrl) {
