@@ -16,11 +16,13 @@ section {
 }
 
 artwork {
-  width: 128px;
-  height: 128px;
-  min-width: 128px;
-  max-width: 128px;
-  margin: 6px;
+  width: 115px;
+  height: 115px;
+  min-width: 115px;
+  max-width: 115px;
+  margin: 15px;
+  border-radius: 5px;
+	border: solid 1px #ffffff;
   /*background-image: url('https://media.www.bailey.dog/images/full/0003.jpg');*/
   background-size: cover;
 }
@@ -39,10 +41,6 @@ nav {
 }
 
 header {
-  display: flex;
-  flex-flow: row wrap;
-  align-items: flex-start;
-  align-content: flex-start;
   min-width: 0; /* Allows child text nodes to overflow properly */
 }
 
@@ -63,31 +61,38 @@ nav a {
   color: #368aa2;
   cursor: pointer;
 }
+
 nav a:hover {
   color: #1e4e5c;
 }
 
 h1,
 h2 {
-  flex-basis: 100%;
+  /*flex-basis: 100%;*/
   margin: 0;
   border: 0;
-  padding: 0;
+  /*padding: 0;
   color: #383838;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-overflow: ellipsis;*/
 }
 
 h1 {
-  font-size: 18px;
-  font-weight: normal;
-  padding: 6px 6px 2px;
+  width: 162px;
+	height: 20px;
+	font-family: SourceSansPro;
+	font-size: 16px;
+	font-weight: 600;
+	color: #ffffff;
 }
 
 h2 {
-  font-size: 16px;
-  padding: 0 6px;
+  width: 46px;
+	height: 18px;
+	font-family: SourceSansPro;
+	font-size: 14px;
+	color: #ffffff;
 }
 
 controls {

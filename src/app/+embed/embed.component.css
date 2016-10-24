@@ -1,13 +1,14 @@
 player {
   position: absolute;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  align-content: stretch;
-  background: white;
-  border: 1px solid #95989A;
+  width: 600px;
+  height: 185px;
+  /*display: flex;*/
+  /*flex-direction: column;*/
+  /*align-items: stretch;*/
+  /*align-content: stretch;*/
+  background: darkblue;
+  border-radius: 5px;
+  border: 1px solid #e6e6e6;
   box-sizing: border-box;
 }
 
