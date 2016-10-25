@@ -13,10 +13,8 @@ section {
 }
 
 artwork {
-  width: 115px;
-  height: 115px;
-  min-width: 115px;
   max-width: 115px;
+  height: 115px;
   margin: 15px;
   border-radius: 5px;
 	border: solid 1px #ffffff;
@@ -178,20 +176,11 @@ duration {
     display: none !important;
   }
 }
-
-@media (min-height: 201px) {
+/*
   artwork {
-    position: absolute;
-    width: auto;
-    height: auto;
-    max-width: none;
-    margin: 0;
-    top: 68px;
-    right: 0;
-    bottom: -60px;
-    left: 0;
+    width: 115px;
+    height: 115px;
     z-index: 0;
-    background-position: center center;
   }
 
 
@@ -235,5 +224,4 @@ duration {
 
   progress-bar {
     height: 42px;
-  }
-}
+  }*/
