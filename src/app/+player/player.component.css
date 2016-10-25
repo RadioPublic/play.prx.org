@@ -1,9 +1,6 @@
-metadata,
-controls {
-  flex-grow: 1;
-}
 
 metadata {
+  flex-grow: 1;
   display: flex;
   align-items: stretch;
   align-content: stretch;
@@ -41,6 +38,8 @@ nav {
 }
 
 header {
+  max-height: 47px;
+  margin: 20px 0;
   min-width: 0; /* Allows child text nodes to overflow properly */
 }
 
@@ -68,56 +67,46 @@ nav a:hover {
 
 h1,
 h2 {
-  /*flex-basis: 100%;*/
+  flex-basis: 100%;
   margin: 0;
   border: 0;
-  /*padding: 0;
-  color: #383838;
+  padding: 0;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;*/
+  text-overflow: ellipsis;
+  font-family: SourceSansPro;
+  color: #ffffff;
 }
 
 h1 {
-  width: 162px;
 	height: 20px;
-	font-family: SourceSansPro;
 	font-size: 16px;
 	font-weight: 600;
-	color: #ffffff;
 }
 
 h2 {
-  width: 46px;
 	height: 18px;
-	font-family: SourceSansPro;
 	font-size: 14px;
-	color: #ffffff;
 }
 
 controls {
-  height: 60px;
   display: flex;
-}
-
-buttons,
-scrubber {
-  flex-grow: 1;
+  justify-content: space-between;
+  height: 30px;
 }
 
 buttons {
   max-width: 200px;
-  border-top: 1px solid #95989A;
   display: flex;
   justify-content: space-around;
   align-items: center;
 }
 
 button {
-  min-width: 50px;
-  min-height: 50px;
+  min-width: 30px;
+  min-height: 30px;
   outline: none;
-  margin: 0;
+  margin-right: 15px;
   border: 0;
   padding: 0;
   background: none;
@@ -131,9 +120,6 @@ button {
 button img {
   background: none;
 }
-
-#rewind-control-button img { width: 30px; }
-#playback-control-button img { width: 40px; }
 
 #playback-rate-control-button div {
   border: 2px solid #000;
@@ -152,14 +138,16 @@ button img {
 }
 
 scrubber {
-  background: #cccccc;
   position: relative;
   cursor: col-resize;
 }
 
 progress-bar {
   display: block;
-  height: 60px;
+  height: 6px;
+  margin: 23px 0;
+  background-color: #ffffff;
+  opacity: 0.3;
 }
 
 playback-progress,
@@ -199,9 +187,6 @@ duration {
     background-position: center center;
   }
 
-  header {
-    max-height: 47px;
-  }
 
   nav {
     padding: 0 6px;
@@ -214,13 +199,6 @@ duration {
     font-size: 13px;
   }
 
-  controls {
-    height: auto;
-    max-height: 102px;
-    flex-direction: column;
-    align-items: stretch;
-    align-content: stretch;
-  }
 
   buttons,
   scrubber {
