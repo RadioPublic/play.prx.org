@@ -38,7 +38,7 @@ nav {
 }
 
 header {
-  max-height: 47px;
+  max-height: 60px;
   margin: 20px 0;
   min-width: 0; /* Allows child text nodes to overflow properly */
 }
@@ -140,22 +140,29 @@ button img {
 scrubber {
   position: relative;
   cursor: col-resize;
+  display: flex;
+  height: 30px;
+  justify-content: space-around;
 }
 
 progress-bar {
-  display: block;
+  width: 492px;
   height: 6px;
-  margin: 23px 0;
-  background-color: #ffffff;
   opacity: 0.3;
+  border-radius: 100px;
+  background-color: #ffffff;
+  display: block;
+  margin: 8px 0;
 }
 
 playback-progress,
 duration {
-  position: absolute;
-  bottom: 0;
-  background: #e6e6e6;
-  padding: 1px;
+  width: 36px;
+	height: 21px;
+	font-family: SourceSansPro;
+	font-size: 14px;
+	line-height: 1.5;
+	color: #ffffff;
 }
 
 playback-progress {

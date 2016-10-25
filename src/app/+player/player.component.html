@@ -25,7 +25,7 @@
         <div *ngIf="player.playbackRate === 2">2<span>✕</span></div>
       </button> -->
       </buttons>
-      
+
       <nav>
         <a [href]="subscribeUrl" *ngIf="subscribeUrl" [target]="subscribeTarget">
           Subscribe
@@ -39,11 +39,11 @@
 </metadata>
 
 <scrubber (window:keydown)="handleHotkey($event)">
+  <playback-progress>{{currentTime | async | duration}}</playback-progress>
   <progress-bar
     [value]="currentTime | async"
     [maximum]="duration | async"
     (seek)="onSeek($event)"
     (scrubbing)="onScrub($event)"></progress-bar>
-  <playback-progress>{{currentTime | async | duration}}</playback-progress>
   <duration>{{duration | async | duration}}</duration>
 </scrubber>
