@@ -4,25 +4,12 @@ player {
   height: 185px;
   display: flex;
   flex-direction: column;
-  /*align-items: stretch;*/
-  /*align-content: stretch;*/
-  /*background: darkblue;*/
   border-radius: 5px;
   border: 1px solid #e6e6e6;
   box-sizing: border-box;
 }
 
-/*@media (max-width: 599px) {
-  player {
-    background-color: red;
-  }
-}*/
-/*
-@media (min-width: 600px) {
-  player {
-    background-color: red;
-  }
-}*/
+
 
 @media (max-height: 199px) {
   player:before {

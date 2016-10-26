@@ -2,7 +2,12 @@
 <background-img [style.background-image]="artworkUrl"></background-img>
   <content>
     <metadata>
-      <artwork [style.background-image]="artworkUrl"></artwork>
+      <artwork [style.background-image]="artworkUrl">
+        <button (click)="togglePlayPause()" id="large-playback-control-button">
+          <img src="/images/large-semi-transparent-play.svg" alt="" *ngIf="player.paused">
+          <img src="/images/large-semi-transparent-pause.svg" alt="" *ngIf="!player.paused">
+        </button>
+      </artwork>
       <section>
         <header>
           <h1 [title]="title">{{title}}</h1>

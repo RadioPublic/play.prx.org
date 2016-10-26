@@ -41,45 +41,24 @@ artwork {
   background-size: cover;
 }
 
+#large-playback-control-button {
+  display: none;
+}
+
 section {
   display: flex;
   flex-flow: column nowrap;
-  align-items: stretch;
-  align-content: stretch;;
-  min-width: 0; /* Allows child text nodes to overflow properly */
+  justify-content: space-between;
+  margin: 20px 0 15px 0;
 }
 
 header,
-nav {
+controls {
   flex-grow: 1;
 }
 
 header {
   max-height: 60px;
-  margin: 20px 0;
-  min-width: 0; /* Allows child text nodes to overflow properly */
-}
-
-nav {
-  max-height: 30px;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: flex-end;
-  align-items: center;
-  align-content: center;
-  padding: 0 6px;
-}
-
-nav a {
-  display: block;
-  padding: 2px 10px;
-  text-decoration: none;
-  color: #368aa2;
-  cursor: pointer;
-}
-
-nav a:hover {
-  color: #1e4e5c;
 }
 
 h1,
@@ -109,61 +88,49 @@ h2 {
 controls {
   display: flex;
   justify-content: space-between;
-  height: 30px;
+  max-height: 30px;
 }
 
 buttons {
-  max-width: 200px;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
 }
 
 button {
   min-width: 30px;
-  min-height: 30px;
-  outline: none;
   margin-right: 15px;
   border: 0;
   padding: 0;
   background: none;
   cursor: pointer;
-  display: flex;
-  align-content: center;
   justify-content: center;
+}
+
+nav {
+  display: flex;
   align-items: center;
+  padding: 0 6px;
 }
 
-button img {
-  background: none;
+nav a {
+  padding: 2px 10px;
+  text-decoration: none;
+  color: #368aa2;
+  cursor: pointer;
 }
 
-#playback-rate-control-button div {
-  border: 2px solid #000;
-  border-radius: 4px;
-  padding: 4px 2px;
-  font-weight: bold;
-  font-family: Helvetica;
-  letter-spacing: -1px;
+nav a:hover {
+  color: #1e4e5c;
 }
 
-#playback-rate-control-button span {
-  display: inline-block;
-  font-weight: bold;
-  font-size: 10px;
-  margin-left: 2px;
-}
 
 scrubber {
-  position: relative;
-  cursor: col-resize;
   display: flex;
-  height: 30px;
   justify-content: space-around;
 }
 
 progress-bar {
-  width: 492px;
+  cursor: col-resize;
+  flex-basis: 100%;
   height: 6px;
   opacity: 0.3;
   border-radius: 100px;
@@ -174,8 +141,7 @@ progress-bar {
 
 playback-progress,
 duration {
-  width: 36px;
-	height: 21px;
+  text-align: center;
 	font-family: SourceSansPro;
 	font-size: 14px;
 	line-height: 1.5;
@@ -183,11 +149,11 @@ duration {
 }
 
 playback-progress {
-  left: 0;
+  width: 61px;
 }
 
 duration {
-  right: 0;
+  width: 47px;
 }
 
 @media (max-height: 199px) {
@@ -195,52 +161,20 @@ duration {
     display: none !important;
   }
 }
-/*
-  artwork {
-    width: 115px;
-    height: 115px;
-    z-index: 0;
+
+@media (max-width: 599px) {
+
+  #rewind-control-button, #forward-control-button, #playback-control-button  {
+    display: none;
   }
 
 
-  nav {
-    padding: 0 6px;
-    max-height: 21px;
-  }
-
-  nav a {
-    padding: 0 10px;
-    text-transform: uppercase;
-    font-size: 13px;
-  }
-
-
-  buttons,
-  scrubber {
-    position: relative;
-    flex-grow: 0;
-    width: 100vw;
-    border-top: none;
-    z-index: 1;
+  #large-playback-control-button {
+    display: block;
   }
 
   buttons {
-    max-width: none;
-    max-height: 60px;
-    height: 60px;
-    background: rgba(255, 255, 255, 0.8);
+    /*display: none;*/
+    /*DO MORE STUFF HERE*/
   }
-
-  buttons img {
-    width: 50px;
-    height: 50px;
-    margin: 5px;
-  }
-
-  scrubber {
-    max-height: 42px;
-  }
-
-  progress-bar {
-    height: 42px;
-  }*/
+}
