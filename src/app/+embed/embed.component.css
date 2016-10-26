@@ -11,9 +11,23 @@ player {
 
 
 
-@media (max-height: 199px) {
+@media (max-height: 184px) {
   player:before {
-    content: 'Minimum height: 200px';
+    content: 'Minimum height: 185px';
+    text-transform: uppercase;
+    font-weight: bold;
+    color: rgb(135, 135, 135);
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+  }
+}
+
+
+@media (max-width: 299px) {
+  player:before {
+    content: 'Minimum width: 300px';
     text-transform: uppercase;
     font-weight: bold;
     color: rgb(135, 135, 135);
