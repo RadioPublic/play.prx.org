@@ -19,11 +19,7 @@ content {
 }
 
 metadata {
-  flex-grow: 1;
   display: flex;
-  align-items: stretch;
-  align-content: stretch;
-  position: relative;
 }
 
 artwork,
@@ -33,11 +29,11 @@ section {
 
 artwork {
   max-width: 115px;
+  width: 115px;
   height: 115px;
   margin: 15px;
   border-radius: 5px;
 	border: solid 1px #ffffff;
-  /*background-image: url('https://media.www.bailey.dog/images/full/0003.jpg');*/
   background-size: cover;
 }
 
@@ -52,18 +48,8 @@ section {
   margin: 20px 0 15px 0;
 }
 
-header,
-controls {
-  flex-grow: 1;
-}
-
-header {
-  max-height: 60px;
-}
-
 h1,
 h2 {
-  flex-basis: 100%;
   margin: 0;
   border: 0;
   padding: 0;
@@ -168,13 +154,9 @@ duration {
     display: none;
   }
 
-
   #large-playback-control-button {
     display: block;
   }
 
-  buttons {
-    /*display: none;*/
-    /*DO MORE STUFF HERE*/
-  }
+
 }
