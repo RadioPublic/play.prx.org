@@ -36,7 +36,8 @@
 
           <nav>
             <a [href]="subscribeUrl" *ngIf="subscribeUrl" [target]="subscribeTarget">
-              Subscribe
+              <!-- note: appearance is provided download button SVG, but should be subscribe -->
+              <img src="/images/download.svg" alt="">
             </a>
             <a (click)="showShareModal()">
               <img src="/images/share.svg" alt="">
