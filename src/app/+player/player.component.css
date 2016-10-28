@@ -5,9 +5,9 @@ background-img {
   -o-filter: blur(25px);
   margin: -25px;
   /* to account for the white-edge blurring from the filter: blur */
-  min-height: 208px;
-  width: calc(100% + 25px);
-  /* 183px of content (sans border) + 25 to account for the -25px margin */
+  min-height: 233px;
+  width: calc(100% + 50px);
+  /* 183px of content (sans border) + 50 to account for the -25px margin */
   background-size: 100% auto;
   position: relative;
   z-index: -1;
