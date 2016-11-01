@@ -10,8 +10,6 @@ player {
   box-sizing: border-box;
 }
 
-
-
 @media (max-height: 184px) {
   player:before {
     content: 'Minimum height: 185px';
@@ -24,7 +22,6 @@ player {
     top: 50%;
   }
 }
-
 
 @media (max-width: 299px) {
   player:before {

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+
 background-img {
   filter: blur(25px);
   -webkit-filter: blur(25px);
@@ -55,8 +57,6 @@ section {
   justify-content: space-between;
   margin: 20px 0 15px 0;
 }
-/* this is just to add a commit */
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
 
 h1,
 h2 {
