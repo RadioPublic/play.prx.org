@@ -40,7 +40,7 @@ artwork {
   height: 115px;
   margin: 15px;
   border-radius: 5px;
-	border: solid 1px #ffffff;
+  border: solid 1px #ffffff;
   background-size: cover;
 }
 
@@ -72,14 +72,14 @@ h2 {
 }
 
 h1 {
-	height: 20px;
-	font-size: 16px;
-	font-weight: 600;
+  height: 20px;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 h2 {
-	height: 18px;
-	font-size: 14px;
+  height: 18px;
+  font-size: 14px;
 }
 
 controls {
@@ -138,10 +138,10 @@ progress-bar {
 playback-progress,
 duration {
   text-align: center;
-	font-family: SourceSansPro;
-	font-size: 14px;
-	line-height: 1.5;
-	color: #ffffff;
+  font-family: SourceSansPro;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #ffffff;
 }
 
 playback-progress {
