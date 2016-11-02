@@ -1,13 +1,31 @@
-metadata,
-controls {
-  flex-grow: 1;
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+
+background-img {
+  filter: blur(25px);
+  -webkit-filter: blur(25px);
+  -moz-filter: blur(25px);
+  -o-filter: blur(25px);
+  margin: -25px;
+  /* to account for the white-edge blurring from the filter: blur */
+  min-height: 233px;
+  width: calc(100% + 50px);
+  /* 183px of content (sans border) + 50 to account for the -25px margins */
+  background-size: 100% auto;
+  position: relative;
+  z-index: -1;
+}
+
+content {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3));
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 }
 
 metadata {
   display: flex;
-  align-items: stretch;
-  align-content: stretch;
-  position: relative;
 }
 
 artwork,
@@ -16,234 +34,136 @@ section {
 }
 
 artwork {
-  width: 128px;
-  height: 128px;
-  min-width: 128px;
-  max-width: 128px;
-  margin: 6px;
-  /*background-image: url('https://media.www.bailey.dog/images/full/0003.jpg');*/
+  position: relative;
+  max-width: 115px;
+  width: 115px;
+  height: 115px;
+  margin: 15px;
+  border-radius: 5px;
+  border: solid 1px #ffffff;
   background-size: cover;
+}
+
+#large-playback-control-button {
+  position: absolute;
+  top: calc(50% - 30px);
+  left: calc(50% - 30px);
+  display: none;
 }
 
 section {
   display: flex;
   flex-flow: column nowrap;
-  align-items: stretch;
-  align-content: stretch;;
-  min-width: 0; /* Allows child text nodes to overflow properly */
-}
-
-header,
-nav {
-  flex-grow: 1;
-}
-
-header {
-  display: flex;
-  flex-flow: row wrap;
-  align-items: flex-start;
-  align-content: flex-start;
-  min-width: 0; /* Allows child text nodes to overflow properly */
-}
-
-nav {
-  max-height: 30px;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: flex-end;
-  align-items: center;
-  align-content: center;
-  padding: 0 6px;
-}
-
-nav a {
-  display: block;
-  padding: 2px 10px;
-  text-decoration: none;
-  color: #368aa2;
-  cursor: pointer;
-}
-nav a:hover {
-  color: #1e4e5c;
+  justify-content: space-between;
+  margin: 20px 0 15px 0;
 }
 
 h1,
 h2 {
-  flex-basis: 100%;
   margin: 0;
   border: 0;
   padding: 0;
-  color: #383838;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-family: "Source Sans Pro";
+  font-weight: normal;
+  color: #ffffff;
 }
 
 h1 {
-  font-size: 18px;
-  font-weight: normal;
-  padding: 6px 6px 2px;
+  height: 20px;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 h2 {
-  font-size: 16px;
-  padding: 0 6px;
+  height: 18px;
+  font-size: 14px;
 }
 
 controls {
-  height: 60px;
   display: flex;
-}
-
-buttons,
-scrubber {
-  flex-grow: 1;
+  justify-content: space-between;
+  max-height: 30px;
 }
 
 buttons {
-  max-width: 200px;
-  border-top: 1px solid #95989A;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
 }
 
 button {
-  min-width: 50px;
-  min-height: 50px;
-  outline: none;
-  margin: 0;
+  min-width: 30px;
+  margin-right: 15px;
   border: 0;
   padding: 0;
   background: none;
   cursor: pointer;
-  display: flex;
-  align-content: center;
   justify-content: center;
+}
+
+nav {
+  display: flex;
   align-items: center;
 }
 
-button img {
-  background: none;
+nav a {
+  margin-right: 15px;
+  text-decoration: none;
+  color: #368aa2;
+  cursor: pointer;
 }
 
-#rewind-control-button img { width: 30px; }
-#playback-control-button img { width: 40px; }
-
-#playback-rate-control-button div {
-  border: 2px solid #000;
-  border-radius: 4px;
-  padding: 4px 2px;
-  font-weight: bold;
-  font-family: Helvetica;
-  letter-spacing: -1px;
+nav a:hover {
+  color: #1e4e5c;
 }
 
-#playback-rate-control-button span {
-  display: inline-block;
-  font-weight: bold;
-  font-size: 10px;
-  margin-left: 2px;
-}
 
 scrubber {
-  background: #cccccc;
-  position: relative;
-  cursor: col-resize;
+  display: flex;
+  justify-content: space-around;
 }
 
 progress-bar {
+  cursor: col-resize;
+  flex-basis: 100%;
+  height: 6px;
+  opacity: 0.3;
+  border-radius: 100px;
+  background-color: #ffffff;
   display: block;
-  height: 60px;
+  margin: 8px 0;
 }
 
 playback-progress,
 duration {
-  position: absolute;
-  bottom: 0;
-  background: #e6e6e6;
-  padding: 1px;
+  text-align: center;
+  font-family: SourceSansPro;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #ffffff;
 }
 
 playback-progress {
-  left: 0;
+  width: 61px;
 }
 
 duration {
-  right: 0;
+  width: 47px;
 }
 
-@media (max-height: 199px) {
+@media (max-height: 185px), (max-width: 299px) {
   * {
     display: none !important;
   }
 }
 
-@media (min-height: 201px) {
-  artwork {
-    position: absolute;
-    width: auto;
-    height: auto;
-    max-width: none;
-    margin: 0;
-    top: 68px;
-    right: 0;
-    bottom: -60px;
-    left: 0;
-    z-index: 0;
-    background-position: center center;
-  }
-
-  header {
-    max-height: 47px;
-  }
-
-  nav {
-    padding: 0 6px;
-    max-height: 21px;
-  }
-
-  nav a {
-    padding: 0 10px;
-    text-transform: uppercase;
-    font-size: 13px;
-  }
-
-  controls {
-    height: auto;
-    max-height: 102px;
-    flex-direction: column;
-    align-items: stretch;
-    align-content: stretch;
-  }
-
-  buttons,
-  scrubber {
-    position: relative;
-    flex-grow: 0;
-    width: 100vw;
-    border-top: none;
-    z-index: 1;
-  }
-
+@media (max-width: 599px) {
   buttons {
-    max-width: none;
-    max-height: 60px;
-    height: 60px;
-    background: rgba(255, 255, 255, 0.8);
+    display: none;
   }
 
-  buttons img {
-    width: 50px;
-    height: 50px;
-    margin: 5px;
-  }
-
-  scrubber {
-    max-height: 42px;
-  }
-
-  progress-bar {
-    height: 42px;
+  #large-playback-control-button {
+    display: block;
   }
 }
