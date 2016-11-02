@@ -16,6 +16,7 @@ background-img {
 }
 
 content {
+  font-family: "Source Sans Pro";
   background: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3));
   position: absolute;
   left: 0;
@@ -66,7 +67,6 @@ h2 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-family: "Source Sans Pro";
   font-weight: normal;
   color: #ffffff;
 }
@@ -138,7 +138,6 @@ progress-bar {
 playback-progress,
 duration {
   text-align: center;
-  font-family: SourceSansPro;
   font-size: 14px;
   line-height: 1.5;
   color: #ffffff;
