@@ -102,6 +102,10 @@ button {
   justify-content: center;
 }
 
+button:focus {
+  outline: 0;
+}
+
 nav {
   display: flex;
   align-items: center;
