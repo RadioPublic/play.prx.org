@@ -38,6 +38,7 @@ artwork {
   position: relative;
   max-width: 115px;
   width: 115px;
+  min-width: 115px;
   height: 115px;
   margin: 15px;
   border-radius: 5px;
@@ -153,12 +154,6 @@ playback-progress {
 
 duration {
   width: 47px;
-}
-
-@media (max-height: 185px), (max-width: 299px) {
-  * {
-    display: none !important;
-  }
 }
 
 @media (max-width: 599px) {
