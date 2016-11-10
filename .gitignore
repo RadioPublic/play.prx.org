@@ -9,3 +9,7 @@ npm-debug.log
 
 *.js.map
 /src/index.html
+
+# dot environment
+src/assets/dotenv.js
+/.env

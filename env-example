@@ -1,0 +1,6 @@
+# (1) cp env-example .env
+# (2) add your ENV overrides here
+# (3) profit
+
+# prx logo
+LOGO_NAME=prx
