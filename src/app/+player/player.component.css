@@ -60,6 +60,12 @@ section {
   margin: 20px 0 15px 0;
 }
 
+header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 h1,
 h2 {
   margin: 0;
@@ -81,6 +87,13 @@ h1 {
 h2 {
   height: 18px;
   font-size: 14px;
+}
+
+logo {
+  width: 30px;
+  height: 30px;
+  margin-right: 15px;
+  display: none;
 }
 
 controls {
@@ -157,11 +170,21 @@ duration {
 }
 
 @media (max-width: 599px) {
-  buttons {
+  buttons,
+  #upper-logo
+  {
     display: none;
   }
 
-  #large-playback-control-button {
+  #large-playback-control-button,
+  #lower-logo
+  {
+    display: block;
+  }
+}
+
+@media (min-width: 600px) {
+  #upper-logo {
     display: block;
   }
 }
