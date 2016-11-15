@@ -50,6 +50,7 @@ export class PlayerComponent implements OnChanges, OnDestroy, OnInit {
   private subscribeUrl: string;
   private subscribeTarget: string;
   private artworkUrl: string;
+  private logoSrc: string = window['ENV'].LOGO_NAME ? `/images/${window['ENV'].LOGO_NAME}-logo.svg` : ""
 
   private routerParams: any;
 

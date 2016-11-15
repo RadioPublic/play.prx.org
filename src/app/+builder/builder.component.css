@@ -31,9 +31,9 @@
   background: rgba(0, 0, 0, 0.8);
 }
 
-#preview-square-wrap {
-  width: 500px;
-  height: 500px;
+#preview-horizontal-wrap {
+  width: 600px;
+  height: 185px;
   margin: 120px auto;
 }
 
