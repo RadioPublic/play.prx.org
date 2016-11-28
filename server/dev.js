@@ -5,7 +5,6 @@ const http      = require('http');
 const https     = require('https');
 const pug       = require('pug');
 const url       = require('url');
-// const config    = require('./config');
 
 const CONTENT_TYPE = 'Content-Type';
 const TEXT_HTML = 'text/html';
