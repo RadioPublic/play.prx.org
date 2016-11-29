@@ -5,11 +5,17 @@ const http      = require('http');
 const https     = require('https');
 const pug       = require('pug');
 const url       = require('url');
+const config   = require('./config');
 
 const CONTENT_TYPE = 'Content-Type';
 const TEXT_HTML = 'text/html';
 
 const PORT = 3001;
+
+// pre-render
+const index = pug.renderFile('./src/index.pug', {
+  config: config.windowEnv()
+});
 
 const server = listen(PORT);
 
@@ -57,7 +63,10 @@ function listen(port) {
     }
   });
 
-  app.get('*', (req, res) => res.render('./src/index'));
+  app.get('*', (req, res) => {
+    res.setHeader(CONTENT_TYPE, TEXT_HTML);
+    res.send(index);
+  });
 
   return app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);

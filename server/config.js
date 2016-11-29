@@ -15,27 +15,21 @@ this.windowEnv = function() {
   } catch (err) {}
 
   // pull overrides out of process.env and .env
-  let envVar = {"sample": "works"};
+  let envVar = {};
   for (let key of keys) {
     if (process.env[key] !== undefined || (env[key] && env[key] !== '')) {
       let val = process.env[key] || env[key];
-      if (['true', 'false', 'null', 'undefined'].indexOf(val) > -1) {
-        val = val;
+      if (val === 'true') {
+        envVar[key] = val;
+      } else if (val === 'false') {
+        envVar[key] = false;
       } else if (isNaN(val) || val == '') {
-        val = `'${val}'`;
+        envVar[key] = val;
       } else {
-        val = val;
+        envVar[key] = parseInt(val);
       }
-      envVar[key] = val
-    }
-  }
-
-  // remove the old dotenv.js, just in case
-  try {
-    fs.unlinkSync(`${__dirname}/../dist/assets/dotenv.js`);
-  } catch (err) {
-    if (err.code !== 'ENOENT') {
-      throw err;
+    } else {
+      envVar[key] = undefined;
     }
   }
 

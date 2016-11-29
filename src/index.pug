@@ -8,8 +8,6 @@ html(lang='en')
     link(rel='stylesheet', href='/stylesheets/main.css')
     link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Open+Sans')
 
-    script(type='text/javascript', src='src/assets/dotenv.js')
-
     if !locals.dist
       script(src='/jspm_packages/system.js')
       script(src='/config/systemjs.config.js')
@@ -20,6 +18,8 @@ html(lang='en')
       window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
       ga('create', 'UA-164824-54', 'auto');
     script(async src='https://www.google-analytics.com/analytics.js')
+    script(type='text/javascript')
+      != 'window.ENV=' + JSON.stringify(config)
 
   body
     app

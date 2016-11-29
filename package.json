@@ -28,7 +28,7 @@
     "prestart:dev": "npm run jspm:bundle",
     "prestart:dist": "",
     "start": "if [ $NODE_ENV='development' ]; then npm run start:dev; else npm run start:dist; fi",
-    "start:dev": "node bin/mkenv.js && node ./server/dev.js",
+    "start:dev": "node ./server/dev.js",
     "start:dist": "node ./server/dist.js",
     "start:test": "",
     "test": "echo SKIP TEST",
