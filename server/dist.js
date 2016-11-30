@@ -5,7 +5,7 @@ const http      = require('http');
 const https     = require('https');
 const pug       = require('pug');
 const url       = require('url');
-// const config   = require('./config');
+const config   = require('./config');
 
 const CONTENT_TYPE = 'Content-Type';
 const TEXT_HTML = 'text/html';
@@ -15,7 +15,7 @@ const PORT = 3000;
 // pre-render
 const index = pug.renderFile('./src/index.pug', {
   dist: true,
-  // config: config.windowEnv()
+  config: config.windowEnv()
 });
 
 const server = listen(PORT);
