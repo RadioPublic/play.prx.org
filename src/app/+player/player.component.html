@@ -13,7 +13,7 @@
           <h1 [title]="title">{{title}}</h1>
           <h2 [title]="subtitle">{{subtitle}}</h2>
         </hgroup>
-        <logo id="upper-logo"><img [src]="logoSrc" alt=""></logo>
+        <logo id="upper-logo"><img *ngIf="logoSrc" [src]="logoSrc" alt=""></logo>
       </header>
       <controls>
         <buttons (window:keydown)="handleHotkey($event)">
@@ -45,7 +45,7 @@
             <img src="/images/share.svg" alt="">
           </a>
         </nav>
-        <logo id="lower-logo"><img [src]="logoSrc" alt=""></logo>
+        <logo id="lower-logo"><img *ngIf="logoSrc" [src]="logoSrc" alt=""></logo>
       </controls>
     </section>
   </metadata>
