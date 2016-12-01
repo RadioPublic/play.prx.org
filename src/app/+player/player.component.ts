@@ -50,7 +50,7 @@ export class PlayerComponent implements OnChanges, OnDestroy, OnInit {
   private subscribeUrl: string;
   private subscribeTarget: string;
   private artworkUrl: string;
-  private logoSrc: string = window['ENV'].LOGO_NAME ? `/images/${window['ENV'].LOGO_NAME}-logo.svg` : ""
+  private logoSrc: string;
 
   private routerParams: any;
 
@@ -84,6 +84,8 @@ export class PlayerComponent implements OnChanges, OnDestroy, OnInit {
       this.player.ontimeupdate = () => observer.next(this.player.currentTime);
       return (): void => this.player.ontimeupdate = undefined;
     }).share();
+
+    this.logoSrc = window.ENV.LOGO_NAME ? `/images/${window.ENV.LOGO_NAME}-logo.svg` : '';
   }
 
   ngOnChanges(changes: { [key: string]: SimpleChange }) {
