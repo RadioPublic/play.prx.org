@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
 
 @Component({
-  directives: [ROUTER_DIRECTIVES],
-  selector: 'app',
-  template: `<router-outlet></router-outlet>`
+  selector: 'play-root',
+  template: '<router-outlet></router-outlet>'
 })
-export class AppComponent { }
+export class AppComponent {
+  title = 'app works!';
+}

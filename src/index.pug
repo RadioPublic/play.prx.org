@@ -1,27 +1,21 @@
+doctype html
 html(lang='en')
   head
-    base(href='.')
-    title Embed
-    meta(name='viewport', content='width=device-width, initial-scale=1')
-
-    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css')
-    link(rel='stylesheet', href='/stylesheets/main.css')
-    link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Open+Sans')
-
-    if !locals.dist
-      script(src='/jspm_packages/system.js')
-      script(src='/config/systemjs.config.js')
+    meta(charset='utf-8')
+    title PRX Embeddable Player
+    base(href='/')
+    meta(name='viewport' content='width=device-width, initial-scale=1')
+    link(rel='icon' type='image/x-icon' href='/assets/images/favicon.png')
+    if gaKey
       script.
-        System.import('src/app/main').then(null, console.error.bind(console));
-
-    script.
-      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-      ga('create', 'UA-164824-54', 'auto');
-    script(async src='https://www.google-analytics.com/analytics.js')
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        ga('create', '${gaKey}', 'auto');
+      script(async src='https://www.google-analytics.com/analytics.js')
+  body(margin: 0)
+    play-root
+      .empty(style='position:absolute;top:0;right:0;bottom:0;left:0;display:flex;align-items:center;justify-content:center;')
+        h3(style='font-size:18px;font-weight:200;color:#bbb') Loading...
     script(type='text/javascript')
-      != 'window.ENV=' + JSON.stringify(config)
-
-  body
-    app
-    if locals.dist
-      script(src='/scripts/embed.min.js')
+      != 'window.ENV=' + JSON.stringify(env)
+    for script in scripts
+      script(src=script)
