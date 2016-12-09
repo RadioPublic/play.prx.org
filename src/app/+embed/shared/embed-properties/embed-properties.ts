@@ -30,7 +30,7 @@ export class EmbedProperties {
   }
 
   get embeddableUrl() {
-    return `https://play.prx.org/e?${this.paramString}`;
+    return `${window.location.origin}/e?${this.paramString}`;
   }
 
   iframeHtml(width: string, height: string) {
