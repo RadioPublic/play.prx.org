@@ -1,1 +1,1 @@
-export * from './duration/index.ts';
+export * from './shared.module';

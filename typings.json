@@ -1,6 +1,0 @@
-{
-  "globalDependencies": {
-    "core-js": "registry:dt/core-js#0.0.0+20160602141332",
-    "google.analytics/ga": "registry:dt/google.analytics/ga#0.0.0+20160317120654"
-  }
-}

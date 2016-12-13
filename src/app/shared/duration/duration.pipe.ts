@@ -1,7 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({name: 'duration'})
+@Pipe({
+  name: 'duration'
+})
+
 export class DurationPipe implements PipeTransform {
+
   transform(value: number, args: string[]): any {
     if (!value) { return '00:00'; }
 
@@ -19,4 +23,5 @@ export class DurationPipe implements PipeTransform {
 
     return `${hh}${mm}:${ss}`;
   }
+
 }
