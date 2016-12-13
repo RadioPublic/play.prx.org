@@ -1,0 +1,11 @@
+app:
+  build: .
+  volumes:
+    - .:/app
+  env_file:
+    - .env
+  ports:
+    - "4300:4300"
+  command: serve
+  environment:
+    VIRTUAL_HOST: play.prx.docker
