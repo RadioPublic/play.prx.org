@@ -7,7 +7,7 @@ ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-stati
 RUN chmod +x /tini
 
 WORKDIR /app
-EXPOSE 4200
+EXPOSE 4300
 
 ADD . ./
 
