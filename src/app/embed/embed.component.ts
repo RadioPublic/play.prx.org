@@ -35,12 +35,12 @@ export class EmbedComponent implements OnInit {
   ngOnInit() {
     this.route.queryParams.forEach(params => {
       if (params[EMBED_AUDIO_URL_PARAM]) {
-        this.audioUrl = decodeURIComponent(params[EMBED_AUDIO_URL_PARAM]);
-        this.title = decodeURIComponent(params[EMBED_TITLE_PARAM]);
-        this.subtitle = decodeURIComponent(params[EMBED_SUBTITLE_PARAM]);
-        this.subscribeUrl = decodeURIComponent(params[EMBED_SUBSCRIBE_URL_PARAM]);
-        this.subscribeTarget = decodeURIComponent(params[EMBED_SUBSCRIBE_TARGET]);
-        this.artworkUrl = 'url(' + decodeURIComponent(params[EMBED_IMAGE_URL_PARAM]) + ')';
+        this.audioUrl        = params[EMBED_AUDIO_URL_PARAM];
+        this.title           = params[EMBED_TITLE_PARAM];
+        this.subtitle        = params[EMBED_SUBTITLE_PARAM];
+        this.subscribeUrl    = params[EMBED_SUBSCRIBE_URL_PARAM];
+        this.subscribeTarget = params[EMBED_SUBSCRIBE_TARGET];
+        this.artworkUrl      = params[EMBED_IMAGE_URL_PARAM];
       }
    });
   }
