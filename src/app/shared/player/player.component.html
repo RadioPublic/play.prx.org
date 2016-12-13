@@ -1,7 +1,7 @@
-<div class="background-img" [style.background-image]="artworkUrl"></div>
+<div class="background-img" [style.background-image]="artworkSafe"></div>
 <content>
   <div class="metadata">
-    <div class="artwork" [style.background-image]="'url('+artworkUrl+')'">
+    <div class="artwork" [style.background-image]="artworkSafe">
       <button (click)="togglePlayPause()" id="large-playback-control-button">
         <img src="/assets/images/large-semi-transparent-play.svg" alt="" *ngIf="player.paused">
         <img src="/assets/images/large-semi-transparent-pause.svg" alt="" *ngIf="!player.paused">

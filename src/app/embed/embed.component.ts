@@ -28,9 +28,7 @@ export class EmbedComponent implements OnInit {
   subscribeTarget: string;
   artworkUrl: string;
 
-  constructor(private route: ActivatedRoute) {
-    this.showShareModal = false;
-  }
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.route.queryParams.forEach(params => {

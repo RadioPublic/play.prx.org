@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnInit, OnChanges } from '@angular/core';
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import { Observable, Observer } from 'rxjs';
 
 import { DovetailAudio } from '../dovetail';
@@ -22,6 +23,8 @@ export class PlayerComponent implements OnInit, OnChanges {
   @Input() artworkUrl: string;
   @Output() share = new EventEmitter<boolean>();
 
+  artworkSafe: SafeStyle;
+
   private player: DovetailAudio;
   private logger: Logger;
 
@@ -37,10 +40,14 @@ export class PlayerComponent implements OnInit, OnChanges {
 
   private logoSrc: string;
 
+  constructor(private sanitizer: DomSanitizer) {}
+
   ngOnInit() {
     this.player = new DovetailAudio(this.audioUrl);
     this.player.addEventListener('segmentstart', e => this.currentSegmentType = e[SEGMENT_TYPE]);
     this.logger = new Logger(this.player, this.title, this.subtitle);
+
+    this.artworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.artworkUrl}')`);
 
     this.duration = Observable.create((observer: Observer<number>) => {
       observer.next(0);
@@ -66,6 +73,9 @@ export class PlayerComponent implements OnInit, OnChanges {
       if (changes.audioUrl || changes.title || changes.subtitle) {
         this.logger = new Logger(this.player, this.title, this.subtitle);
       }
+    }
+    if (changes.artworkUrl) {
+      this.artworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.artworkUrl}')`);
     }
   }
 
