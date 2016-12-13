@@ -156,11 +156,12 @@ export class DovetailAudio extends ExtendableAudio {
     ).then(([dovetailResponse, adzerkResponse]: AllResult) =>  {
       return this.calculateArrangement(dovetailResponse.arrangement, adzerkResponse);
     }).catch(error => {
-      return [{
+      return [<DovetailArrangementEntry> {
         audioUrl: url,
         duration: 0,
         id: 'fallback',
-        type: 'fallback'
+        type: 'fallback',
+        impressionUrl: null
       }];
     }).then(arrangement => {
       if (this.currentPromise === promise) {

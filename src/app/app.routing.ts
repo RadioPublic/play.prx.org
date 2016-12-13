@@ -2,7 +2,7 @@ import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { BuilderComponent } from './builder';
-import { EmbedComponent } from './embed';
+import { EmbedComponent, ShareModalComponent } from './embed';
 import { DemoComponent } from './demo';
 
 export const routes: Routes = [
@@ -14,6 +14,7 @@ export const routes: Routes = [
 export const routingComponents: any[] = [
   BuilderComponent,
   EmbedComponent,
+  ShareModalComponent,
   DemoComponent
 ];
 
