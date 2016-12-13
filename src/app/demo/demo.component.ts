@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'play-demo',
@@ -48,17 +49,35 @@ export class DemoComponent {
 
   backgroundColor = 'white';
 
-  demoSrc = '/e?tt=214-%20Loud%20and%20Clear&amp;ts=99%25%20Invisible&amp;' +
-             'tc=&amp;ua=http%3A%2F%2Fwww.podtrac.com%2Fpts%2Fredirect.mp3%2F' +
-             'media.blubrry.com%2F99percentinvisible%2Fdovetail.prxu.org%2F99pi' +
-             '%2F874c3465-0dfc-456e-bf4b-14dcfc29b665%2F214-Loud-and-Clear.mp3&amp;' +
-             'ui=http%3A%2F%2Fcdn.99percentinvisible.org%2Fwp-content%2Fuploads%2F' +
-             'powerpress%2F99invisible-logo-1400.jpg&amp;uf=https%3A%2F%2Fprx-feed.' +
-             's3.amazonaws.com%2F99pi%2Ffeed-rss.xml&amp;uc=&amp;us=https%3A%2F%2F' +
-             'itunes.apple.com%2Fus%2Fpodcast%2F99-invisible%2Fid394775318&amp;gs=_blank';
+  demoSrc: SafeResourceUrl;
+
+  demoParams = {
+    tt: '214- Loud and Clear',
+    ts: '99% Invisible',
+    tc: '',
+    ua: 'http://www.podtrac.com/pts/redirect.mp3/media.blubrry.com/99percentinvisible' +
+        '/dovetail.prxu.org/99pi/874c3465-0dfc-456e-bf4b-14dcfc29b665/214-Loud-and-Clear.mp3',
+    ui: 'http://cdn.99percentinvisible.org/wp-content/uploads/powerpress/99invisible-logo-1400.jpg',
+    uf: 'https://prx-feed.s3.amazonaws.com/99pi/feed-rss.xml',
+    uc: '',
+    us: 'https://itunes.apple.com/us/podcast/99-invisible/id394775318',
+    gs: '_blank'
+  };
+
+  constructor(sanitizer: DomSanitizer) {
+    let src = '/e?' + this.toQueryString(this.demoParams);
+    this.demoSrc = sanitizer.bypassSecurityTrustResourceUrl(src);
+  }
 
   setColor(color: string) {
     this.backgroundColor = color;
+  }
+
+  private toQueryString(obj: {}) {
+    return Object.keys(obj).reduce((a, k) => {
+      a.push(k + '=' + encodeURIComponent(obj[k]));
+      return a;
+    }, []).join('&');
   }
 
 }
