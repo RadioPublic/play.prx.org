@@ -3,14 +3,27 @@
 const SKIP_PROPERTIES = ['dispatchEvent', 'addEventListener', 'removeEventListener'];
 
 export class ExtendableAudio {
+
+  _audio: HTMLAudioElement;
+  _documentFragment: DocumentFragment;
+  _toSetUrl: string;
+
+  // TODO: only defining to make typescript happy - why doesn't the d.ts work?
+  src: string;
+  ondurationchange: Function;
+  ontimeupdate: Function;
+  onseeking: Function;
+  paused: boolean;
+  volume: number;
+
   constructor(url) {
     this._audio = new Audio();
     // This is our proxy for DOM events
     this._documentFragment = document.createDocumentFragment();
     this._toSetUrl = url;
-    var proto = Object.getPrototypeOf(this);
+    let proto = Object.getPrototypeOf(this);
     for (let property in this._audio) {
-      if (SKIP_PROPERTIES.indexOf(property) == -1 &&
+      if (SKIP_PROPERTIES.indexOf(property) === -1 &&
         !(proto.hasOwnProperty(property) || this.hasOwnProperty(property))) {
         if (typeof this._audio[property] === 'function') {
           Object.defineProperty(this, property, {
@@ -32,11 +45,11 @@ export class ExtendableAudio {
     if (this._toSetUrl) { this.src = this._toSetUrl; }
   }
 
-  emit() {
+  emit(e: Event) {
     return this._documentFragment.dispatchEvent.apply(this._documentFragment, arguments);
   }
 
-  addEventListener() {
+  addEventListener(event: string, callback: Function) {
     return this._documentFragment.addEventListener.apply(this._documentFragment, arguments);
   }
 

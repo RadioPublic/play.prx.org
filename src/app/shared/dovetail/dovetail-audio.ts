@@ -92,7 +92,7 @@ export class DovetailAudio extends ExtendableAudio {
   }
 
   set playbackRate(rate: number) {
-    if (this._playbackRate != rate) {
+    if (this._playbackRate !== rate) {
       this._playbackRate = rate;
       this._audio.playbackRate = this._playbackRate;
       this.$$sendEvent(RATE_CHANGE);
@@ -112,7 +112,7 @@ export class DovetailAudio extends ExtendableAudio {
   }
 
   set currentTime(position: number) {
-    if (this.currentTime != position) {
+    if (this.currentTime !== position) {
       let event = DovetailAudioEvent.build(SEEKING, this);
       this.emit(event);
       if (this.onseeking) { this.onseeking(event); }
@@ -121,10 +121,10 @@ export class DovetailAudio extends ExtendableAudio {
         for (let i = 0; i < this.arrangement.entries.length; i++) {
           let duration = this.arrangement.entries[i].duration;
           if (soFar + duration > position) {
-            if (this.index != i) {
+            if (this.index !== i) {
               this.skipToFile(i);
               const newTime = position - soFar;
-              if (this._audio.currentTime != newTime) {
+              if (this._audio.currentTime !== newTime) {
                 this._audio.currentTime = newTime;
               } else {
                 // Still send out an event since the overall time has changed
@@ -148,7 +148,7 @@ export class DovetailAudio extends ExtendableAudio {
     this._dovetailLoading = true;
     let promise = this.currentPromise = this.dovetailFetcher.fetch(url).then(
       result => {
-        if (this.currentPromise == promise) {
+        if (this.currentPromise === promise) {
           let data: AllUnion  = [result, this.getArrangement(result.request)];
           return Promise.all<any>(data);
         }
@@ -163,7 +163,7 @@ export class DovetailAudio extends ExtendableAudio {
         type: 'fallback'
       }];
     }).then(arrangement => {
-      if (this.currentPromise == promise) {
+      if (this.currentPromise === promise) {
         this._dovetailLoading = false;
         this.setSegments(arrangement);
       }
@@ -173,7 +173,7 @@ export class DovetailAudio extends ExtendableAudio {
   private getArrangement(adzerkRequestBody: AdzerkRequest, retries = 5) {
     let promise = this.currentAdzerkPromise = this.adzerkFetcher.fetch(adzerkRequestBody).catch(
       error => {
-        if (this.currentAdzerkPromise == promise && retries > 0) {
+        if (this.currentAdzerkPromise === promise && retries > 0) {
           return this.getArrangement(adzerkRequestBody, retries - 1);
         } else {
           throw error;
@@ -192,7 +192,7 @@ export class DovetailAudio extends ExtendableAudio {
         entry.audioUrl = response.decisions[entry.id].contents[0].data.imageUrl;
         entry.duration = 10;
         entry.impressionUrl = response.decisions[entry.id].impressionUrl;
-      } else if (entry.type == 'original') {
+      } else if (entry.type === 'original') {
         result.push(entry);
       }
     }
@@ -206,7 +206,7 @@ export class DovetailAudio extends ExtendableAudio {
 
   private listenerOnDurationChange(event: Event) {
     event.stopImmediatePropagation();
-    if (this._audio.src == this.arrangement.entries[this.index].audioUrl) {
+    if (this._audio.src === this.arrangement.entries[this.index].audioUrl) {
       this.arrangement.entries[this.index].duration = this._audio.duration;
       this.arrangement.duration = undefined;
       this.$$sendEvent(DURATION_CHANGE);
@@ -215,7 +215,7 @@ export class DovetailAudio extends ExtendableAudio {
 
   private listenerOnEnded(event: Event) {
     event.stopImmediatePropagation();
-    if (this._audio.src == this.arrangement.entries[this.index].audioUrl) {
+    if (this._audio.src === this.arrangement.entries[this.index].audioUrl) {
       if (!this.skipToFile(this.index + 1, true)) {
         this.$$sendEvent(ENDED);
       }
@@ -241,8 +241,8 @@ export class DovetailAudio extends ExtendableAudio {
   }
 
   private skipToFile(index: number, resume = false) {
-    if (this.index != index && this.arrangement.entries.length > index) {
-      if (this.index != -1) {
+    if (this.index !== index && this.arrangement.entries.length > index) {
+      if (this.index !== -1) {
         const eventData: SegmentEventData = {
           segment: this.arrangement.entries[this.index],
           segmentType: this.arrangement.entries[this.index].type
@@ -269,8 +269,8 @@ export class DovetailAudio extends ExtendableAudio {
     const type: string = data.segmentType;
     const segment: DovetailArrangementEntry = data.segment;
 
-    if (type == 'ad' || type == 'houseAd') {
-      if (typeof this._imgElem == 'undefined') {
+    if (type === 'ad' || type === 'houseAd') {
+      if (typeof this._imgElem === 'undefined') {
           this._imgElem = document.createElement('img');
           this._imgElem.width = 1;
           this._imgElem.height = 1;

@@ -9,7 +9,7 @@ for once the constructor has finished (which is a little weird, more soon)
 and an emit helper method for us to send events out.
 */
 
-export class ExtendableAudio extends Audio {
+export class ExtendableAudio extends HTMLAudioElement {
   /* tslint:disable */
   protected _audio: HTMLAudioElement;
   /* tslint:enable */
