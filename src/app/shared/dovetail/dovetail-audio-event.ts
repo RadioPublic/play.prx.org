@@ -1,7 +1,5 @@
-import { DovetailAudio } from './dovetail-audio';
-
 export class DovetailAudioEvent {
-  static build(eventName: string, audio: DovetailAudio, extras?: {}) {
+  static build(eventName: string, audio: any, extras?: {}) {
     let event = new Event(eventName);
     Object.defineProperty(event, 'target', {
       value: audio,
