@@ -89,9 +89,15 @@ export class BuilderComponent implements OnInit, OnDestroy {
   }
 
   onFeedUrlSubmit(url: string): void {
-    let encodedUrl = encodeURIComponent(url);
-    let draperUrl = `https://draper.radiopublic.com/transform?url=${encodedUrl}`
-    this.router.navigate([], { queryParams: { feedUrl: draperUrl } });
+    let feedUrl; 
+
+    if ( window.ENV.FEED_PROXY_URL != undefined) { 
+      feedUrl = encodeURIComponent(`${window.ENV.FEED_PROXY_URL}${url}`);
+    } else {
+      feedUrl = encodeURIComponent(url);
+    };
+
+    this.router.navigate([], { queryParams: { feedUrl: feedUrl } });
   }
 
   resetCopyButton(el: Element) {
