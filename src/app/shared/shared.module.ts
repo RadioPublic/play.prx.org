@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 
 import { DurationPipe } from './duration';
 import { PlayerComponent } from './player';
+import { ProgressComponent } from './progress';
 
 @NgModule({
   declarations: [
     DurationPipe,
-    PlayerComponent
+    PlayerComponent,
+    ProgressComponent
   ],
   exports: [
     CommonModule,
@@ -16,8 +17,7 @@ import { PlayerComponent } from './player';
     PlayerComponent
   ],
   imports: [
-    CommonModule,
-    RouterModule
+    CommonModule
   ],
   providers: []
 })
