@@ -55,15 +55,17 @@ export class PlayerComponent implements OnInit, OnChanges {
     }).share();
 
     if (window['ENV'] && window['ENV']['LOGO_NAME']) {
-      this.logoSrc = `/images/${window['ENV']['LOGO_NAME']}-logo.svg`;
+      this.logoSrc = `/assets/images/${window['ENV']['LOGO_NAME']}-logo.svg`;
     } else {
       this.logoSrc = '';
     }
   }
 
   ngOnChanges(changes: any) {
-    if (changes.audioUrl || changes.title || changes.subtitle) {
-      this.logger = new Logger(this.player, this.title, this.subtitle);
+    if (this.player) {
+      if (changes.audioUrl || changes.title || changes.subtitle) {
+        this.logger = new Logger(this.player, this.title, this.subtitle);
+      }
     }
   }
 

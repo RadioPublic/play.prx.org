@@ -1,31 +1,31 @@
-<background-img [style.background-image]="artworkUrl"></background-img>
+<div class="background-img" [style.background-image]="artworkUrl"></div>
 <content>
-  <metadata>
-    <artwork [style.background-image]="artworkUrl">
+  <div class="metadata">
+    <div class="artwork" [style.background-image]="'url('+artworkUrl+')'">
       <button (click)="togglePlayPause()" id="large-playback-control-button">
-        <img src="/images/large-semi-transparent-play.svg" alt="" *ngIf="player.paused">
-        <img src="/images/large-semi-transparent-pause.svg" alt="" *ngIf="!player.paused">
+        <img src="/assets/images/large-semi-transparent-play.svg" alt="" *ngIf="player.paused">
+        <img src="/assets/images/large-semi-transparent-pause.svg" alt="" *ngIf="!player.paused">
       </button>
-    </artwork>
+    </div>
     <section>
       <header>
-        <hgroup>
+        <div>
           <h1 [title]="title">{{title}}</h1>
           <h2 [title]="subtitle">{{subtitle}}</h2>
-        </hgroup>
-        <logo id="upper-logo"><img *ngIf="logoSrc" [src]="logoSrc" alt=""></logo>
+        </div>
+        <div class="logo" id="upper-logo"><img *ngIf="logoSrc" [src]="logoSrc" alt=""></div>
       </header>
-      <controls>
-        <buttons (window:keydown)="handleHotkey($event)">
+      <div class="controls">
+        <div class="buttons" (window:keydown)="handleHotkey($event)">
           <button (click)="seekBy(-10)" id="rewind-control-button">
-            <img src="/images/back-5.svg" alt="">
+            <img src="/assets/images/back-5.svg" alt="">
           </button>
           <button (click)="togglePlayPause()" id="playback-control-button">
-            <img src="/images/play.svg" alt="" *ngIf="player.paused">
-            <img src="/images/pause.svg" alt="" *ngIf="!player.paused">
+            <img src="/assets/images/play.svg" alt="" *ngIf="player.paused">
+            <img src="/assets/images/pause.svg" alt="" *ngIf="!player.paused">
           </button>
           <button (click)="seekBy(30)" id="forward-control-button">
-            <img src="/images/forward-30.svg" alt="">
+            <img src="/assets/images/forward-30.svg" alt="">
           </button>
 
           <!-- <button (click)="cyclePlaybackRate()" id="playback-rate-control-button">
@@ -34,30 +34,30 @@
           <div *ngIf="player.playbackRate === 1.5">1.5<span>✕</span></div>
           <div *ngIf="player.playbackRate === 2">2<span>✕</span></div>
         </button> -->
-        </buttons>
+        </div>
 
         <nav>
           <a [href]="subscribeUrl" *ngIf="subscribeUrl" [target]="subscribeTarget">
             <!-- note: appearance is provided download button SVG, but should be subscribe -->
-            <img src="/images/download.svg" alt="">
+            <img src="/assets/images/download.svg" alt="">
           </a>
           <a (click)="showShareModal()">
-            <img src="/images/share.svg" alt="">
+            <img src="/assets/images/share.svg" alt="">
           </a>
         </nav>
-        <logo id="lower-logo"><img *ngIf="logoSrc" [src]="logoSrc" alt=""></logo>
-      </controls>
+        <div class="logo" id="lower-logo"><img *ngIf="logoSrc" [src]="logoSrc" alt=""></div>
+      </div>
     </section>
-  </metadata>
+  </div>
 
-  <scrubber (window:keydown)="handleHotkey($event)">
-    <playback-progress>{{currentTime | async | duration}}</playback-progress>
-    <progress-bar
+  <div class="scrubber" (window:keydown)="handleHotkey($event)">
+    <span class="playback-progress">{{currentTime | async | duration}}</span>
+    <play-progress
       [value]="currentTime | async"
       [maximum]="duration | async"
       (seek)="onSeek($event)"
       (scrubbing)="onScrub($event)">
-    </progress-bar>
-    <duration>{{duration | async | duration}}</duration>
-  </scrubber>
+    </play-progress>
+    <span class="duration">{{duration | async | duration}}</span>
+  </div>
 </content>
