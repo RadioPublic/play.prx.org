@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { QSDAdapter } from './adapters/qsd.adapter';
+import { MergeAdapter } from './adapters/merge.adapter';
 
 @Component({
   selector: 'play-embed',
@@ -31,7 +31,7 @@ export class EmbedComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.forEach(params => {
-      const adapter = new QSDAdapter(params)
+      const adapter = new MergeAdapter(params)
       this.audioUrl = adapter.audioUrl
       this.title = adapter.title
       this.subtitle = adapter.subtitle
