@@ -41,8 +41,7 @@ export class EpisodePickerComponent implements OnChanges, OnInit {
 
   private getEpisodes() {
     const feedUrl = decodeURIComponent(this.feedUrl);
-    const proxyUrl = `/proxy?url=${feedUrl}`;
-    this.episodes = this.http.get(proxyUrl).map((res: Response) => {
+    this.episodes = this.http.get(feedUrl).map((res: Response) => {
       let episodes: Episode[] = [];
 
       let xml = res.text();
