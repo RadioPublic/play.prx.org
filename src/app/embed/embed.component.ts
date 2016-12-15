@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EMBED_AUDIO_URL_PARAM, EMBED_TITLE_PARAM, EMBED_SUBTITLE_PARAM,
-  EMBED_SUBSCRIBE_URL_PARAM, EMBED_SUBSCRIBE_TARGET, EMBED_IMAGE_URL_PARAM } from './embed.constants';
+import { QSDAdapter } from './adapters/qsd.adapter';
 
 @Component({
   selector: 'play-embed',
@@ -32,14 +31,13 @@ export class EmbedComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.forEach(params => {
-      if (params[EMBED_AUDIO_URL_PARAM]) {
-        this.audioUrl        = params[EMBED_AUDIO_URL_PARAM];
-        this.title           = params[EMBED_TITLE_PARAM];
-        this.subtitle        = params[EMBED_SUBTITLE_PARAM];
-        this.subscribeUrl    = params[EMBED_SUBSCRIBE_URL_PARAM];
-        this.subscribeTarget = params[EMBED_SUBSCRIBE_TARGET];
-        this.artworkUrl      = params[EMBED_IMAGE_URL_PARAM];
-      }
+      const adapter = new QSDAdapter(params)
+      this.audioUrl = adapter.audioUrl
+      this.title = adapter.title
+      this.subtitle = adapter.subtitle
+      this.subscribeUrl = adapter.subscribeUrl
+      this.subscribeTarget = adapter.subscribeTarget
+      this.artworkUrl = adapter.artworkUrl
    });
   }
 
