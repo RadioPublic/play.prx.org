@@ -5,7 +5,7 @@ import { QSDAdapter } from './qsd.adapter'
 export class MergeAdapter {
 
   constructor(private params: Object) {
-    this.params = params
+    this.QSDAdapter = new QSDAdapter(params);
   }
 
   get audioUrl(): string {
@@ -31,10 +31,6 @@ export class MergeAdapter {
   get artworkUrl(): string {
     return this.QSDAdapter.artworkUrl
   }
-
-  private get QSDAdapter(): QSDAdapter { 
-    return new QSDAdapter(this.params);
-  } 
 }
 
 
