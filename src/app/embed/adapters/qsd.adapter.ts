@@ -3,7 +3,10 @@ import { EMBED_AUDIO_URL_PARAM, EMBED_TITLE_PARAM, EMBED_SUBTITLE_PARAM,
 
 export class QSDAdapter {
 
-  constructor(private params: Object) {}
+
+  constructor(private params: Object) {
+    this.params = params
+  }
 
   get audioUrl(): string {
     return this.params[EMBED_AUDIO_URL_PARAM]

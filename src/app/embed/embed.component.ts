@@ -29,24 +29,28 @@ export class EmbedComponent implements OnInit {
 
   constructor(private route: ActivatedRoute) {}
 
-  ngOnInit() {
-    this.route.queryParams.forEach(params => {
-      const adapter = new MergeAdapter(params)
-      this.audioUrl = adapter.audioUrl
-      this.title = adapter.title
-      this.subtitle = adapter.subtitle
-      this.subscribeUrl = adapter.subscribeUrl
-      this.subscribeTarget = adapter.subscribeTarget
-      this.artworkUrl = adapter.artworkUrl
-   });
-  }
+	ngOnInit() {
+		this.route.queryParams.forEach(params => {
+			const adapter = new MergeAdapter(params)
+			adapter.getParams().subscribe(
+				parameters => {
+					this.audioUrl = parameters.audioUrl
+					this.title = parameters.title
+					this.subtitle = parameters.subtitle
+					this.subscribeUrl = parameters.subscribeUrl
+					this.subscribeTarget = parameters.subscribeTarget
+					this.artworkUrl = parameters.artworkUrl
+				}
+			)
+		});
+	}
 
-  showModal() {
-    this.showShareModal = true;
-  }
+	showModal() {
+		this.showShareModal = true;
+	}
 
-  hideModal() {
-    this.showShareModal = false;
-  }
+	hideModal() {
+		this.showShareModal = false;
+	}
 
 }
