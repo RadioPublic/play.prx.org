@@ -39,9 +39,22 @@ export class EpisodePickerComponent implements OnChanges, OnInit {
     this.select.emit(episode);
   }
 
+  private proxiedFeedUri() {
+    const customProxyUrl= window['ENV']['FEED_PROXY_URL'];
+    const expressProxyPath = "/proxy?url=";
+    let proxyUri;
+
+    if(customProxyUrl != undefined){
+      proxyUri = customProxyUrl
+    } else { 
+      proxyUri = expressProxyPath 
+    }
+    return `${proxyUri}${this.feedUrl}`;
+  }
+
   private getEpisodes() {
-    const feedUrl = decodeURIComponent(this.feedUrl);
-    this.episodes = this.http.get(feedUrl).map((res: Response) => {
+    const feedUri = this.proxiedFeedUri();
+    this.episodes = this.http.get(feedUri).map((res: Response) => {
       let episodes: Episode[] = [];
 
       let xml = res.text();
