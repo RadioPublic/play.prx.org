@@ -48,17 +48,8 @@ export class BuilderComponent implements OnInit {
   }
 
   onFeedUrlSubmit(value: string) {
-    let feedUrl;
-    let proxyUrl = window['ENV']['FEED_PROXY_URL']
-    debugger;
-    if ( proxyUrl != undefined) {
-      feedUrl = encodeURIComponent(`${proxyUrl}${value}`);
-    } else {
-      feedUrl = value;
-    };
-
     if (value) {
-      this.router.navigate(['/'], { queryParams: { feedUrl } });
+      this.router.navigate(['/'], { queryParams: { feedUrl: value } });
     }
   }
 
