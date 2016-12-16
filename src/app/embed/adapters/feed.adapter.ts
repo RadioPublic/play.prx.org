@@ -31,43 +31,48 @@ export class FeedAdapter {
 		let xml = res.text();
 		let parser = new DOMParser();
 		let doc = <XMLDocument> parser.parseFromString(xml, 'application/xml');
-		let img: string;
-		let _img = Array.from(doc.querySelectorAll('channel > *[href]')).filter(e => e.nodeName === 'itunes:image')[0];
-		if (_img) {
-			img = _img.getAttribute('href');
-		}
-
-		let artist = doc.querySelector('channel > title').innerHTML;
-
+    let rpNamespace = doc.lookupNamespaceURI('rp')
+    let atomNamespace = doc.lookupNamespaceURI('atom')
 		let elements = doc.querySelectorAll('item');
+    console.log(doc);
 
 		let episode;
 		for (let i = 0; i < elements.length; ++i) {
 			let item = <Element> elements[i];
-			let guid = item.querySelector('guid').innerHTML;
+      let guid = doc.getElementsByTagName('guid')[0].textContent
 
 			if(guid == this.guid){ episode =  item }
 		};
 
+    //temp
     episode = episode || elements[0]
 
-		let title = function (html: string) {
-			let txt = <HTMLTextAreaElement> document.createElement('textarea');
-			txt.innerHTML = html;
-			return txt.value;
-		}(episode.querySelector('title').innerHTML);
+    let title = episode.getElementsByTagName('title')[0].textContent
+    let audioUrl = episode.getElementsByTagName('enclosure')[0].getAttribute('url')
 
-    let audioUrl = episode.querySelector('enclosure').getAttribute('url');
+    let subtitle = doc.getElementsByTagName('title')[0].textContent
+    let subscribeUrl = doc.getElementsByTagNameNS(atomNamespace, 'link')[0].getAttribute('href')
+    let feedArtworkUrl  = doc.getElementsByTagNameNS(rpNamespace, 'image')[0].getAttribute('href')
+    let artworkUrl  = episode.getElementsByTagNameNS(rpNamespace, 'image') 
+    debugger;
+    if (artworkUrl.length == 0){ 
+      artworkUrl = feedArtworkUrl
+    } else { 
+      artworkUrl = artworkUrl[0].getAttribute('href')
+    };
+    console.log(doc);
 
-		return {
-			audioUrl:         audioUrl,
-			title:            title,
-      // subtitle:         subtitle,
-      // subscribeUrl:     subscribeUrl,
-      // subscribeTarget:  subscribeTarget,
-      // artworkUrl:       artworkUrl
-		}
+		let parsed = { 
+      audioUrl, 
+      title, 
+      subtitle, 
+      subscribeUrl, 
+      feedArtworkUrl,
+      artworkUrl 
+    }
+    return parsed;
 	}
+
 }
 
 

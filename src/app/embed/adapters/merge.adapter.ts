@@ -27,7 +27,7 @@ export class MergeAdapter {
         .mergeMap(
           response => this.QSDAdapter.getParams,
           (response, query) => {
-            return Object.assign(response, query);
+            return Object.assign({}, response, query);
           }
         );
     } 

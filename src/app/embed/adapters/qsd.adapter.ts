@@ -19,14 +19,21 @@ export class QSDAdapter {
   }
 
   get getParams(): Observable<Object> {
-    return Observable.of({
+    return Observable.of(this.playerParams);
+  }
+
+
+  get playerParams(): Object {
+    let playerParams = {
       audioUrl:         this.audioUrl,
       title:            this.title,
       subtitle:         this.subtitle,
       subscribeUrl:     this.subscribeUrl,
       subscribeTarget:  this.subscribeTarget,
       artworkUrl:       this.artworkUrl
-    });
+    }
+    Object.keys(playerParams).forEach((key) => (playerParams[key] == null) && delete playerParams[key]);
+    return playerParams
   }
 
   get audioUrl(): string {

@@ -9,7 +9,7 @@ import { MergeAdapter } from './adapters/merge.adapter';
   template: `
     <play-share-modal *ngIf="showShareModal" (close)="hideModal()">
     </play-share-modal>
-    <play-player [audioUrl]="audioUrl" [title]="title" [subtitle]="subtitle"
+    <play-player [feedArtworkUrl]="feedArtworkUrl" [audioUrl]="audioUrl" [title]="title" [subtitle]="subtitle"
       [subscribeUrl]="subscribeUrl" [subscribeTarget]="subscribeTarget"
       [artworkUrl]="artworkUrl" (share)="showModal()">
     </play-player>
@@ -27,6 +27,7 @@ export class EmbedComponent implements OnInit {
   subscribeUrl: string;
   subscribeTarget: string;
   artworkUrl: string;
+  feedArtworkUrl: string;
 
   constructor(
 		private route: ActivatedRoute,
@@ -44,6 +45,7 @@ export class EmbedComponent implements OnInit {
 					this.subscribeUrl = parameters['subscribeUrl']
 					this.subscribeTarget = parameters['subscribeTarget']
 					this.artworkUrl = parameters['artworkUrl']
+          this.feedArtworkUrl = parameters['feedArtworkUrl']
 				}
 			)
 		});
