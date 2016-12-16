@@ -17,13 +17,16 @@ export class FeedAdapter {
   }
 
 	public get getParams(): Observable<Object> { 
- 		return this.http.get(this.draperUrl).map(this.parseResponse)
+ 		return this.http.get(this.draperUrl).map(this.parseResponse.bind(this))
 	}
 
 	private get draperUrl(): string { 
-		let feedUrl = `https://draper.radiopublic.com/transform?url=${this.feedUrl}`
-		let feedId;
-		
+    let feedUrl, feedId;
+    if (this.feedUrl) { 
+      feedUrl = `https://draper.radiopublic.com/transform?url=${this.feedUrl}`
+    } else if (this.feedId) {
+      feedId = `https://draper.radiopublic.com/transform?program_id=${this.feedId}`
+    }
 		return (feedUrl || feedId)
 	}
 
@@ -34,14 +37,13 @@ export class FeedAdapter {
     let rpNamespace = doc.lookupNamespaceURI('rp')
     let atomNamespace = doc.lookupNamespaceURI('atom')
 		let elements = doc.querySelectorAll('item');
-    console.log(doc);
 
 		let episode;
 		for (let i = 0; i < elements.length; ++i) {
 			let item = <Element> elements[i];
-      let guid = doc.getElementsByTagName('guid')[0].textContent
+      let guid = item.getElementsByTagName('guid')[0].textContent
 
-			if(guid == this.guid){ episode =  item }
+			if(guid == this.guid){ episode = item }
 		};
 
     //temp
@@ -54,14 +56,13 @@ export class FeedAdapter {
     let subscribeUrl = doc.getElementsByTagNameNS(atomNamespace, 'link')[0].getAttribute('href')
     let feedArtworkUrl  = doc.getElementsByTagNameNS(rpNamespace, 'image')[0].getAttribute('href')
     let artworkUrl  = episode.getElementsByTagNameNS(rpNamespace, 'image') 
-    debugger;
     if (artworkUrl.length == 0){ 
       artworkUrl = feedArtworkUrl
     } else { 
       artworkUrl = artworkUrl[0].getAttribute('href')
     };
-    console.log(doc);
 
+    console.log(doc);
 		let parsed = { 
       audioUrl, 
       title, 
