@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Http } from '@angular/http';
 import { ActivatedRoute } from '@angular/router';
 import { MergeAdapter } from './adapters/merge.adapter';
 
@@ -27,14 +28,17 @@ export class EmbedComponent implements OnInit {
   subscribeTarget: string;
   artworkUrl: string;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+		private route: ActivatedRoute,
+		private http: Http
+	) {}
 
 	ngOnInit() {
 		this.route.queryParams.forEach(params => {
-			const adapter = new MergeAdapter(params)
+			const adapter = new MergeAdapter(params, this.http)
 			adapter.getParams.subscribe(
 				parameters => {
-          console.log(parameters);
+          console.log(parameters)
 					this.audioUrl = parameters['audioUrl']
 					this.title = parameters['title']
 					this.subtitle = parameters['subtitle']
