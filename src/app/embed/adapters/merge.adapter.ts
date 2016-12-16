@@ -19,14 +19,18 @@ export class MergeAdapter {
   }
 
   get getParams(): Observable<Object> {
-    return this.QSDAdapter.getParams
-    // return this.FeedAdapter.getParams
-    //   .mergeMap(
-    //     response => this.QSDAdapter.getParams,
-    //     (response, query) => {
-    //       return Object.assign(response, query);
-    //     }
-    //   );
+    if(this.QSDAdapter.hasFullInformation){
+      return this.QSDAdapter.getParams
+
+    } else { 
+      return this.FeedAdapter.getParams
+        .mergeMap(
+          response => this.QSDAdapter.getParams,
+          (response, query) => {
+            return Object.assign(response, query);
+          }
+        );
+    } 
 	}
 }
 

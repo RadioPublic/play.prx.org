@@ -31,7 +31,6 @@ export class FeedAdapter {
 		let xml = res.text();
 		let parser = new DOMParser();
 		let doc = <XMLDocument> parser.parseFromString(xml, 'application/xml');
-    console.log(doc);
 		let img: string;
 		let _img = Array.from(doc.querySelectorAll('channel > *[href]')).filter(e => e.nodeName === 'itunes:image')[0];
 		if (_img) {
@@ -39,7 +38,6 @@ export class FeedAdapter {
 		}
 
 		let artist = doc.querySelector('channel > title').innerHTML;
-    console.log(artist)
 
 		let elements = doc.querySelectorAll('item');
 
@@ -60,11 +58,10 @@ export class FeedAdapter {
 		}(episode.querySelector('title').innerHTML);
 
     let audioUrl = episode.querySelector('enclosure').getAttribute('url');
-    console.log(audioUrl);
 
 		return {
-			// audioUrl:         audioUrl,
-			// title:            title,
+			audioUrl:         audioUrl,
+			title:            title,
       // subtitle:         subtitle,
       // subscribeUrl:     subscribeUrl,
       // subscribeTarget:  subscribeTarget,

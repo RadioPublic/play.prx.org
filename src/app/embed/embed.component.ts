@@ -38,7 +38,6 @@ export class EmbedComponent implements OnInit {
 			const adapter = new MergeAdapter(params, this.http)
 			adapter.getParams.subscribe(
 				parameters => {
-          console.log(parameters)
 					this.audioUrl = parameters['audioUrl']
 					this.title = parameters['title']
 					this.subtitle = parameters['subtitle']

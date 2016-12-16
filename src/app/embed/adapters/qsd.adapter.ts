@@ -7,6 +7,17 @@ export class QSDAdapter {
     this.params = params
   }
 
+  get hasFullInformation(): boolean {
+    return (
+      (this.audioUrl != undefined) &&
+        (this.title != undefined) &&
+        (this.subtitle != undefined) &&
+        (this.subscribeUrl != undefined) &&
+        (this.subscribeTarget != undefined) &&
+        (this.artworkUrl != undefined)
+    );
+  }
+
   get getParams(): Observable<Object> {
     return Observable.of({
       audioUrl:         this.audioUrl,
