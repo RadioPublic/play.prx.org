@@ -1,11 +1,21 @@
 import { EMBED_AUDIO_URL_PARAM, EMBED_TITLE_PARAM, EMBED_SUBTITLE_PARAM,
   EMBED_SUBSCRIBE_URL_PARAM, EMBED_SUBSCRIBE_TARGET, EMBED_IMAGE_URL_PARAM } from './../embed.constants';
+import { Observable } from 'rxjs/Observable';
 
 export class QSDAdapter {
-
-
   constructor(private params: Object) {
     this.params = params
+  }
+
+  get getParams(): Observable<Object> {
+    return Observable.of({
+      audioUrl:         this.audioUrl,
+      title:            this.title,
+      subtitle:         this.subtitle,
+      subscribeUrl:     this.subscribeUrl,
+      subscribeTarget:  this.subscribeTarget,
+      artworkUrl:       this.artworkUrl
+    });
   }
 
   get audioUrl(): string {
@@ -31,7 +41,6 @@ export class QSDAdapter {
   get artworkUrl(): string {
     return this.params[EMBED_IMAGE_URL_PARAM]
   }
-
 }
 
 
