@@ -1,6 +1,7 @@
 import { EMBED_AUDIO_URL_PARAM, EMBED_TITLE_PARAM, EMBED_SUBTITLE_PARAM,
   EMBED_SUBSCRIBE_URL_PARAM, EMBED_SUBSCRIBE_TARGET, EMBED_IMAGE_URL_PARAM } from './../embed.constants';
 import { Observable } from 'rxjs/Observable';
+import { AdapterProperties } from './adapter.properties'
 
 export class QSDAdapter {
   constructor(private params: Object) {
@@ -18,22 +19,22 @@ export class QSDAdapter {
     );
   }
 
-  get getParams(): Observable<Object> {
-    return Observable.of(this.playerParams);
+  get getProperties(): Observable<AdapterProperties> {
+    return Observable.of(this.playerProperties);
   }
 
 
-  get playerParams(): Object {
-    let playerParams = {
+  get playerProperties(): AdapterProperties {
+    // Could I pass 'this' to decode? Hrm.
+    //
+    return  AdapterProperties.decode({
       audioUrl:         this.audioUrl,
       title:            this.title,
       subtitle:         this.subtitle,
       subscribeUrl:     this.subscribeUrl,
       subscribeTarget:  this.subscribeTarget,
       artworkUrl:       this.artworkUrl
-    }
-    Object.keys(playerParams).forEach((key) => (playerParams[key] == null) && delete playerParams[key]);
-    return playerParams
+    });
   }
 
   get audioUrl(): string {

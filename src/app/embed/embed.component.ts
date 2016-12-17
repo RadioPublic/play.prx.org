@@ -37,16 +37,16 @@ export class EmbedComponent implements OnInit {
 	ngOnInit() {
 		this.route.queryParams.forEach(params => {
 			const adapter = new MergeAdapter(params, this.http)
-			adapter.getParams.subscribe(
-				parameters => {
-          console.log(parameters);
-					this.audioUrl = parameters['audioUrl']
-					this.title = parameters['title']
-					this.subtitle = parameters['subtitle']
-					this.subscribeUrl = parameters['subscribeUrl']
-					this.subscribeTarget = parameters['subscribeTarget']
-					this.artworkUrl = parameters['artworkUrl']
-          this.feedArtworkUrl = parameters['feedArtworkUrl']
+			adapter.getProperties.subscribe(
+				properties => {
+          console.log(properties)
+					this.audioUrl = properties['audioUrl']
+					this.title = properties['title']
+					this.subtitle = properties['subtitle']
+					this.subscribeUrl = properties['subscribeUrl']
+					this.subscribeTarget = properties['subscribeTarget']
+					this.artworkUrl = properties['artworkUrl']
+          this.feedArtworkUrl = properties['feedArtworkUrl']
 				}
 			)
 		});
