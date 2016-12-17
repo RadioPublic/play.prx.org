@@ -40,13 +40,13 @@ export class EmbedComponent implements OnInit {
 			adapter.getProperties.subscribe(
 				properties => {
           console.log(properties)
-					this.audioUrl = properties['audioUrl']
-					this.title = properties['title']
-					this.subtitle = properties['subtitle']
-					this.subscribeUrl = properties['subscribeUrl']
-					this.subscribeTarget = properties['subscribeTarget']
-					this.artworkUrl = properties['artworkUrl']
-          this.feedArtworkUrl = properties['feedArtworkUrl']
+					this.audioUrl = ( properties.audioUrl || this.audioUrl ) 
+					this.title = ( properties.title || this.title )
+					this.subtitle = ( properties.subtitle || this.subtitle ) 
+					this.subscribeUrl = ( properties.subscribeUrl || this.subscribeUrl )
+					this.subscribeTarget = ( properties.subscribeTarget || this.subscribeTarget ) 
+					this.artworkUrl = ( properties.artworkUrl || this.artworkUrl ) 
+          this.feedArtworkUrl = ( properties.feedArtworkUrl || this.feedArtworkUrl ) 
 				}
 			)
 		});

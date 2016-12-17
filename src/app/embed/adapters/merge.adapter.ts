@@ -11,7 +11,7 @@ import { AdapterProperties } from './adapter.properties'
 export class MergeAdapter {
   private QSDAdapter: QSDAdapter
   private FeedAdapter: FeedAdapter
-  // public playerProperties: Observable<AdapterProperties>
+  private Adapters: Observable<AdapterProperties>
 
   constructor(
 		private params: Object,
@@ -19,19 +19,13 @@ export class MergeAdapter {
 	) {
     this.QSDAdapter = new QSDAdapter(params);
     this.FeedAdapter = new FeedAdapter(params, http);
+    this.Adapters  = Observable.of(this.FeedAdapter).
+      map( x => x.getProperties).mergeAll();
   }
 
-  get getProperties(): Observable<Object> {
-    let source = new ReplaySubject();
-    let adapters = [this.QSDAdapter, this.FeedAdapter]
-    adapters.forEach( (adapter) => {
-      adapter.getProperties.subscribe( properties => {
-        console.log("props...FA");
-        source.next(properties)
-      })
-      
-    })
-    return source;
+  get getProperties(): Observable<AdapterProperties> {
+    return this.Adapters.
+      concat(this.QSDAdapter.getProperties)
 	}
 }
 
