@@ -4,4 +4,8 @@
 
 # prx logo
 LOGO_NAME=
+# What url to feed requests to 
 FEED_PROXY_URL=
+
+# What set of data sources should we use for fetching information?
+DATA_SOURCES=

@@ -1,23 +1,22 @@
 import { EMBED_FEED_URL_PARAM, EMBED_FEED_ID_PARAM, EMBED_EPISODE_GUID_PARAM } from './../embed.constants'
+import {Injectable} from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { AdapterProperties } from './adapter.properties'
 
+
+@Injectable()
 export class FeedAdapter {
 	private feedUrl: string
 	private feedId: string
 	private guid: string
 
-  constructor(
-		private params: Object,
-		private http: Http
-	) {
-		this.feedUrl = params[EMBED_FEED_URL_PARAM]
-		this.feedId  = params[EMBED_FEED_ID_PARAM]
-		this.guid = params[EMBED_EPISODE_GUID_PARAM]
-  }
+  constructor(private http: Http) {}
 
-	public get getProperties(): Observable<AdapterProperties> { 
+	public getProperties(params): Observable<AdapterProperties> { 
+    this.feedUrl = params[EMBED_FEED_URL_PARAM]
+    this.feedId  = params[EMBED_FEED_ID_PARAM]
+    this.guid = params[EMBED_EPISODE_GUID_PARAM]
  		return this.http.get(this.draperUrl).map((res: Response) => {
       let xml = res.text();
       let parser = new DOMParser();
