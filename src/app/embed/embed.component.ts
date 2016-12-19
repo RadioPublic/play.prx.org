@@ -30,8 +30,8 @@ export class EmbedComponent implements OnInit {
   subscribeTarget: string;
   artworkUrl: string;
   feedArtworkUrl: string;
-  private operativeAdapters: Array<any>
-  private priorityAdapter: any;
+  // private operativeAdapters: Array<any>
+  // private priorityAdapter: any;
 
   constructor(
 		private route: ActivatedRoute,
