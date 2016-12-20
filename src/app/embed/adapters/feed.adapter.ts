@@ -46,15 +46,14 @@ export class FeedAdapter {
         artworkUrl = artworkUrl[0].getAttribute('href')
       };
 
-     let props = AdapterProperties.decode({ 
-      audioUrl, 
-      title, 
-      subtitle, 
-      subscribeUrl, 
-      feedArtworkUrl,
-      artworkUrl 
-      });
-      return props;
+      return { 
+        audioUrl, 
+        title, 
+        subtitle, 
+        subscribeUrl, 
+        feedArtworkUrl,
+        artworkUrl 
+      }
     })
 	}
 

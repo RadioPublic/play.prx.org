@@ -51,7 +51,6 @@ export class EmbedComponent implements OnInit {
         this.QSDAdapter, 
         this.FeedAdapter
       )
-
 			adapter.getProperties.subscribe(
 				properties => {
 					this.audioUrl = ( properties.audioUrl || this.audioUrl ) 

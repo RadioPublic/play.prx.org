@@ -11,14 +11,14 @@ export class QSDAdapter {
   }
 
   private playerProperties(params): AdapterProperties {
-    return  AdapterProperties.decode({
+    return  {
       audioUrl:         params[EMBED_AUDIO_URL_PARAM],
       title:            params[EMBED_TITLE_PARAM],
       subtitle:         params[EMBED_SUBTITLE_PARAM],
       subscribeUrl:     params[EMBED_SUBSCRIBE_URL_PARAM],
       subscribeTarget:  params[EMBED_SUBSCRIBE_TARGET],
       artworkUrl:       params[EMBED_IMAGE_URL_PARAM]
-    });
+    };
   }
 }
 
