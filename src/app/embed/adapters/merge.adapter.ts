@@ -1,27 +1,36 @@
+import {Injectable} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ReplaySubject } from 'rxjs';
+import { QSDAdapter } from './qsd.adapter'
+import { FeedAdapter } from './feed.adapter'
+import { AdapterProperties, hasMinimumParams, DataAdapter, getMergedValues } from './adapter.properties'
 
-import { AdapterProperties } from './adapter.properties'
+const NO_EMIT_YET = Symbol();
 
+@Injectable()
 export class MergeAdapter {
-  private Adapters: Observable<AdapterProperties>
+  private adapters: DataAdapter[]
   constructor(
-		private params: Object,
-    private concatAdapter: any, 
-    ...adapters: Array<any>
-	) {
-    this.params = params;
-    this.Adapters  = Observable.of(...adapters).
-      map( x => x.getProperties(this.params)).
-      mergeAll();
+    private FeedAdapter: FeedAdapter,
+    private QSDAdapter:  QSDAdapter
+	) { 
+    this.adapters = [this.QSDAdapter, this.FeedAdapter]
   }
 
-  get getProperties(): Observable<AdapterProperties> {
+  getProperties(params): Observable<AdapterProperties> {
+    let chosenAdapters: Observable<AdapterProperties>[];
 
-    return this.Adapters.
-      concat(this.concatAdapter.getProperties(this.params));
+    chosenAdapters = this.adapters.
+      map(obs => obs.getProperties(params)).
+      map(obs => obs.startWith(NO_EMIT_YET))
+
+    return Observable.combineLatest(...chosenAdapters).map(sources => {
+      let data = [];
+      for (let source of sources) {
+        if (source === NO_EMIT_YET) { break; }
+        data.unshift(source);
+      }
+      return getMergedValues(...data);
+    }).filter(hasMinimumParams)
 	}
 }
-
-
-

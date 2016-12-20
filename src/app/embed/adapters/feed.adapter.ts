@@ -2,11 +2,10 @@ import { EMBED_FEED_URL_PARAM, EMBED_FEED_ID_PARAM, EMBED_EPISODE_GUID_PARAM } f
 import {Injectable} from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { AdapterProperties } from './adapter.properties'
-
+import { AdapterProperties, DataAdapter } from './adapter.properties'
 
 @Injectable()
-export class FeedAdapter {
+export class FeedAdapter implements DataAdapter {
 	private feedUrl: string
 	private feedId: string
 	private guid: string
@@ -60,7 +59,7 @@ export class FeedAdapter {
 	private get draperUrl(): string { 
     let feedUrl, feedId;
     if (this.feedUrl) { 
-      feedUrl = `https://draper.radiopublic.com/transform?url=${this.feedUrl}`
+      feedUrl = `${window['ENV']['FEED_PROXY_URL']}${this.feedUrl}`
     } else if (this.feedId) {
       feedId = `https://draper.radiopublic.com/transform?program_id=${this.feedId}`
     }
