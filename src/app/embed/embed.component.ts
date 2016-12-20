@@ -36,21 +36,21 @@ export class EmbedComponent implements OnInit {
     private adapter: MergeAdapter
 	) {}
 
-	ngOnInit() {
-		this.route.queryParams.forEach(params => {
-			this.adapter.getProperties(params).subscribe(
-				properties => {
-					this.audioUrl = ( properties.audioUrl || this.audioUrl ) 
-					this.title = ( properties.title || this.title )
-					this.subtitle = ( properties.subtitle || this.subtitle ) 
-					this.subscribeUrl = ( properties.subscribeUrl || this.subscribeUrl )
-					this.subscribeTarget = ( properties.subscribeTarget || this.subscribeTarget ) 
-					this.artworkUrl = ( properties.artworkUrl || this.artworkUrl ) 
+  ngOnInit() {
+    this.route.queryParams.forEach(params => {
+      this.adapter.getProperties(params).subscribe(
+        properties => {
+          this.audioUrl = ( properties.audioUrl || this.audioUrl ) 
+          this.title = ( properties.title || this.title )
+          this.subtitle = ( properties.subtitle || this.subtitle ) 
+          this.subscribeUrl = ( properties.subscribeUrl || this.subscribeUrl )
+          this.subscribeTarget = ( properties.subscribeTarget || this.subscribeTarget ) 
+          this.artworkUrl = ( properties.artworkUrl || this.artworkUrl ) 
           this.feedArtworkUrl = ( properties.feedArtworkUrl || this.feedArtworkUrl ) 
-				}
-			)
-		});
-	}
+        }
+      )
+    });
+  }
 
 	showModal() {
 		this.showShareModal = true;
