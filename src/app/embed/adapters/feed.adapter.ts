@@ -37,6 +37,7 @@ export class FeedAdapter implements DataAdapter {
 
       let subtitle = doc.getElementsByTagName('title')[0].textContent
       let subscribeUrl = doc.getElementsByTagNameNS(atomNamespace, 'link')[0].getAttribute('href')
+      // Future feeds may not include RP-namespaced data!
       let feedArtworkUrl  = doc.getElementsByTagNameNS(rpNamespace, 'image')[0].getAttribute('href')
       let artworkUrl  = episode.getElementsByTagNameNS(rpNamespace, 'image') 
       if (artworkUrl.length == 0){ 

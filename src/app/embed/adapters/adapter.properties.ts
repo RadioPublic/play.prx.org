@@ -34,14 +34,16 @@ export function hasMinimumParams(props): boolean {
     (props.artworkUrl !== undefined)
 }
 export function getMergedValues(...data: AdapterProperties[]):AdapterProperties {
-  const result: AdapterProperties = {};
-  for (let datum of data ) {
+  const mergedResult: AdapterProperties = {};
+  const resultsInReversePriority = data.reverse();
+
+  for (let result of resultsInReversePriority)  {
     for (let property of PropNames) {
-      if (typeof datum[property] !== 'undefined') {
-        result[property] = datum[property];
+      if (typeof result[property] !== 'undefined') {
+        mergedResult[property] = result[property];
       }
     }
   }
-  return result;
+  return mergedResult;
 }
 

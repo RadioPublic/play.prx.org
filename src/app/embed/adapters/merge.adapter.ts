@@ -28,7 +28,7 @@ export class MergeAdapter {
       let data = [];
       for (let source of sources) {
         if (source === NO_EMIT_YET) { break; }
-        data.unshift(source);
+        data.push(source);
       }
       return getMergedValues(...data);
     }).filter(hasMinimumParams)
