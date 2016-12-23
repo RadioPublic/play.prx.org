@@ -23,9 +23,11 @@ export class PlayerComponent implements OnInit, OnChanges {
   @Input() subscribeUrl: string;
   @Input() subscribeTarget: string;
   @Input() artworkUrl: string;
+  @Input() feedArtworkUrl: string;
   @Output() share = new EventEmitter<boolean>();
 
   artworkSafe: SafeStyle;
+  feedArtworkSafe: SafeStyle;
 
   private player: DovetailAudio;
   private logger: Logger;
@@ -50,6 +52,7 @@ export class PlayerComponent implements OnInit, OnChanges {
     this.logger = new Logger(this.player, this.title, this.subtitle);
 
     this.artworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.artworkUrl}')`);
+    this.feedArtworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.feedArtworkUrl}')`);
 
     this.duration = Observable.create((observer: Observer<number>) => {
       observer.next(0);
@@ -76,6 +79,9 @@ export class PlayerComponent implements OnInit, OnChanges {
       if (changes.audioUrl || changes.title || changes.subtitle) {
         this.logger = new Logger(this.player, this.title, this.subtitle);
       }
+    }
+    if (changes.feedArtworkUrl) {
+      this.feedArtworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.feedArtworkUrl}')`);
     }
     if (changes.artworkUrl) {
       this.artworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.artworkUrl}')`);
