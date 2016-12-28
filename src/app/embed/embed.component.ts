@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MergeAdapter } from './adapters/merge.adapter';
 import { QSDAdapter } from './adapters/qsd.adapter'
 import { FeedAdapter } from './adapters/feed.adapter'
+import { AdapterProperties } from './adapters/adapter.properties'
 
 @Component({
   selector: 'play-embed',
@@ -38,17 +39,7 @@ export class EmbedComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.forEach(params => {
-      this.adapter.getProperties(params).subscribe(
-        properties => {
-          this.audioUrl = ( properties.audioUrl || this.audioUrl ) 
-          this.title = ( properties.title || this.title )
-          this.subtitle = ( properties.subtitle || this.subtitle ) 
-          this.subscribeUrl = ( properties.subscribeUrl || this.subscribeUrl )
-          this.subscribeTarget = ( properties.subscribeTarget || this.subscribeTarget ) 
-          this.artworkUrl = ( properties.artworkUrl || this.artworkUrl ) 
-          this.feedArtworkUrl = ( properties.feedArtworkUrl || this.feedArtworkUrl ) 
-        }
-      )
+      this.adapter.getProperties(params).subscribe(this.assignEpisodePropertiesToPlayer.bind(this))
     });
   }
 
@@ -59,5 +50,15 @@ export class EmbedComponent implements OnInit {
 	hideModal() {
 		this.showShareModal = false;
 	}
+
+  private assignEpisodePropertiesToPlayer(properties: AdapterProperties) { 
+    this.audioUrl = ( properties.audioUrl || this.audioUrl ) 
+    this.title = ( properties.title || this.title )
+    this.subtitle = ( properties.subtitle || this.subtitle ) 
+    this.subscribeUrl = ( properties.subscribeUrl || this.subscribeUrl )
+    this.subscribeTarget = ( properties.subscribeTarget || this.subscribeTarget || "_blank") 
+    this.artworkUrl = ( properties.artworkUrl || this.artworkUrl ) 
+    this.feedArtworkUrl = ( properties.feedArtworkUrl || this.feedArtworkUrl ) 
+  }
 
 }

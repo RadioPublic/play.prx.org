@@ -25,11 +25,13 @@ export class FeedAdapter implements DataAdapter {
       let elements = doc.querySelectorAll('item');
 
       let episode;
-      for (let i = 0; i < elements.length; ++i) {
-        let item = <Element> elements[i];
-        let guid = item.getElementsByTagName('guid')[0].textContent
-        if(guid == this.guid){ episode = item }
-      };
+      if(this.guid) {
+        for (let i = 0; i < elements.length; ++i) {
+          let item = <Element> elements[i];
+          let guid = item.getElementsByTagName('guid')[0].textContent
+          if(guid == this.guid){ episode = item }
+        };
+      }
       //temp
       episode = episode || elements[0]
       let title = episode.getElementsByTagName('title')[0].textContent
