@@ -32,7 +32,7 @@ export class FeedAdapter implements DataAdapter {
         for (let i = 0; i < elements.length; ++i) {
           let item = <Element> elements[i];
           let episodeGuid = item.getElementsByTagName('guid')[0].textContent;
-          if(this.isEncrypted(this.guid) && !this.isEncrypted(episodeGuid)){
+          if(this.isEncoded(this.guid) && !this.isEncoded(episodeGuid)){
             episodeGuid = this.encodeGuid(episodeGuid);
           };
           if(episodeGuid.indexOf(this.guid) !== -1){ 
@@ -68,7 +68,7 @@ export class FeedAdapter implements DataAdapter {
     })
 	}
 
-  private isEncrypted(guid): boolean { 
+  private isEncoded(guid): boolean { 
     return (guid.indexOf(GUID_PREFIX) == 0)
   }
 
