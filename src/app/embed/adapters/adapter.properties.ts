@@ -30,7 +30,6 @@ export function hasMinimumParams(props): boolean {
     (props.title !== undefined) &&
     (props.subtitle !== undefined) &&
     (props.subscribeUrl !== undefined) &&
-    (props.subscribeTarget !== undefined) &&
     (props.artworkUrl !== undefined)
 }
 export function getMergedValues(...data: AdapterProperties[]):AdapterProperties {
