@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { AdapterProperties, DataAdapter } from './adapter.properties';
-let sha1 = require('sha1');
+import { sha1 }  from './sha1'
 
 const GUID_PREFIX = 's1!'
 @Injectable()
@@ -14,10 +14,10 @@ export class FeedAdapter implements DataAdapter {
 
   constructor(private http: Http) {}
 
-	public getProperties(params): Observable<AdapterProperties> { 
+	public getProperties(params): Observable<AdapterProperties> {
     this.feedUrl = params[EMBED_FEED_URL_PARAM]
     this.feedId  = params[EMBED_FEED_ID_PARAM]
-    this.guid    = params[EMBED_EPISODE_GUID_PARAM] 
+    this.guid    = params[EMBED_EPISODE_GUID_PARAM]
 
  		return this.http.get(this.draperUrl).map((res: Response) => {
       let xml = res.text();
@@ -28,19 +28,19 @@ export class FeedAdapter implements DataAdapter {
       let elements = doc.querySelectorAll('item');
 
       let episode;
-      if(this.guid) { 
+      if(this.guid) {
         for (let i = 0; i < elements.length; ++i) {
           let item = <Element> elements[i];
           let episodeGuid = item.getElementsByTagName('guid')[0].textContent;
           if(this.isEncoded(this.guid) && !this.isEncoded(episodeGuid)){
             episodeGuid = this.encodeGuid(episodeGuid);
           };
-          if(episodeGuid.indexOf(this.guid) !== -1){ 
+          if(episodeGuid.indexOf(this.guid) !== -1){
             episode = item;
 						break;
           }
         };
-      } 
+      }
 			episode = episode || elements[0]
 
       let title = episode.getElementsByTagName('title')[0].textContent
@@ -49,36 +49,36 @@ export class FeedAdapter implements DataAdapter {
       let subscribeUrl = doc.getElementsByTagNameNS(atomNamespace, 'link')[0].getAttribute('href')
       // Future feeds may not include RP-namespaced data!
       let feedArtworkUrl  = doc.getElementsByTagNameNS(rpNamespace, 'image')[0].getAttribute('href')
-      let artworkUrl  = episode.getElementsByTagNameNS(rpNamespace, 'image') 
+      let artworkUrl  = episode.getElementsByTagNameNS(rpNamespace, 'image')
 
-      if (artworkUrl.length == 0){ 
+      if (artworkUrl.length == 0){
         artworkUrl = feedArtworkUrl
-      } else { 
+      } else {
         artworkUrl = artworkUrl[0].getAttribute('href')
       };
 
-      return { 
-        audioUrl, 
-        title, 
-        subtitle, 
-        subscribeUrl, 
+      return {
+        audioUrl,
+        title,
+        subtitle,
+        subscribeUrl,
         feedArtworkUrl,
-        artworkUrl 
+        artworkUrl
       }
     })
 	}
 
-  private isEncoded(guid): boolean { 
+  private isEncoded(guid): boolean {
     return (guid.indexOf(GUID_PREFIX) == 0)
   }
 
   private encodeGuid(guid): string {
-    return `${GUID_PREFIX}${sha1(guid)};`
+    return `${GUID_PREFIX}${sha1.hash(guid)};`
   }
 
-	private get draperUrl(): string { 
+	private get draperUrl(): string {
     let feedUrl, feedId;
-    if (this.feedUrl) { 
+    if (this.feedUrl) {
       feedUrl = `${window['ENV']['FEED_PROXY_URL']}${this.feedUrl}`
     } else if (this.feedId) {
       feedId = `https://draper.radiopublic.com/transform?program_id=${this.feedId}`
