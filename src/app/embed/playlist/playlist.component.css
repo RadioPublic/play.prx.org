@@ -1,0 +1,17 @@
+:host {
+  position: absolute;
+  margin-top: 185px;
+  width: 100%;
+}
+
+.playlist-entry { 
+  height: 50px;
+  padding: 0 5px;
+}
+
+.playlist-container { 
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  margin: 0;
+}

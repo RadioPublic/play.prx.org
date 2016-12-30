@@ -16,6 +16,8 @@ import { AdapterProperties } from './adapters/adapter.properties'
       [subscribeUrl]="subscribeUrl" [subscribeTarget]="subscribeTarget"
       [artworkUrl]="artworkUrl" (share)="showModal()">
     </play-player>
+    <playlist [duration]="duration" [length]="length" [episodes]="episodes" >
+    </playlist>
   `
 })
 
@@ -31,6 +33,8 @@ export class EmbedComponent implements OnInit {
   subscribeTarget: string;
   artworkUrl: string;
   feedArtworkUrl: string;
+  duration:  string;
+  length:  number;
   episodes:  Array<AdapterProperties>;
 
   constructor(
@@ -61,6 +65,9 @@ export class EmbedComponent implements OnInit {
     this.artworkUrl = ( properties.artworkUrl || this.artworkUrl ) 
     this.feedArtworkUrl = ( properties.feedArtworkUrl || this.feedArtworkUrl ) 
     this.episodes = (properties.episodes || this.episodes || [])
+
+    this.length = this.episodes.length
+    this.duration = "45 mins"
   }
 
 }

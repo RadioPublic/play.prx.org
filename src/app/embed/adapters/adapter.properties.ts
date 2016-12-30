@@ -8,7 +8,8 @@ export const PropNames = [
   'subscribeUrl',
   'subscribeTarget',
   'artworkUrl',
-  'feedArtworkUrl'
+  'feedArtworkUrl',
+  'episodes'
 ]
 
 export interface AdapterProperties { 
