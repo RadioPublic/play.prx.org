@@ -19,6 +19,7 @@ export interface AdapterProperties {
   subscribeTarget?: string;
   artworkUrl?: string;
   feedArtworkUrl?: string;
+  episodes?: Array<AdapterProperties>;
 } 
 
 export interface DataAdapter {

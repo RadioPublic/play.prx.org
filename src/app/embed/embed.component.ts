@@ -31,6 +31,7 @@ export class EmbedComponent implements OnInit {
   subscribeTarget: string;
   artworkUrl: string;
   feedArtworkUrl: string;
+  episodes:  Array<AdapterProperties>;
 
   constructor(
 		private route: ActivatedRoute,
@@ -59,6 +60,7 @@ export class EmbedComponent implements OnInit {
     this.subscribeTarget = ( properties.subscribeTarget || this.subscribeTarget || "_blank") 
     this.artworkUrl = ( properties.artworkUrl || this.artworkUrl ) 
     this.feedArtworkUrl = ( properties.feedArtworkUrl || this.feedArtworkUrl ) 
+    this.episodes = (properties.episodes || this.episodes || [])
   }
 
 }
