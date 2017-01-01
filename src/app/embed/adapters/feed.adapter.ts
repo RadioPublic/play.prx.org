@@ -16,6 +16,7 @@ export class FeedAdapter implements DataAdapter {
   private feedArtworkUrl: string
   private subtitle: string
   private subscribeUrl: string
+  private feedDescription: string
 
   constructor(private http: Http) {}
 
@@ -34,10 +35,15 @@ export class FeedAdapter implements DataAdapter {
         rp: this.doc.lookupNamespaceURI('rp'),
         atom: this.doc.lookupNamespaceURI('atom')
       }
-
       let elements = this.doc.querySelectorAll('item');
       this.subtitle = this.doc.getElementsByTagName('title')[0].textContent
       this.subscribeUrl = this.doc.getElementsByTagNameNS(this.namespaces['atom'], 'link')[0].getAttribute('href')
+      let feedDescription = this.doc.getElementsByTagName('description')
+      if(feedDescription.length == 0){
+        this.feedDescription = ""
+      } else { 
+        this.feedDescription = feedDescription[0].textContent
+      }
       this.feedArtworkUrl  = this.doc.getElementsByTagNameNS(this.namespaces['rp'], 'image')[0].getAttribute('href')
 
       return this.mapElementsToProperties(elements);
@@ -66,6 +72,7 @@ export class FeedAdapter implements DataAdapter {
       subtitle: this.subtitle,
       subscribeUrl: this.subscribeUrl,
       feedArtworkUrl: this.feedArtworkUrl,
+      feedDescription: this.feedDescription,
       artworkUrl
     }
   }
