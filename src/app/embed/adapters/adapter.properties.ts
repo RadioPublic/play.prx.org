@@ -10,6 +10,7 @@ export const PropNames = [
   'artworkUrl',
   'feedDescription',
   'feedArtworkUrl',
+  'showPlaylist',
   'episodes'
 ]
 
@@ -23,6 +24,7 @@ export interface AdapterProperties {
   feedArtworkUrl?: string;
   feedDescription?: string;
   episodes?: Array<AdapterProperties>;
+  showPlaylist?: boolean;
 } 
 
 export interface DataAdapter {

@@ -16,7 +16,7 @@ import { AdapterProperties } from './adapters/adapter.properties'
       [subscribeUrl]="subscribeUrl" [subscribeTarget]="subscribeTarget"
       [artworkUrl]="artworkUrl" (share)="showModal()">
     </play-player>
-    <playlist [duration]="duration" [length]="length" [episodes]="episodes" [feedDescription]="feedDescription">
+    <playlist *ngIf="showPlaylist" [duration]="duration" [length]="length" [episodes]="episodes" [feedDescription]="feedDescription">
     </playlist>
   `
 })
@@ -36,6 +36,7 @@ export class EmbedComponent implements OnInit {
   feedDescription: string;
   duration:  string;
   length:  number;
+  showPlaylist:  boolean;
   episodes:  Array<AdapterProperties>;
 
   constructor(
@@ -69,6 +70,7 @@ export class EmbedComponent implements OnInit {
     this.feedDescription = (properties.feedDescription || this.feedDescription)
     this.episodes = (properties.episodes || this.episodes || [])
 
+    this.showPlaylist = (properties.showPlaylist || false)
     this.length = this.episodes.length
     this.duration = "45 min"
   }
