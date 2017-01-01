@@ -1,0 +1,125 @@
+:host {
+  position: relative;
+  top: 200px;
+  width: 400px;
+  display: block;
+  margin: 0 auto;
+}
+
+.playlist-container { 
+  list-style: none;
+  width: 100%;
+  padding-left: 0px;
+}
+
+.playlist-entry { 
+  min-height: 60px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-bottom: solid 2px #e6e6e6;
+  padding-top: 10px;
+}
+
+.playlist-entry img { 
+  display: inline-block;
+  height: 40px;
+  width:  40px;
+  border-radius: 5px;
+	background-color: rgba(0, 0, 0, 0.5);
+	border: solid 1px #e6e6e6;
+  padding: 1px;
+  margin-right: 5px;
+}
+
+.playlist-number { 
+  display: inline-block;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.29;
+  color: #808080;
+  vertical-align: top;
+  padding-right: 5px; 
+}
+
+.title { 
+	font-size: 16px;
+	font-weight: 600;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: 1.12;
+	color: #000000;
+}
+
+.subtitle { 
+	font-size: 13px;
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: 1.38;
+	color: #808080;
+}
+
+.title-container { 
+  display: inline-block;
+  width: 65%;
+  position: relative;
+  vertical-align: top;
+  padding-top: 5px;
+}
+
+.duration { 
+  display: inline-block;
+  font-size: 14px;
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: 1.29;
+	text-align: right;
+	color: #808080;
+  vertical-align: top;
+}
+
+.playlist-info { 
+  font-size: 14px;
+	font-weight: 600;
+	font-style: normal;
+	font-stretch: normal;
+	color: #808080;
+}
+
+.playlist-info span { 
+  font-weight: normal;
+}
+
+.description { 
+  font-size: 14px;
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: 1.43;
+  margin-bottom: 30px;
+}
+
+.description-header img {
+  width: 20px;
+	height: 20px;
+	object-fit: contain;
+  display: inline-block;
+  margin-right: 5px;
+}
+.description-header h1 {
+  display: inline-block;
+  font-size: 16px;
+	font-weight: 600;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: 1.25;
+  margin-top: 0px;
+  vertical-align: top;
+}
+
+.description-header {
+}
+

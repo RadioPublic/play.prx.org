@@ -16,6 +16,8 @@ import { AdapterProperties } from './adapters/adapter.properties'
       [subscribeUrl]="subscribeUrl" [subscribeTarget]="subscribeTarget"
       [artworkUrl]="artworkUrl" (share)="showModal()">
     </play-player>
+    <playlist *ngIf="showPlaylist" [duration]="duration" [length]="length" [episodes]="episodes" [feedDescription]="feedDescription">
+    </playlist>
   `
 })
 
@@ -31,6 +33,11 @@ export class EmbedComponent implements OnInit {
   subscribeTarget: string;
   artworkUrl: string;
   feedArtworkUrl: string;
+  feedDescription: string;
+  duration:  string;
+  length:  number;
+  showPlaylist:  boolean;
+  episodes:  Array<AdapterProperties>;
 
   constructor(
 		private route: ActivatedRoute,
@@ -52,6 +59,7 @@ export class EmbedComponent implements OnInit {
 	}
 
   private assignEpisodePropertiesToPlayer(properties: AdapterProperties) { 
+    console.log(properties)
     this.audioUrl = ( properties.audioUrl || this.audioUrl ) 
     this.title = ( properties.title || this.title )
     this.subtitle = ( properties.subtitle || this.subtitle ) 
@@ -59,6 +67,12 @@ export class EmbedComponent implements OnInit {
     this.subscribeTarget = ( properties.subscribeTarget || this.subscribeTarget || "_blank") 
     this.artworkUrl = ( properties.artworkUrl || this.artworkUrl ) 
     this.feedArtworkUrl = ( properties.feedArtworkUrl || this.feedArtworkUrl ) 
+    this.feedDescription = (properties.feedDescription || this.feedDescription)
+    this.episodes = (properties.episodes || this.episodes || [])
+
+    this.showPlaylist = (properties.showPlaylist || false)
+    this.length = this.episodes.length
+    this.duration = "45 min"
   }
 
 }

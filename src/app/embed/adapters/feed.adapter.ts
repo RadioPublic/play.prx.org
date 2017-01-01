@@ -11,6 +11,12 @@ export class FeedAdapter implements DataAdapter {
 	private feedUrl: string
 	private feedId: string
 	private guid: string
+  private doc: XMLDocument
+  private namespaces: Object
+  private feedArtworkUrl: string
+  private subtitle: string
+  private subscribeUrl: string
+  private feedDescription: string
 
   constructor(private http: Http) {}
 
@@ -22,51 +28,78 @@ export class FeedAdapter implements DataAdapter {
  		return this.http.get(this.draperUrl).map((res: Response) => {
       let xml = res.text();
       let parser = new DOMParser();
-      let doc = <XMLDocument> parser.parseFromString(xml, 'application/xml');
-      let rpNamespace = doc.lookupNamespaceURI('rp')
-      let atomNamespace = doc.lookupNamespaceURI('atom')
-      let elements = doc.querySelectorAll('item');
+      this.doc = <XMLDocument> parser.parseFromString(xml, 'application/xml'); 
 
-      let episode;
-      if(this.guid) {
-        for (let i = 0; i < elements.length; ++i) {
-          let item = <Element> elements[i];
-          let episodeGuid = item.getElementsByTagName('guid')[0].textContent;
-          if(this.isEncoded(this.guid) && !this.isEncoded(episodeGuid)){
-            episodeGuid = this.encodeGuid(episodeGuid);
-          };
-          if(episodeGuid.indexOf(this.guid) !== -1){
-            episode = item;
-						break;
-          }
-        };
-      }
-			episode = episode || elements[0]
-
-      let title = episode.getElementsByTagName('title')[0].textContent
-      let audioUrl = episode.getElementsByTagName('enclosure')[0].getAttribute('url')
-      let subtitle = doc.getElementsByTagName('title')[0].textContent
-      let subscribeUrl = doc.getElementsByTagNameNS(atomNamespace, 'link')[0].getAttribute('href')
       // Future feeds may not include RP-namespaced data!
-      let feedArtworkUrl  = doc.getElementsByTagNameNS(rpNamespace, 'image')[0].getAttribute('href')
-      let artworkUrl  = episode.getElementsByTagNameNS(rpNamespace, 'image')
-
-      if (artworkUrl.length == 0){
-        artworkUrl = feedArtworkUrl
-      } else {
-        artworkUrl = artworkUrl[0].getAttribute('href')
-      };
-
-      return {
-        audioUrl,
-        title,
-        subtitle,
-        subscribeUrl,
-        feedArtworkUrl,
-        artworkUrl
+      this.namespaces = {
+        rp: this.doc.lookupNamespaceURI('rp'),
+        atom: this.doc.lookupNamespaceURI('atom')
       }
+      let elements = this.doc.querySelectorAll('item');
+      this.subtitle = this.doc.getElementsByTagName('title')[0].textContent
+      this.subscribeUrl = this.doc.getElementsByTagNameNS(this.namespaces['atom'], 'link')[0].getAttribute('href')
+      let feedDescription = this.doc.getElementsByTagName('description')
+      if(feedDescription.length == 0){
+        this.feedDescription = ""
+      } else { 
+        this.feedDescription = feedDescription[0].textContent
+      }
+      this.feedArtworkUrl  = this.doc.getElementsByTagNameNS(this.namespaces['rp'], 'image')[0].getAttribute('href')
+
+      return this.mapElementsToProperties(elements);
     })
 	}
+
+  private wrap(episode) { 
+    let title = episode.getElementsByTagName('title')[0].textContent
+    let audioUrl = episode.getElementsByTagName('enclosure')
+    let artworkUrl  = episode.getElementsByTagNameNS(this.namespaces['rp'], 'image')
+
+    if (audioUrl.length == 0){
+      audioUrl = undefined
+    } else {
+      audioUrl = audioUrl[0].getAttribute('url')
+    }
+    if (artworkUrl.length == 0){
+      artworkUrl = this.feedArtworkUrl
+    } else {
+      artworkUrl = artworkUrl[0].getAttribute('href')
+    };
+
+    return {
+      audioUrl,
+      title,
+      subtitle: this.subtitle,
+      subscribeUrl: this.subscribeUrl,
+      feedArtworkUrl: this.feedArtworkUrl,
+      feedDescription: this.feedDescription,
+      artworkUrl
+    }
+  }
+
+  private mapElementsToProperties(elements) { 
+    let properties = { episodes: [] }
+
+    for (let i = 0; i < elements.length; ++i) {
+      let item = <Element> elements[i];
+      let episodeGuid = item.getElementsByTagName('guid')[0].textContent;
+
+      let episode = this.wrap(item);
+      properties.episodes.push(episode)
+
+      if(this.guid) {
+        if(this.isEncoded(this.guid) && !this.isEncoded(episodeGuid)){
+          episodeGuid = this.encodeGuid(episodeGuid);
+        };
+        if(episodeGuid.indexOf(this.guid) !== -1){
+           properties = Object.assign({}, properties, episode) 
+        }
+      } else { 
+        if (i === 0){ properties = Object.assign({}, properties, episode) }
+      }
+    }
+    return properties;
+  }
 
   private isEncoded(guid): boolean {
     return (guid.indexOf(GUID_PREFIX) == 0)
