@@ -65,7 +65,7 @@ export class FeedAdapter implements DataAdapter {
         feedArtworkUrl,
         artworkUrl
       }
-    })
+    }).catch((err, caught) => Observable.of({}));
 	}
 
   private isEncoded(guid): boolean {

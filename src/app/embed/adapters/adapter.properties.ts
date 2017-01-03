@@ -11,7 +11,7 @@ export const PropNames = [
   'feedArtworkUrl'
 ]
 
-export interface AdapterProperties { 
+export interface AdapterProperties {
   audioUrl?: string;
   title?: string;
   subtitle?: string;
@@ -19,18 +19,20 @@ export interface AdapterProperties {
   subscribeTarget?: string;
   artworkUrl?: string;
   feedArtworkUrl?: string;
-} 
+}
 
 export interface DataAdapter {
   getProperties: (params:Object) => Observable<AdapterProperties>
 }
 
 export function hasMinimumParams(props): boolean {
+  return true; /*
   return (props.audioUrl !== undefined) &&
     (props.title !== undefined) &&
     (props.subtitle !== undefined) &&
     (props.subscribeUrl !== undefined) &&
     (props.artworkUrl !== undefined)
+    */
 }
 export function getMergedValues(...data: AdapterProperties[]):AdapterProperties {
   const mergedResult: AdapterProperties = {};
@@ -45,4 +47,3 @@ export function getMergedValues(...data: AdapterProperties[]):AdapterProperties 
   }
   return mergedResult;
 }
-
