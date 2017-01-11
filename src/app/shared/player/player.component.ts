@@ -1,11 +1,13 @@
 import { Component, EventEmitter, Input, Output, OnInit, OnChanges } from '@angular/core';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import { Observable, Observer } from 'rxjs';
+import 'player.js';
 
 import { DovetailAudio } from '../dovetail';
 import { Logger } from '../logger';
 
 const SEGMENT_TYPE = 'segmentType';
+const playerjsAdapter = window['playerjs']['HTML5Adapter']
 
 @Component({
   selector: 'play-player',
@@ -21,9 +23,11 @@ export class PlayerComponent implements OnInit, OnChanges {
   @Input() subscribeUrl: string;
   @Input() subscribeTarget: string;
   @Input() artworkUrl: string;
+  @Input() feedArtworkUrl: string;
   @Output() share = new EventEmitter<boolean>();
 
   artworkSafe: SafeStyle;
+  feedArtworkSafe: SafeStyle;
 
   private player: DovetailAudio;
   private logger: Logger;
@@ -48,6 +52,7 @@ export class PlayerComponent implements OnInit, OnChanges {
     this.logger = new Logger(this.player, this.title, this.subtitle);
 
     this.artworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.artworkUrl}')`);
+    this.feedArtworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.feedArtworkUrl}')`);
 
     this.duration = Observable.create((observer: Observer<number>) => {
       observer.next(0);
@@ -66,6 +71,7 @@ export class PlayerComponent implements OnInit, OnChanges {
     } else {
       this.logoSrc = '';
     }
+    playerjsAdapter(this.player).ready();
   }
 
   ngOnChanges(changes: any) {
@@ -73,6 +79,9 @@ export class PlayerComponent implements OnInit, OnChanges {
       if (changes.audioUrl || changes.title || changes.subtitle) {
         this.logger = new Logger(this.player, this.title, this.subtitle);
       }
+    }
+    if (changes.feedArtworkUrl) {
+      this.feedArtworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.feedArtworkUrl}')`);
     }
     if (changes.artworkUrl) {
       this.artworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.artworkUrl}')`);

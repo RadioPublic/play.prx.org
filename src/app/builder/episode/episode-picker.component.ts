@@ -3,6 +3,8 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Episode } from './episode';
 
+const customProxyUri = window['ENV']['FEED_PROXY_URL'] || "/proxy?url=";
+
 @Component({
   selector: 'play-episode-picker',
   styleUrls: ['episode-picker.component.css'],
@@ -39,10 +41,12 @@ export class EpisodePickerComponent implements OnChanges, OnInit {
     this.select.emit(episode);
   }
 
+  private get proxiedFeedUri() {
+    return `${customProxyUri}${this.feedUrl}`;
+  }
+
   private getEpisodes() {
-    const feedUrl = decodeURIComponent(this.feedUrl);
-    const proxyUrl = `/proxy?url=${feedUrl}`;
-    this.episodes = this.http.get(proxyUrl).map((res: Response) => {
+    this.episodes = this.http.get(this.proxiedFeedUri).map((res: Response) => {
       let episodes: Episode[] = [];
 
       let xml = res.text();

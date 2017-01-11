@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EMBED_AUDIO_URL_PARAM, EMBED_TITLE_PARAM, EMBED_SUBTITLE_PARAM,
-  EMBED_SUBSCRIBE_URL_PARAM, EMBED_SUBSCRIBE_TARGET, EMBED_IMAGE_URL_PARAM } from './embed.constants';
+import { MergeAdapter } from './adapters/merge.adapter';
+import { QSDAdapter } from './adapters/qsd.adapter'
+import { FeedAdapter } from './adapters/feed.adapter'
+import { AdapterProperties } from './adapters/adapter.properties'
 
 @Component({
   selector: 'play-embed',
   styleUrls: ['embed.component.css'],
+  providers: [MergeAdapter, QSDAdapter, FeedAdapter],
   template: `
     <play-share-modal *ngIf="showShareModal" (close)="hideModal()">
     </play-share-modal>
-    <play-player [audioUrl]="audioUrl" [title]="title" [subtitle]="subtitle"
+    <play-player [feedArtworkUrl]="feedArtworkUrl" [audioUrl]="audioUrl" [title]="title" [subtitle]="subtitle"
       [subscribeUrl]="subscribeUrl" [subscribeTarget]="subscribeTarget"
       [artworkUrl]="artworkUrl" (share)="showModal()">
     </play-player>
@@ -27,28 +30,35 @@ export class EmbedComponent implements OnInit {
   subscribeUrl: string;
   subscribeTarget: string;
   artworkUrl: string;
+  feedArtworkUrl: string;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+		private route: ActivatedRoute,
+    private adapter: MergeAdapter
+	) {}
 
   ngOnInit() {
     this.route.queryParams.forEach(params => {
-      if (params[EMBED_AUDIO_URL_PARAM]) {
-        this.audioUrl        = params[EMBED_AUDIO_URL_PARAM];
-        this.title           = params[EMBED_TITLE_PARAM];
-        this.subtitle        = params[EMBED_SUBTITLE_PARAM];
-        this.subscribeUrl    = params[EMBED_SUBSCRIBE_URL_PARAM];
-        this.subscribeTarget = params[EMBED_SUBSCRIBE_TARGET];
-        this.artworkUrl      = params[EMBED_IMAGE_URL_PARAM];
-      }
-   });
+      this.adapter.getProperties(params).subscribe(this.assignEpisodePropertiesToPlayer.bind(this))
+    });
   }
 
-  showModal() {
-    this.showShareModal = true;
-  }
+	showModal() {
+		this.showShareModal = true;
+	}
 
-  hideModal() {
-    this.showShareModal = false;
+	hideModal() {
+		this.showShareModal = false;
+	}
+
+  private assignEpisodePropertiesToPlayer(properties: AdapterProperties) { 
+    this.audioUrl = ( properties.audioUrl || this.audioUrl ) 
+    this.title = ( properties.title || this.title )
+    this.subtitle = ( properties.subtitle || this.subtitle ) 
+    this.subscribeUrl = ( properties.subscribeUrl || this.subscribeUrl )
+    this.subscribeTarget = ( properties.subscribeTarget || this.subscribeTarget || "_blank") 
+    this.artworkUrl = ( properties.artworkUrl || this.artworkUrl ) 
+    this.feedArtworkUrl = ( properties.feedArtworkUrl || this.feedArtworkUrl ) 
   }
 
 }
