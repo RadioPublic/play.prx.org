@@ -7,7 +7,7 @@ import { DovetailAudio } from '../dovetail';
 import { Logger } from '../logger';
 
 const SEGMENT_TYPE = 'segmentType';
-const playerjsAdapter = window['playerjs']['HTML5Adapter']
+const playerjsAdapter = window['playerjs']['HTML5Adapter'];
 
 @Component({
   selector: 'play-player',

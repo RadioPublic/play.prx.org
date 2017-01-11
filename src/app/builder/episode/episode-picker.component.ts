@@ -3,7 +3,7 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Episode } from './episode';
 
-const customProxyUri = window['ENV']['FEED_PROXY_URL'] || "/proxy?url=";
+const customProxyUri = window['ENV']['FEED_PROXY_URL'] || '/proxy?url=';
 
 @Component({
   selector: 'play-episode-picker',

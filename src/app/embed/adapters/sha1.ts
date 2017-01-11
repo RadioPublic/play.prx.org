@@ -1,3 +1,4 @@
+/* tslint:disable */
 export module sha1
 {
 

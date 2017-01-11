@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MergeAdapter } from './adapters/merge.adapter';
-import { QSDAdapter } from './adapters/qsd.adapter'
-import { FeedAdapter } from './adapters/feed.adapter'
-import { AdapterProperties } from './adapters/adapter.properties'
+import { QSDAdapter } from './adapters/qsd.adapter';
+import { FeedAdapter } from './adapters/feed.adapter';
+import { AdapterProperties } from './adapters/adapter.properties';
 
 @Component({
   selector: 'play-embed',
@@ -32,33 +32,32 @@ export class EmbedComponent implements OnInit {
   artworkUrl: string;
   feedArtworkUrl: string;
 
-  constructor(
-		private route: ActivatedRoute,
-    private adapter: MergeAdapter
-	) {}
+  constructor(private route: ActivatedRoute, private adapter: MergeAdapter) {}
 
   ngOnInit() {
     this.route.queryParams.forEach(params => {
-      this.adapter.getProperties(params).subscribe(this.assignEpisodePropertiesToPlayer.bind(this))
+      this.adapter.getProperties(params).subscribe(props => {
+        this.assignEpisodePropertiesToPlayer(props);
+      });
     });
   }
 
-	showModal() {
-		this.showShareModal = true;
-	}
+  showModal() {
+    this.showShareModal = true;
+  }
 
-	hideModal() {
-		this.showShareModal = false;
-	}
+  hideModal() {
+    this.showShareModal = false;
+  }
 
-  private assignEpisodePropertiesToPlayer(properties: AdapterProperties) { 
-    this.audioUrl = ( properties.audioUrl || this.audioUrl ) 
-    this.title = ( properties.title || this.title )
-    this.subtitle = ( properties.subtitle || this.subtitle ) 
-    this.subscribeUrl = ( properties.subscribeUrl || this.subscribeUrl )
-    this.subscribeTarget = ( properties.subscribeTarget || this.subscribeTarget || "_blank") 
-    this.artworkUrl = ( properties.artworkUrl || this.artworkUrl ) 
-    this.feedArtworkUrl = ( properties.feedArtworkUrl || this.feedArtworkUrl ) 
+  private assignEpisodePropertiesToPlayer(properties: AdapterProperties) {
+    this.audioUrl = ( properties.audioUrl || this.audioUrl );
+    this.title = ( properties.title || this.title );
+    this.subtitle = ( properties.subtitle || this.subtitle );
+    this.subscribeUrl = ( properties.subscribeUrl || this.subscribeUrl );
+    this.subscribeTarget = ( properties.subscribeTarget || this.subscribeTarget || '_blank');
+    this.artworkUrl = ( properties.artworkUrl || this.artworkUrl );
+    this.feedArtworkUrl = ( properties.feedArtworkUrl || this.feedArtworkUrl );
   }
 
 }

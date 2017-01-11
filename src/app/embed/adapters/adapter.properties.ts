@@ -9,7 +9,7 @@ export const PropNames = [
   'subscribeTarget',
   'artworkUrl',
   'feedArtworkUrl'
-]
+];
 
 export interface AdapterProperties {
   audioUrl?: string;
@@ -22,7 +22,7 @@ export interface AdapterProperties {
 }
 
 export interface DataAdapter {
-  getProperties: (params:Object) => Observable<AdapterProperties>
+  getProperties: (params: Object) => Observable<AdapterProperties>;
 }
 
 export function hasMinimumParams(props): boolean {
@@ -34,7 +34,8 @@ export function hasMinimumParams(props): boolean {
     (props.artworkUrl !== undefined)
     */
 }
-export function getMergedValues(...data: AdapterProperties[]):AdapterProperties {
+
+export function getMergedValues(...data: AdapterProperties[]): AdapterProperties {
   const mergedResult: AdapterProperties = {};
   const resultsInReversePriority = data.reverse();
 
