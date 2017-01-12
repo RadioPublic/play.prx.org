@@ -1,7 +1,7 @@
-import { EMBED_FEED_URL_PARAM, EMBED_FEED_ID_PARAM, EMBED_EPISODE_GUID_PARAM } from './../embed.constants';
+import { EMBED_FEED_URL_PARAM, EMBED_EPISODE_GUID_PARAM } from './../embed.constants';
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Http } from '@angular/http';
+import { Observable } from 'rxjs';
 import { AdapterProperties, DataAdapter } from './adapter.properties';
 import { sha1 }  from './sha1';
 
@@ -10,83 +10,132 @@ const GUID_PREFIX = 's1!';
 @Injectable()
 export class FeedAdapter implements DataAdapter {
 
-  private feedUrl: string;
-  private feedId: string;
-  private guid: string;
-
   constructor(private http: Http) {}
 
   getProperties(params): Observable<AdapterProperties> {
-    this.feedUrl = params[EMBED_FEED_URL_PARAM];
-    this.feedId  = params[EMBED_FEED_ID_PARAM];
-    this.guid    = params[EMBED_EPISODE_GUID_PARAM];
-
-    return this.http.get(this.draperUrl).map((res: Response) => {
-      let xml = res.text();
-      let parser = new DOMParser();
-      let doc = <XMLDocument> parser.parseFromString(xml, 'application/xml');
-      let rpNamespace = doc.lookupNamespaceURI('rp');
-      let atomNamespace = doc.lookupNamespaceURI('atom');
-      let elements = doc.querySelectorAll('item');
-
-      let episode;
-      if (this.guid) {
-        for (let i = 0; i < elements.length; ++i) {
-          let item = <Element> elements[i];
-          let episodeGuid = item.getElementsByTagName('guid')[0].textContent;
-          if (this.isEncoded(this.guid) && !this.isEncoded(episodeGuid)) {
-            episodeGuid = this.encodeGuid(episodeGuid);
-          }
-          if (episodeGuid.indexOf(this.guid) !== -1) {
-            episode = item;
-            break;
-          }
-        }
-      }
-      episode = episode || elements[0];
-
-      let title = episode.getElementsByTagName('title')[0].textContent;
-      let audioUrl = episode.getElementsByTagName('enclosure')[0].getAttribute('url');
-      let subtitle = doc.getElementsByTagName('title')[0].textContent;
-      let subscribeUrl = doc.getElementsByTagNameNS(atomNamespace, 'link')[0].getAttribute('href');
-
-      // Future feeds may not include RP-namespaced data!
-      let feedArtworkUrl  = doc.getElementsByTagNameNS(rpNamespace, 'image')[0].getAttribute('href');
-      let artworkUrl  = episode.getElementsByTagNameNS(rpNamespace, 'image');
-
-      if (artworkUrl.length === 0) {
-        artworkUrl = feedArtworkUrl;
-      } else {
-        artworkUrl = artworkUrl[0].getAttribute('href');
-      }
-
-      return {
-        audioUrl,
-        title,
-        subtitle,
-        subscribeUrl,
-        feedArtworkUrl,
-        artworkUrl
-      };
-    }).catch((err, caught) => Observable.of({}));
+    let feedUrl = params[EMBED_FEED_URL_PARAM];
+    let episodeGuid = params[EMBED_EPISODE_GUID_PARAM];
+    if (feedUrl && episodeGuid) {
+      return this.fetchFeed(feedUrl).map(body => {
+        let props = this.parseFeed(body, episodeGuid);
+        Object.keys(props).forEach(key => {
+          if (props[key] === undefined) { delete props[key]; }
+        });
+        return props;
+      }).catch(err => {
+        console.error(err.message);
+        return Observable.of({}); // TODO: really ignore errors?
+      });
+    } else {
+      return Observable.of({});
+    }
   }
 
-  private isEncoded(guid): boolean {
+  fetchFeed(feedUrl: string): Observable<string> {
+    let proxied = this.proxyUrl(feedUrl);
+    return this.http.get(proxied).map(res => {
+      if (res.ok && res.text()) {
+        return res.text();
+      } else if (res.ok) {
+        throw new Error(`Got empty response from ${proxied}`);
+      } else {
+        throw new Error(`Got ${res.status} from ${proxied}`);
+      }
+    });
+  }
+
+  parseFeed(xml: string, episodeGuid: string): AdapterProperties {
+    let parser = new DOMParser();
+    let doc = <XMLDocument> parser.parseFromString(xml, 'application/xml');
+    let props = this.processDoc(doc);
+
+    let episode = this.parseFeedEpisode(doc, episodeGuid);
+    if (episode) {
+      props = this.processEpisode(episode, props);
+    }
+
+    return props;
+  }
+
+  parseFeedEpisode(doc: XMLDocument, episodeGuid: string): Element {
+    let items = doc.querySelectorAll('item');
+    for (let i = 0; i < items.length; i++) {
+      let itemGuid = this.getTagText(items[i], 'guid');
+      if (itemGuid) {
+        if (!this.isEncoded(itemGuid) && this.isEncoded(episodeGuid)) {
+          itemGuid = this.encodeGuid(itemGuid);
+        }
+        if (itemGuid.indexOf(episodeGuid) !== -1) {
+          return items[i];
+        }
+      }
+    }
+  }
+
+  processDoc(doc: XMLDocument, props: AdapterProperties = {}): AdapterProperties {
+    props.subtitle = this.getTagText(doc, 'title');
+    props.subscribeUrl = this.getTagAttributeNS(doc, 'atom', 'link', 'href'); // TODO: what if this isn't the first link?
+    props.feedArtworkUrl = this.getTagAttributeNS(doc, 'itunes', 'image', 'href');
+    return props;
+  }
+
+  processEpisode(item: Element, props: AdapterProperties = {}): AdapterProperties {
+    props.title = this.getTagText(item, 'title');
+    props.audioUrl = this.getTagTextNS(item, 'feedburner', 'origEnclosureLink');
+    if (!props.audioUrl) {
+      props.audioUrl = this.getTagAttribute(item, 'enclosure', 'url');
+    }
+    props.artworkUrl = this.getTagAttributeNS(item, 'itunes', 'image', 'href');
+    if (!props.artworkUrl) {
+      props.artworkUrl = props.feedArtworkUrl;
+    }
+    return props;
+  }
+
+  proxyUrl(url: string): string {
+    if (window['ENV'] && window['ENV']['FEED_PROXY_URL']) {
+      return window['ENV']['FEED_PROXY_URL'] + url;
+    } else {
+      return `/proxy?url=${url}`;
+    }
+  }
+
+  protected isEncoded(guid): boolean {
     return (guid.indexOf(GUID_PREFIX) === 0);
   }
 
-  private encodeGuid(guid): string {
+  protected encodeGuid(guid): string {
     return `${GUID_PREFIX}${sha1.hash(guid)};`;
   }
 
-  private get draperUrl(): string {
-    let feedUrl, feedId;
-    if (this.feedUrl) {
-      feedUrl = `${window['ENV']['FEED_PROXY_URL']}${this.feedUrl}`;
-    } else if (this.feedId) {
-      feedId = `https://draper.radiopublic.com/transform?program_id=${this.feedId}`;
+  protected getTagText(el: Element | XMLDocument, tag: string): string {
+    let found = el.getElementsByTagName(tag);
+    if (found.length) {
+      return found[0].textContent;
     }
-    return (feedUrl || feedId);
+  }
+
+  protected getTagTextNS(el: Element | XMLDocument, ns: string, tag: string): string {
+    let namespace = el.lookupNamespaceURI(ns);
+    let found = el.getElementsByTagNameNS(namespace, tag);
+    if (found.length) {
+      return found[0].textContent;
+    }
+  }
+
+  protected getTagAttribute(el: Element | XMLDocument, tag: string, attr: string): string {
+    let found = el.getElementsByTagName(tag);
+    if (found.length) {
+      return found[0].getAttribute(attr);
+    }
+  }
+
+  protected getTagAttributeNS(el: Element | XMLDocument, ns: string, tag: string, attr: string): string {
+    let namespace = el.lookupNamespaceURI(ns);
+    let found = el.getElementsByTagNameNS(namespace, tag);
+    if (found.length) {
+      return found[0].getAttribute(attr);
+    }
   }
 
 }
