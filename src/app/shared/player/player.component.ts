@@ -86,6 +86,9 @@ export class PlayerComponent implements OnInit, OnChanges {
     if (changes.artworkUrl) {
       this.artworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.artworkUrl}')`);
     }
+    if (this.player && changes.audioUrl) {
+      this.player.src = this.audioUrl;
+    }
   }
 
   showShareModal() {
