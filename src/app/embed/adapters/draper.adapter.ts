@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
 import { Observable } from 'rxjs';
 import { EMBED_FEED_ID_PARAM, EMBED_EPISODE_GUID_PARAM } from './../embed.constants';
 import { AdapterProperties } from './adapter.properties';
@@ -6,6 +7,10 @@ import { FeedAdapter } from './feed.adapter';
 
 @Injectable()
 export class DraperAdapter extends FeedAdapter {
+
+  constructor(http: Http) {
+    super(http);
+  }
 
   getProperties(params): Observable<AdapterProperties> {
     let feedId = params[EMBED_FEED_ID_PARAM];

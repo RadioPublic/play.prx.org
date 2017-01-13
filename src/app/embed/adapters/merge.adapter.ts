@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { QSDAdapter } from './qsd.adapter';
+import { DraperAdapter } from './draper.adapter';
 import { FeedAdapter } from './feed.adapter';
+import { QSDAdapter } from './qsd.adapter';
 import { AdapterProperties, PropNames, DataAdapter } from './adapter.properties';
 
 const NO_EMIT_YET = Symbol();
@@ -13,8 +14,12 @@ export class MergeAdapter {
 
   private adapters: DataAdapter[];
 
-  constructor(private feedAdapter: FeedAdapter, private qsdAdapter: QSDAdapter) {
-    this.adapters = [qsdAdapter, feedAdapter];
+  constructor(
+    private draperAdapter: DraperAdapter,
+    private feedAdapter: FeedAdapter,
+    private qsdAdapter: QSDAdapter,
+  ) {
+    this.adapters = [qsdAdapter, draperAdapter, feedAdapter];
   }
 
   getProperties(params): Observable<AdapterProperties> {

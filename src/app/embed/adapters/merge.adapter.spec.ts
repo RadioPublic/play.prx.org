@@ -2,17 +2,26 @@ import { testService, injectHttp } from '../../../testing';
 import { Subject } from 'rxjs';
 import { AdapterProperties } from './adapter.properties';
 import { MergeAdapter } from './merge.adapter';
+import { DraperAdapter } from './draper.adapter';
 import { FeedAdapter } from './feed.adapter';
 import { QSDAdapter } from './qsd.adapter';
 
 describe('MergeAdapter', () => {
 
-  let qsd: Subject<AdapterProperties>, feed: Subject<AdapterProperties>;
+  let qsd: Subject<AdapterProperties>,
+      draper: Subject<AdapterProperties>,
+      feed: Subject<AdapterProperties>;
   testService(MergeAdapter, [
     {
       provide: QSDAdapter,
       useFactory: () => {
         return {getProperties: () => qsd = new Subject()};
+      }
+    },
+    {
+      provide: DraperAdapter,
+      useFactory: () => {
+        return {getProperties: () => draper = new Subject()};
       }
     },
     {
@@ -23,15 +32,15 @@ describe('MergeAdapter', () => {
     }
   ]);
 
-  it('waits the 1st adapter before using the 2nd', injectHttp((merge: MergeAdapter) => {
+  it('waits the top adapter before returning', injectHttp((merge: MergeAdapter) => {
     spyOn(merge, 'hasMinimumParams').and.returnValue(true);
     let props: AdapterProperties;
     merge.getProperties({}).subscribe(p => props = p);
     expect(props).toBeUndefined();
-    feed.next({title: 'feed-title'});
+    draper.next({title: 'draper-title'});
     expect(props).toBeUndefined();
     qsd.next({});
-    expect(props).toEqual({title: 'feed-title'});
+    expect(props).toEqual({title: 'draper-title'});
   }));
 
   it('overrides adapters by priority', injectHttp((merge: MergeAdapter) => {
@@ -39,6 +48,9 @@ describe('MergeAdapter', () => {
     let props: AdapterProperties;
     merge.getProperties({}).subscribe(p => props = p);
     feed.next({title: 'feed-title'});
+    draper.next({title: 'draper-title'});
+    qsd.next({});
+    expect(props).toEqual({title: 'draper-title'});
     qsd.next({title: 'qsd-title'});
     expect(props).toEqual({title: 'qsd-title'});
   }));
@@ -49,6 +61,7 @@ describe('MergeAdapter', () => {
     merge.getProperties({}).subscribe(p => props = p);
     feed.next({title: 'feed-title-1'});
     feed.next({title: 'feed-title-2'});
+    draper.next({});
     qsd.next({});
     expect(props).toEqual({title: 'feed-title-2'});
   }));
