@@ -10,7 +10,7 @@ const NO_EMIT_YET = Symbol();
 @Injectable()
 export class MergeAdapter {
 
-  static REQUIRED = ['audioUrl', 'title', 'subtitle', 'subscribeUrl', 'artworkUrl'];
+  static REQUIRED = ['audioUrl', 'title', 'subtitle', 'subscribeUrl', 'feedArtworkUrl'];
 
   private adapters: DataAdapter[];
 

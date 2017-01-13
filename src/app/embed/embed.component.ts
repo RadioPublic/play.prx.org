@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MergeAdapter } from './adapters/merge.adapter';
 import { QSDAdapter } from './adapters/qsd.adapter';
+import { DraperAdapter } from './adapters/draper.adapter';
 import { FeedAdapter } from './adapters/feed.adapter';
 import { AdapterProperties } from './adapters/adapter.properties';
 
 @Component({
   selector: 'play-embed',
   styleUrls: ['embed.component.css'],
-  providers: [MergeAdapter, QSDAdapter, FeedAdapter],
+  providers: [MergeAdapter, QSDAdapter, DraperAdapter, FeedAdapter],
   template: `
     <play-share-modal *ngIf="showShareModal" (close)="hideModal()">
     </play-share-modal>
@@ -58,6 +59,9 @@ export class EmbedComponent implements OnInit {
     this.subscribeTarget = ( properties.subscribeTarget || this.subscribeTarget || '_blank');
     this.artworkUrl = ( properties.artworkUrl || this.artworkUrl );
     this.feedArtworkUrl = ( properties.feedArtworkUrl || this.feedArtworkUrl );
+
+    // fallback to feed image
+    this.artworkUrl = this.artworkUrl || this.feedArtworkUrl;
   }
 
 }
