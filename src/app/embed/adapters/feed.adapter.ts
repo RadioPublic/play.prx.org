@@ -1,7 +1,7 @@
-import { EMBED_FEED_URL_PARAM, EMBED_EPISODE_GUID_PARAM } from './../embed.constants';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs';
+import { EMBED_FEED_URL_PARAM, EMBED_EPISODE_GUID_PARAM } from './../embed.constants';
 import { AdapterProperties, DataAdapter } from './adapter.properties';
 import { sha1 }  from './sha1';
 
@@ -10,25 +10,31 @@ const GUID_PREFIX = 's1!';
 @Injectable()
 export class FeedAdapter implements DataAdapter {
 
+  static logError(msg: string | Error) {
+    console.error(`${msg}`);
+  }
+
   constructor(private http: Http) {}
 
   getProperties(params): Observable<AdapterProperties> {
     let feedUrl = params[EMBED_FEED_URL_PARAM];
     let episodeGuid = params[EMBED_EPISODE_GUID_PARAM];
     if (feedUrl && episodeGuid) {
-      return this.fetchFeed(feedUrl).map(body => {
-        let props = this.parseFeed(body, episodeGuid);
-        Object.keys(props).forEach(key => {
-          if (props[key] === undefined) { delete props[key]; }
-        });
-        return props;
-      }).catch(err => {
-        console.error(err.message);
-        return Observable.of({}); // TODO: really ignore errors?
-      });
+      return this.processFeed(feedUrl, episodeGuid);
     } else {
       return Observable.of({});
     }
+  }
+
+  processFeed(feedUrl: string, episodeGuid: string): Observable<AdapterProperties> {
+    return this.fetchFeed(feedUrl).map(body => {
+      let props = this.parseFeed(body, episodeGuid);
+      Object.keys(props).filter(k => props[k] === undefined).forEach(key => delete props[key]);
+      return props;
+    }).catch(err => {
+      FeedAdapter.logError(err);
+      return Observable.of({}); // TODO: really ignore errors?
+    });
   }
 
   fetchFeed(feedUrl: string): Observable<string> {
@@ -52,6 +58,8 @@ export class FeedAdapter implements DataAdapter {
     let episode = this.parseFeedEpisode(doc, episodeGuid);
     if (episode) {
       props = this.processEpisode(episode, props);
+    } else {
+      FeedAdapter.logError(`Could not find item with guid ${episodeGuid}`);
     }
 
     return props;
@@ -81,22 +89,17 @@ export class FeedAdapter implements DataAdapter {
 
   processEpisode(item: Element, props: AdapterProperties = {}): AdapterProperties {
     props.title = this.getTagText(item, 'title');
-    props.audioUrl = this.getTagTextNS(item, 'feedburner', 'origEnclosureLink');
-    if (!props.audioUrl) {
-      props.audioUrl = this.getTagAttribute(item, 'enclosure', 'url');
-    }
+    props.audioUrl = this.getTagTextNS(item, 'feedburner', 'origEnclosureLink')
+                  || this.getTagAttribute(item, 'enclosure', 'url');
     props.artworkUrl = this.getTagAttributeNS(item, 'itunes', 'image', 'href');
-    if (!props.artworkUrl) {
-      props.artworkUrl = props.feedArtworkUrl;
-    }
     return props;
   }
 
-  proxyUrl(url: string): string {
+  proxyUrl(feedUrl: string): string {
     if (window['ENV'] && window['ENV']['FEED_PROXY_URL']) {
-      return window['ENV']['FEED_PROXY_URL'] + url;
+      return window['ENV']['FEED_PROXY_URL'] + feedUrl;
     } else {
-      return `/proxy?url=${url}`;
+      return `/proxy?url=${feedUrl}`;
     }
   }
 

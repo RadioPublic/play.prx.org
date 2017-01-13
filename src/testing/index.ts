@@ -6,7 +6,7 @@ import { MockBackend } from '@angular/http/testing';
 export { async, inject } from '@angular/core/testing';
 
 // testbed helper
-export function testService(service: Type<any>) {
+export function testService(service: Type<any>, extraProviders: any[] = []) {
   this._testing = service;
   beforeEach(function() {
     TestBed.configureTestingModule({
@@ -19,7 +19,8 @@ export function testService(service: Type<any>) {
           useFactory: (mockBackend, options) => new Http(mockBackend, options)
         },
         MockBackend,
-        BaseRequestOptions
+        BaseRequestOptions,
+        ...extraProviders
       ]
     });
   });

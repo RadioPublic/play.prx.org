@@ -6,6 +6,10 @@ describe('FeedAdapter', () => {
 
   testService(FeedAdapter);
 
+  beforeEach(() => {
+    spyOn(FeedAdapter, 'logError').and.stub();
+  });
+
   const TEST_FEED = `<?xml version="1.0" encoding="UTF-8" ?>
     <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"
          xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
@@ -62,10 +66,10 @@ describe('FeedAdapter', () => {
     expect(props.feedArtworkUrl).toEqual('http://channel/image.png');
   }));
 
-  it('falls back to the channel for artworkUrl', injectHttp((feed: FeedAdapter, mocker) => {
+  it('does not fallback to channel artwork at this level', injectHttp((feed: FeedAdapter, mocker) => {
     mocker(TEST_FEED);
     let props = getProperties(feed, 'http://some.where/feed.xml', 'guid-2');
-    expect(props.artworkUrl).toEqual('http://channel/image.png');
+    expect(props.artworkUrl).toBeUndefined();
     expect(props.feedArtworkUrl).toEqual('http://channel/image.png');
   }));
 
