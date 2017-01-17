@@ -13,7 +13,7 @@ describe('QSDAdapter', () => {
     subtitle:        EMBED_SUBTITLE_PARAM,
     subscribeUrl:    EMBED_SUBSCRIBE_URL_PARAM,
     subscribeTarget: EMBED_SUBSCRIBE_TARGET,
-    artworkUrl:      EMBED_IMAGE_URL_PARAM
+    feedArtworkUrl:  EMBED_IMAGE_URL_PARAM
   };
 
   // helper to sync-get properties
@@ -52,8 +52,8 @@ describe('QSDAdapter', () => {
     expect(props.subtitle).toEqual('the subtitle');
     expect(props.subscribeUrl).toEqual('subscribe-url');
     expect(props.subscribeTarget).toEqual('subscribe-target');
-    expect(props.artworkUrl).toEqual('artwork-url');
-    expect(props.feedArtworkUrl).toBeUndefined();
+    expect(props.artworkUrl).toBeUndefined();
+    expect(props.feedArtworkUrl).toEqual('feed-artwork-url');
     expect(props.foobar).toBeUndefined();
   }));
 
