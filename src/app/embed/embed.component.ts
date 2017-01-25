@@ -1,10 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MergeAdapter } from './adapters/merge.adapter';
 import { QSDAdapter } from './adapters/qsd.adapter';
 import { DraperAdapter } from './adapters/draper.adapter';
 import { FeedAdapter } from './adapters/feed.adapter';
 import { AdapterProperties } from './adapters/adapter.properties';
+
+const PYM_MESSAGE_DELIMITER = 'xPYMx';
+const PYM_CHILD_ID_PARAM = 'childId';
+
 
 @Component({
   selector: 'play-embed',
@@ -32,15 +36,18 @@ export class EmbedComponent implements OnInit {
   subscribeTarget: string;
   artworkUrl: string;
   feedArtworkUrl: string;
+  pymId?: string;
 
   constructor(private route: ActivatedRoute, private adapter: MergeAdapter) {}
 
   ngOnInit() {
     this.route.queryParams.forEach(params => {
+      this.pymId = params[PYM_CHILD_ID_PARAM];
       this.adapter.getProperties(params).subscribe(props => {
         this.assignEpisodePropertiesToPlayer(props);
       });
     });
+    this.setEmbedHeight();
   }
 
   showModal() {
@@ -62,6 +69,22 @@ export class EmbedComponent implements OnInit {
 
     // fallback to feed image
     this.artworkUrl = this.artworkUrl || this.feedArtworkUrl;
+  }
+
+  @HostListener("window:resize", [])
+  setEmbedHeight() {
+    if (window.parent && window.parent.postMessage) {
+      window.parent.postMessage(JSON.stringify({
+        src: window.location.toString(),
+        context: 'iframe.resize',
+        height: 185
+      }), '*');
+      if (this.pymId) {
+        window.parent.postMessage([
+          'pym', this.pymId, 'height', 185
+        ].join(PYM_MESSAGE_DELIMITER), '*');
+      }
+    }
   }
 
 }
