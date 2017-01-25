@@ -1,12 +1,17 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpModule, Request, XSRFStrategy } from '@angular/http';
 import { SharedModule } from './shared';
+
 
 import { routing, routingProviders, routingComponents } from './app.routing';
 
 import { AppComponent } from './app.component';
+
+class NullXSRFStrategy implements XSRFStrategy {
+  configureRequest(req: Request): void { }
+}
 
 @NgModule({
   declarations: [
@@ -21,7 +26,8 @@ import { AppComponent } from './app.component';
     routing
   ],
   providers: [
-    routingProviders
+    routingProviders,
+    {provide: XSRFStrategy, useClass: NullXSRFStrategy}
   ],
   bootstrap: [AppComponent]
 })
