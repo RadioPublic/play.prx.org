@@ -9,7 +9,6 @@ import { AdapterProperties } from './adapters/adapter.properties';
 const PYM_MESSAGE_DELIMITER = 'xPYMx';
 const PYM_CHILD_ID_PARAM = 'childId';
 
-
 @Component({
   selector: 'play-embed',
   styleUrls: ['embed.component.css'],
