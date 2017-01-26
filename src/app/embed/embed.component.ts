@@ -42,11 +42,11 @@ export class EmbedComponent implements OnInit {
   ngOnInit() {
     this.route.queryParams.forEach(params => {
       this.pymId = params[PYM_CHILD_ID_PARAM];
+      this.setEmbedHeight();
       this.adapter.getProperties(params).subscribe(props => {
         this.assignEpisodePropertiesToPlayer(props);
       });
     });
-    this.setEmbedHeight();
   }
 
   showModal() {
