@@ -15,7 +15,7 @@ export class DraperAdapter extends FeedAdapter {
   getProperties(params): Observable<AdapterProperties> {
     let feedId = params[EMBED_FEED_ID_PARAM];
     let episodeGuid = params[EMBED_EPISODE_GUID_PARAM];
-    if (feedId && episodeGuid) {
+    if (feedId) {
       return this.processFeed(feedId, episodeGuid);
     } else {
       return Observable.of({});

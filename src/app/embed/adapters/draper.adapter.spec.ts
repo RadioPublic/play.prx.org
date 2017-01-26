@@ -53,10 +53,10 @@ describe('DraperAdapter', () => {
     return props;
   };
 
-  it('only runs when feedId and guid are set', injectHttp((feed: DraperAdapter, mocker) => {
+  it('only runs when feedId is set', injectHttp((feed: DraperAdapter, mocker) => {
     mocker(TEST_DRAPE);
     expect(getProperties(feed, null, null)).toEqual({});
-    expect(getProperties(feed, 'http://some.where/feed.xml', null)).toEqual({});
+    expect(getProperties(feed, 'http://some.where/feed.xml', null)).not.toEqual({});
     expect(getProperties(feed, null, '1234')).toEqual({});
     expect(getProperties(feed, 'http://some.where/feed.xml', '1234')).not.toEqual({});
   }));
