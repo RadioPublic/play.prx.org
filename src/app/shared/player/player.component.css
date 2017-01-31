@@ -58,7 +58,7 @@ section {
   flex-flow: column nowrap;
   justify-content: space-between;
   margin: 20px 15px 15px 0;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 header {
