@@ -22,10 +22,24 @@ export class DraperAdapter extends FeedAdapter {
     }
   }
 
+  processFeed(feedUrl: string, episodeGuid?: string): Observable<AdapterProperties> {
+    return super.processFeed(feedUrl, episodeGuid).map(props => {
+      props.subscribeTarget = "_top";
+      if (episodeGuid) {
+        if (!this.isEncoded(episodeGuid)) {
+          episodeGuid = this.encodeGuid(episodeGuid);
+        }
+        props.subscribeUrl = `${props.subscribeUrl}/ep/${episodeGuid}`;
+      }
+      return props;
+    });
+  }
+
   processDoc(doc: XMLDocument, props: AdapterProperties = {}): AdapterProperties {
     props = super.processDoc(doc, props);
     props.feedArtworkUrl = this.getTagAttributeNS(doc, 'rp', 'image', 'href')
                         || props.feedArtworkUrl;
+    props.subscribeUrl = `https://play.radiopublic.com/${this.getTagTextNS(doc, 'rp', 'program-id')}`;
     return props;
   }
 
