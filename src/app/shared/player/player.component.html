@@ -4,7 +4,7 @@
     <div class="artwork" [style.background-image]="artworkSafe">
       <button (click)="togglePlayPause()" id="large-playback-control-button">
         <img src="/assets/images/large-semi-transparent-play.svg" alt="" *ngIf="player.paused">
-        <img src="/assets/images/large-semi-transparent-pause.svg" alt="" *ngIf="!player.paused">
+        <img class="pauseButton" src="/assets/images/large-semi-transparent-pause.svg" alt="" *ngIf="!player.paused">
       </button>
     </div>
     <section>
@@ -22,7 +22,7 @@
           </button>
           <button (click)="togglePlayPause()" id="playback-control-button">
             <img src="/assets/images/play.svg" alt="" *ngIf="player.paused">
-            <img src="/assets/images/pause.svg" alt="" *ngIf="!player.paused">
+            <img class="pauseButton" src="/assets/images/pause.svg" alt="" *ngIf="!player.paused">
           </button>
           <button (click)="seekBy(30)" id="forward-control-button">
             <img src="/assets/images/forward-30.svg" alt="">

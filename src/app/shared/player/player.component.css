@@ -23,6 +23,10 @@ content {
   right: 0;
   top: 0;
   bottom: 0;
+  border-radius: 5px;
+  border: 1px solid #e6e6e6;
+  box-sizing: border-box;
+  height: 185px;
 }
 
 .metadata {
@@ -169,10 +173,24 @@ play-progress {
 
 .playback-progress {
   width: 60px;
+  overflow: hidden;
 }
 
 .duration {
   width: 60px;
+  overflow: hidden;
+}
+
+.loadingRender play-progress, .loadingRender .playback-progress, .loadingRender .duration{
+  color: transparent;
+}
+
+.loadingRender .pauseButton {
+  display: none;
+}
+
+.loadingRender play-progress {
+  opacity: 0.1;
 }
 
 @media (max-width: 599px) {
