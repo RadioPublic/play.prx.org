@@ -57,13 +57,19 @@ section {
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
-  margin: 20px 0 15px 0;
+  margin: 20px 15px 15px 0;
+  overflow: hidden;
 }
 
 header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  overflow-x: hidden;
+}
+
+.titles {
+  overflow-x: hidden;
 }
 
 h1,
@@ -92,7 +98,6 @@ h2 {
 .logo {
   width: 30px;
   height: 30px;
-  margin-right: 15px;
   display: none;
 }
 
