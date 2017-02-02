@@ -3,6 +3,7 @@
   display: block;
   height: 100%;
   pointer-events: none;
+  border-radius: 5px;
 }
 .bar.disabled {
   background: rgb(235, 255, 0);
