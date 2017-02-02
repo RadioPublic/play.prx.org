@@ -9,7 +9,7 @@ import { routing, routingProviders, routingComponents } from './app.routing';
 
 import { AppComponent } from './app.component';
 
-class NullXSRFStrategy implements XSRFStrategy {
+export class NullXSRFStrategy implements XSRFStrategy {
   configureRequest(req: Request): void { }
 }
 
