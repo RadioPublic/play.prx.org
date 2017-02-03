@@ -46,10 +46,10 @@ describe('FeedAdapter', () => {
     return props;
   };
 
-  it('only runs when feedUrl and guid are set', injectHttp((feed: FeedAdapter, mocker) => {
+  it('only runs when feedUrl is set', injectHttp((feed: FeedAdapter, mocker) => {
     mocker(TEST_FEED);
     expect(getProperties(feed, null, null)).toEqual({});
-    expect(getProperties(feed, 'http://some.where/feed.xml', null)).toEqual({});
+    expect(getProperties(feed, 'http://some.where/feed.xml', null)).not.toEqual({});
     expect(getProperties(feed, null, '1234')).toEqual({});
     expect(getProperties(feed, 'http://some.where/feed.xml', '1234')).not.toEqual({});
   }));
@@ -110,6 +110,11 @@ describe('FeedAdapter', () => {
     expect(feed.proxyUrl('http://some.where/out/there')).toEqual('/proxy?url=http://some.where/out/there');
     window['ENV'] = {FEED_PROXY_URL: 'http://google.com/'};
     expect(feed.proxyUrl('http://some.where/out/there')).toEqual('http://google.com/http://some.where/out/there');
+  }));
+
+  it('defaults to the first item', injectHttp((feed: FeedAdapter, mocker) => {
+    mocker(TEST_FEED);
+    expect(getProperties(feed, 'whatev').title).toEqual("Title #1");
   }));
 
 });

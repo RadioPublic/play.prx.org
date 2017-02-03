@@ -19,14 +19,14 @@ export class FeedAdapter implements DataAdapter {
   getProperties(params): Observable<AdapterProperties> {
     let feedUrl = params[EMBED_FEED_URL_PARAM];
     let episodeGuid = params[EMBED_EPISODE_GUID_PARAM];
-    if (feedUrl && episodeGuid) {
+    if (feedUrl) {
       return this.processFeed(feedUrl, episodeGuid);
     } else {
       return Observable.of({});
     }
   }
 
-  processFeed(feedUrl: string, episodeGuid: string): Observable<AdapterProperties> {
+  processFeed(feedUrl: string, episodeGuid?: string): Observable<AdapterProperties> {
     return this.fetchFeed(feedUrl).map(body => {
       let props = this.parseFeed(body, episodeGuid);
       Object.keys(props).filter(k => props[k] === undefined).forEach(key => delete props[key]);
@@ -50,7 +50,7 @@ export class FeedAdapter implements DataAdapter {
     });
   }
 
-  parseFeed(xml: string, episodeGuid: string): AdapterProperties {
+  parseFeed(xml: string, episodeGuid?: string): AdapterProperties {
     let parser = new DOMParser();
     let doc = <XMLDocument> parser.parseFromString(xml, 'application/xml');
     let props = this.processDoc(doc);
@@ -65,18 +65,23 @@ export class FeedAdapter implements DataAdapter {
     return props;
   }
 
-  parseFeedEpisode(doc: XMLDocument, episodeGuid: string): Element {
+  parseFeedEpisode(doc: XMLDocument, episodeGuid?: string): Element {
     let items = doc.querySelectorAll('item');
-    for (let i = 0; i < items.length; i++) {
-      let itemGuid = this.getTagText(items[i], 'guid');
-      if (itemGuid) {
-        if (!this.isEncoded(itemGuid) && this.isEncoded(episodeGuid)) {
-          itemGuid = this.encodeGuid(itemGuid);
-        }
-        if (itemGuid.indexOf(episodeGuid) !== -1) {
-          return items[i];
+
+    if (typeof episodeGuid !== 'undefined') {
+      for (let i = 0; i < items.length; i++) {
+        let itemGuid = this.getTagText(items[i], 'guid');
+        if (itemGuid) {
+          if (!this.isEncoded(itemGuid) && this.isEncoded(episodeGuid)) {
+            itemGuid = this.encodeGuid(itemGuid);
+          }
+          if (itemGuid.indexOf(episodeGuid) !== -1) {
+            return items[i];
+          }
         }
       }
+    } else if (items.length > 0) {
+      return items[0];
     }
   }
 

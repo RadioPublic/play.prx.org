@@ -20,7 +20,7 @@ export class QSDAdapter implements DataAdapter {
       subtitle:         params[EMBED_SUBTITLE_PARAM],
       subscribeUrl:     params[EMBED_SUBSCRIBE_URL_PARAM],
       subscribeTarget:  params[EMBED_SUBSCRIBE_TARGET],
-      artworkUrl:       params[EMBED_IMAGE_URL_PARAM]
+      feedArtworkUrl:   params[EMBED_IMAGE_URL_PARAM]
     };
   }
 

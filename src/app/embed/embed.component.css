@@ -5,7 +5,6 @@ play-player {
   display: flex;
   overflow: hidden;
   flex-direction: column;
-  border-radius: 5px;
-  border: 1px solid #e6e6e6;
   box-sizing: border-box;
+  border-radius: 5px;
 }
