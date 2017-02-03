@@ -38,11 +38,10 @@
 
         <nav>
           <a [href]="subscribeUrl" *ngIf="subscribeUrl" [target]="subscribeTarget">
-            <!-- note: appearance is provided download button SVG, but should be subscribe -->
-            <img src="/assets/images/download.svg" alt="">
+            <img class="nav-button" src="/assets/images/plus-sign-subscribe.svg" alt="">
           </a>
           <a (click)="showShareModal()">
-            <img src="/assets/images/share.svg" alt="">
+            <img class="nav-button" src="/assets/images/share.svg" alt="">
           </a>
         </nav>
         <div class="logo" id="lower-logo"><img *ngIf="logoSrc" [src]="logoSrc" alt=""></div>
