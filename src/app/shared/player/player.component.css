@@ -13,6 +13,7 @@
   background-size: 100% auto;
   position: relative;
   z-index: -1;
+  background-position: center center;
 }
 
 content {
@@ -47,7 +48,21 @@ section {
   margin: 15px;
   border-radius: 5px;
   border: solid 1px #ffffff;
+  background-color: white;
+}
+
+.artwork .artworkBackground {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
   background-size: cover;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  border-radius: 5px;
+}
+
+.artwork .artworkBackground.loaded {
+  opacity: 1;
 }
 
 #large-playback-control-button {
@@ -181,6 +196,12 @@ play-progress {
   font-size: 14px;
   line-height: 1.5;
   color: #ffffff;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.playback-progress.loaded, .duration.loaded {
+  opacity: 1;
 }
 
 .playback-progress {

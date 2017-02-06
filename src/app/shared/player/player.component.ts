@@ -28,6 +28,7 @@ export class PlayerComponent implements OnInit, OnChanges {
 
   artworkSafe: SafeStyle;
   feedArtworkSafe: SafeStyle;
+  artworkSafeLoaded: SafeStyle;
 
   private player: DovetailAudio;
   private logger: Logger;
@@ -121,6 +122,10 @@ export class PlayerComponent implements OnInit, OnChanges {
     } else if (this.player.playbackRate === 2) {
       this.player.playbackRate = 1;
     }
+  }
+
+  artworkLoaded() {
+    this.artworkSafeLoaded = this.artworkSafe;
   }
 
   handleHotkey(event: KeyboardEvent): void {

@@ -1,7 +1,9 @@
 <div class="background-img" [style.background-image]="feedArtworkSafe"></div>
 <content>
   <div class="metadata">
-    <div class="artwork" [style.background-image]="artworkSafe">
+    <div class="artwork">
+      <div class="artworkBackground" [class.loaded]="!!artworkSafeLoaded" [style.background-image]="artworkSafeLoaded"></div>
+      <img [src]="artworkUrl" (load)="artworkLoaded()" style="display:none"/>
       <button (click)="togglePlayPause()" id="large-playback-control-button">
         <img src="/assets/images/large-semi-transparent-play.svg" alt="" *ngIf="player.paused">
         <img class="pauseButton" src="/assets/images/large-semi-transparent-pause.svg" alt="" *ngIf="!player.paused">
@@ -50,13 +52,13 @@
   </div>
 
   <div class="scrubber" (window:keydown)="handleHotkey($event)">
-    <span class="playback-progress">{{currentTime | async | duration}}</span>
+    <span class="playback-progress" [class.loaded]="duration | async">{{currentTime | async | duration}}</span>
     <play-progress
       [value]="currentTime | async"
       [maximum]="duration | async"
       (seek)="onSeek($event)"
       (scrubbing)="onScrub($event)">
     </play-progress>
-    <span class="duration">{{duration | async | duration}}</span>
+    <span class="duration" [class.loaded]="duration | async ">{{duration | async | duration}}</span>
   </div>
 </content>
