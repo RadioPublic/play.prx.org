@@ -150,6 +150,13 @@ nav a:hover {
   color: #1e4e5c;
 }
 
+.nav-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid gray;
+  background: inherit;
+}
 
 .scrubber {
   display: flex;
