@@ -7,15 +7,15 @@ html(lang='en')
     meta(name='viewport' content='width=device-width, initial-scale=1')
     link(rel='icon' type='image/x-icon' href='/assets/images/favicon.png')
     != css
-    if gaKey
+    if env.GA_KEY
       script.
         window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-        ga('create', '${gaKey}', 'auto');
+        ga('create', '#{env.GA_KEY}', 'auto');
       script(async src='https://www.google-analytics.com/analytics.js')
   body(margin: 0)
     play-root
       != loadingMarkup
-    != inlineJs
+    != js
     script(type='text/javascript')
       != 'window.ENV=' + JSON.stringify(env)
     for script in scripts

@@ -2,10 +2,11 @@
 # (2) add your ENV overrides here
 # (3) profit
 
-# prx logo
+# Optional player logo (found at src/app/assets/images/[LOGO_NAME]-logo.svg)
 LOGO_NAME=
-# What url to feed requests to 
+
+# Optional external proxy (defaults to using built-in express server)
 FEED_PROXY_URL=
 
-# What set of data sources should we use for fetching information?
-DATA_SOURCES=
+# Optional google analytics
+GA_KEY=
