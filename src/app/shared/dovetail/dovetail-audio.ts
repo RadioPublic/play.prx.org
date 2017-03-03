@@ -37,13 +37,14 @@ const CAN_PLAY = 'canplay';
 const CAN_PLAY_THROUGH = 'canplaythrough';
 
 const PROXIED_EVENTS = [
-  TIME_UPDATE, SEEKED, ERROR, PLAYING, ABORT, CAN_PLAY, CAN_PLAY_THROUGH
+  TIME_UPDATE, SEEKED, PLAYING, ABORT, CAN_PLAY, CAN_PLAY_THROUGH
 ];
 
 export class DovetailAudio extends ExtendableAudio {
   private arrangement: DovetailArrangement = {entries: []};
   private index: number;
 
+  private _dovetailOriginalUrl: string;
   private _dovetailLoading = false;
 
   private adzerkFetcher = new AdzerkFetcher();
@@ -58,6 +59,7 @@ export class DovetailAudio extends ExtendableAudio {
 
   constructor(url: string) {
     super(url);
+    this._audio.addEventListener(ERROR, this.listenerOnError.bind(this));
     this._audio.addEventListener(DURATION_CHANGE, this.listenerOnDurationChange.bind(this));
     this._audio.addEventListener(ENDED, this.listenerOnEnded.bind(this));
     this.$$forwardEvent = this.$$forwardEvent.bind(this);
@@ -145,6 +147,24 @@ export class DovetailAudio extends ExtendableAudio {
 
   set src(url: string) {
     this.index = -1;
+    if (this.dovetailFetcher.transform(url)) {
+      this._dovetailOriginalUrl = url;
+      url += (url.indexOf('?') < 0 ? '?' : '&') + 'debug';
+    }
+    this.setSegments(this.fallback(url));
+  }
+
+  private fallback(url: string): DovetailArrangementEntry[] {
+    return [{
+      audioUrl: url,
+      duration: 0,
+      id: 'fallback',
+      type: 'fallback',
+      impressionUrl: null
+    }];
+  }
+
+  private getDovetailDebug(url: string) {
     this._dovetailLoading = true;
     let promise = this.currentPromise = this.dovetailFetcher.fetch(url).then(
       result => {
@@ -156,16 +176,11 @@ export class DovetailAudio extends ExtendableAudio {
     ).then(([dovetailResponse, adzerkResponse]: AllResult) =>  {
       return this.calculateArrangement(dovetailResponse.arrangement, adzerkResponse);
     }).catch(error => {
-      return [<DovetailArrangementEntry> {
-        audioUrl: url,
-        duration: 0,
-        id: 'fallback',
-        type: 'fallback',
-        impressionUrl: null
-      }];
+      return this.fallback(url);
     }).then(arrangement => {
       if (this.currentPromise === promise) {
         this._dovetailLoading = false;
+        this.$$debug('Arranged:\n' + arrangement.map(a => `  ${a.id} ${a.audioUrl}`).join('\n'));
         this.setSegments(arrangement);
       }
     });
@@ -203,6 +218,20 @@ export class DovetailAudio extends ExtendableAudio {
   private setSegments(segments: DovetailArrangementEntry[]) {
     this.arrangement = {entries: segments};
     this.skipToFile(0, this.resumeOnLoad);
+  }
+
+  private listenerOnError(event: Event) {
+    event.stopImmediatePropagation();
+    let el = <HTMLMediaElement> event.target;
+    if (this._dovetailOriginalUrl && el.error.code === el.error.MEDIA_ERR_SRC_NOT_SUPPORTED) {
+      let url = this._dovetailOriginalUrl;
+      this._dovetailOriginalUrl = null;
+      this._audio.src = '';
+      this.index = -1;
+      this.getDovetailDebug(url);
+    } else {
+      this.$$sendEvent(ERROR, event);
+    }
   }
 
   private listenerOnDurationChange(event: Event) {
@@ -251,13 +280,15 @@ export class DovetailAudio extends ExtendableAudio {
         this.$$sendEvent(SEGMENT_END, eventData);
       }
       this.index = index;
-      this._audio.src = this.arrangement.entries[index].audioUrl;
+      let arrangement = this.arrangement.entries[index];
+      this.$$debug(`Goto: ${arrangement.id}`);
+      this._audio.src = arrangement.audioUrl;
       this._audio.playbackRate = this.playbackRate;
       if (resume) { this._audio.play(); }
 
       this.$$sendEvent(SEGMENT_START, {
-        segment: this.arrangement.entries[index],
-        segmentType: this.arrangement.entries[index].type
+        segment: arrangement,
+        segmentType: arrangement.type
       });
 
       return true;
@@ -266,9 +297,9 @@ export class DovetailAudio extends ExtendableAudio {
     }
   }
 
-  private $$logImpression(event: Event, data: SegmentEventData) {
-    const type: string = data.segmentType;
-    const segment: DovetailArrangementEntry = data.segment;
+  private $$logImpression(event: SegmentEventData) {
+    const type: string = event.segmentType;
+    const segment: DovetailArrangementEntry = event.segment;
 
     if (type === 'ad' || type === 'houseAd') {
       if (typeof this._imgElem === 'undefined') {
@@ -278,7 +309,14 @@ export class DovetailAudio extends ExtendableAudio {
           this._imgElem.style.position = 'absolute';
           document.body.appendChild(this._imgElem);
       }
+      this.$$debug(`Impress: ${segment.id}`);
       this._imgElem.src = segment.impressionUrl;
+    }
+  }
+
+  private $$debug(msg: string) {
+    if (window.location.search.match(/[\?\&]debug/)) {
+      console.log(msg);
     }
   }
 }
