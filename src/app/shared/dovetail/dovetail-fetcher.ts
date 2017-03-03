@@ -7,6 +7,7 @@ const ACCEPT = 'Accept';
 const MIME_TYPE = 'application/vnd.dovetail.v1+json';
 const CONTENT_TYPE = 'Content-Type';
 const APPLICATION_JSON = 'application/json';
+export const DOVETAIL_MATCHER = /\/dovetail(-.+)?\.prxu\.org\//;
 
 export interface DovetailResponse {
   program: {
@@ -25,8 +26,16 @@ export class DovetailFetcher {
   private toResolve: (value?: DovetailResponse | PromiseLike<DovetailResponse>) => void;
   private toReject: (reason?: DovetailFetchError) => any;
 
+  public transform(url: string): string {
+    let match = url.match(DOVETAIL_MATCHER);
+    if (match) {
+      return 'https:/' + match[0] + url.split(match[0])[1];
+    } else {
+      return null;
+    }
+  }
+
   public fetch(url: string) {
-    url = url.replace('www.podtrac.com/pts/redirect.mp3/', '');
     if (this.currentUrl !== url) {
       this.cancel();
       this.currentUrl = url;
@@ -39,9 +48,14 @@ export class DovetailFetcher {
         request.onreadystatechange = this.onReadyStateChange.bind(this, request);
         request.onerror = this.onError.bind(this, request);
 
-        this.currentRequest.open(GET, url, true);
-        this.currentRequest.setRequestHeader(ACCEPT, MIME_TYPE);
-        this.currentRequest.send();
+        let directUrl = this.transform(url);
+        if (directUrl) {
+          this.currentRequest.open(GET, directUrl, true);
+          this.currentRequest.setRequestHeader(ACCEPT, MIME_TYPE);
+          this.currentRequest.send();
+        } else {
+          reject(new Error(`Tried to fetch non-dovetail URL: ${url}`));
+        }
       });
     }
 
