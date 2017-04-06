@@ -169,7 +169,7 @@ export class DovetailAudio extends ExtendableAudio {
     let promise = this.currentPromise = this.dovetailFetcher.fetch(url).then(
       result => {
         if (!result.request.placements.length) {
-          throw 'No placements in request; falling back to raw audio';
+          throw new Error('No placements');
         } else if (this.currentPromise === promise) {
           let data: AllUnion  = [result, this.getArrangement(result.request)];
           return Promise.all<any>(data);
@@ -178,7 +178,8 @@ export class DovetailAudio extends ExtendableAudio {
     ).then(([dovetailResponse, adzerkResponse]: AllResult) =>  {
       return this.calculateArrangement(dovetailResponse.arrangement, adzerkResponse);
     }).catch(error => {
-      return this.fallback(url);
+      let directUrl = this.dovetailFetcher.transform(url);
+      return this.fallback(directUrl);
     }).then(arrangement => {
       if (this.currentPromise === promise) {
         this._dovetailLoading = false;
