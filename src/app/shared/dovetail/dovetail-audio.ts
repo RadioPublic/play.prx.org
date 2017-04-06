@@ -168,7 +168,9 @@ export class DovetailAudio extends ExtendableAudio {
     this._dovetailLoading = true;
     let promise = this.currentPromise = this.dovetailFetcher.fetch(url).then(
       result => {
-        if (this.currentPromise === promise) {
+        if (!result.request.placements.length) {
+          throw 'No placements in request; falling back to raw audio';
+        } else if (this.currentPromise === promise) {
           let data: AllUnion  = [result, this.getArrangement(result.request)];
           return Promise.all<any>(data);
         }
