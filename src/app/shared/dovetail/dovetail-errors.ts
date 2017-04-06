@@ -13,3 +13,5 @@ export class HttpRequestError extends Error {
 export class CancelledError extends Error { }
 
 export type DovetailFetchError = NonDovetailUrlError | HttpRequestError | CancelledError;
+
+export class VanillaAudioError extends Error { }

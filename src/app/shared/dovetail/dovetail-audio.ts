@@ -3,6 +3,7 @@ import { ExtendableAudio } from '../audio';
 import { DovetailFetcher, DovetailResponse } from './dovetail-fetcher';
 import { DovetailAudioEvent } from './dovetail-audio-event';
 import { DovetailArrangement, DovetailArrangementEntry } from './dovetail-arrangement';
+import { VanillaAudioError } from './dovetail-errors';
 
 type AllUnion = [
   DovetailResponse | PromiseLike<DovetailResponse>,
@@ -168,7 +169,9 @@ export class DovetailAudio extends ExtendableAudio {
     this._dovetailLoading = true;
     let promise = this.currentPromise = this.dovetailFetcher.fetch(url).then(
       result => {
-        if (this.currentPromise === promise) {
+        if (!result.request.placements.length) {
+          throw new VanillaAudioError();
+        } else if (this.currentPromise === promise) {
           let data: AllUnion  = [result, this.getArrangement(result.request)];
           return Promise.all<any>(data);
         }
@@ -176,7 +179,12 @@ export class DovetailAudio extends ExtendableAudio {
     ).then(([dovetailResponse, adzerkResponse]: AllResult) =>  {
       return this.calculateArrangement(dovetailResponse.arrangement, adzerkResponse);
     }).catch(error => {
-      return this.fallback(url);
+      if (error instanceof VanillaAudioError) {
+        let directUrl = this.dovetailFetcher.transform(url);
+        return this.fallback(directUrl);
+      } else {
+        return this.fallback(url);
+      }
     }).then(arrangement => {
       if (this.currentPromise === promise) {
         this._dovetailLoading = false;
