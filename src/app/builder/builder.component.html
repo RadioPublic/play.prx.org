@@ -58,35 +58,35 @@
 
         <fieldset>
           <label for="title">Title</label>
-          <p>By default, the player will use <em>{{this.defaults.title}}</em>.</p>
+          <p>If you leave this blank, the player will default to  <em>{{this.defaults.title}}</em>.</p>
           <input type="text" [(ngModel)]="props.title" id="title" name="title">
         </fieldset>
 
         <fieldset>
           <label for="subtitle">Subtitle</label>
-          <p>By default, the player will use <em>{{this.defaults.subtitle}}</em>.</p>
+          <p>If you leave this blank, the player will default to  <em>{{this.defaults.subtitle}}</em>.</p>
           <input type="text" [(ngModel)]="props.subtitle" id="subtitle" name="subtitle">
         </fieldset>
 
         <fieldset>
-          <img [src]="props.imageUrl" id="artwork-preview">
+          <img [src]="props.imageUrl || defaults.imageUrl" id="artwork-preview">
           <label>Artwork URL</label>
-          <p>By default, the player will use <em>{{this.defaults.imageUrl}}</em>.</p>
+          <p>If you leave this blank, the player will default to  <em>{{this.defaults.imageUrl}}</em>.</p>
           <input type="text" [(ngModel)]="props.imageUrl" id="imageUrl" name="imageUrl">
         </fieldset>
 
         <fieldset>
           <label>Audio URL</label>
-          <p>By default, the player will use <em>{{this.defaults.audioUrl}}</em>.</p>
+          <p>If you leave this blank, the player will default to  <em>{{this.defaults.audioUrl}}</em>.</p>
           <input type="text" [(ngModel)]="props.audioUrl" id="audioUrl" name="audioUrl">
           <audio controls id="audio-preview">
-            <source [src]="(props.audioUrl || defaults.audioUrl)" type="audio/mpeg">
+            <source [src]="props.audioUrl || defaults.audioUrl" type="audio/mpeg">
           </audio>
         </fieldset>
 
         <fieldset>
           <label for="subscribeUrl">Subscription URL</label>
-          <p>By default, the player will use <em>{{this.defaults.subscribeUrl}}</em>.</p>
+          <p>If you leave this blank, the player will default to  <em>{{this.defaults.subscribeUrl}}</em>.</p>
           <input type="text" [(ngModel)]="props.subscribeUrl" id="subscribeUrl" name="subscribeUrl">
           <p>
             <small>If you provide a URL, a "Subscribe" button will appear in the player. This should be somewhere that makes is easier for people to subscribe to your show, such as the iTunes link for your show or a landing page on your own site.</small>
