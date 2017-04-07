@@ -50,34 +50,43 @@
 
     <form #builderForm="ngForm">
       <section class="builder-step" id="step-3" *ngIf="props">
-        <h4>Design Your Player</h4>
+        <h4>Customize Your Player</h4>
+        <p>These fields are for overrides only. They should be set
+          if you want to override the episode's information in your RSS feed
+          for the player.
+        </p>
 
         <fieldset>
           <label for="title">Title</label>
+          <p>By default, the player will use <em>{{this.defaults.title}}</em>.</p>
           <input type="text" [(ngModel)]="props.title" id="title" name="title">
         </fieldset>
 
         <fieldset>
           <label for="subtitle">Subtitle</label>
+          <p>By default, the player will use <em>{{this.defaults.subtitle}}</em>.</p>
           <input type="text" [(ngModel)]="props.subtitle" id="subtitle" name="subtitle">
         </fieldset>
 
         <fieldset>
           <img [src]="props.imageUrl" id="artwork-preview">
           <label>Artwork URL</label>
+          <p>By default, the player will use <em>{{this.defaults.imageUrl}}</em>.</p>
           <input type="text" [(ngModel)]="props.imageUrl" id="imageUrl" name="imageUrl">
         </fieldset>
 
         <fieldset>
           <label>Audio URL</label>
+          <p>By default, the player will use <em>{{this.defaults.audioUrl}}</em>.</p>
           <input type="text" [(ngModel)]="props.audioUrl" id="audioUrl" name="audioUrl">
           <audio controls id="audio-preview">
-            <source [src]="props.audioUrl" type="audio/mpeg">
+            <source [src]="(props.audioUrl || defaults.audioUrl)" type="audio/mpeg">
           </audio>
         </fieldset>
 
         <fieldset>
           <label for="subscribeUrl">Subscription URL</label>
+          <p>By default, the player will use <em>{{this.defaults.subscribeUrl}}</em>.</p>
           <input type="text" [(ngModel)]="props.subscribeUrl" id="subscribeUrl" name="subscribeUrl">
           <p>
             <small>If you provide a URL, a "Subscribe" button will appear in the player. This should be somewhere that makes is easier for people to subscribe to you show, such as the iTunes link for your show or a landing page on your own site.</small>

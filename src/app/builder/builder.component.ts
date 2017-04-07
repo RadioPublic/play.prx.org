@@ -15,6 +15,7 @@ export class BuilderComponent implements OnInit {
 
   feedUrl: string;
   props: BuilderProperties;
+  defaults: {};
   previewIframeSrc: SafeResourceUrl;
   editMode = false;
 
@@ -66,6 +67,13 @@ export class BuilderComponent implements OnInit {
       '', // subscriptionURL
       '_blank'
     );
+    this.defaults = {
+      title: episode.title,
+      subtitle: episode.artist,
+      audioUrl: episode.url,
+      imageUrl: episode.imageUrl,
+      subscribeUrl: this.feedUrl
+    };
   }
 
   resetCopyButton(el: Element) {
