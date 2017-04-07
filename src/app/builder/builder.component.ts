@@ -55,14 +55,15 @@ export class BuilderComponent implements OnInit {
 
   onEpisodeSelect(episode: Episode) {
     this.props = new BuilderProperties(
-      episode.title,
-      episode.artist,
-      '',
-      episode.url,
-      episode.imageUrl,
       this.feedUrl,
-      '',
-      this.feedUrl,
+      episode.guid,
+      '', // title
+      '', // subtitle
+      '', // CTA title
+      '', // audio url
+      '', // image
+      '', // CTA url
+      '', // subscriptionURL
       '_blank'
     );
   }
