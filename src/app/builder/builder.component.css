@@ -9,6 +9,10 @@
   z-index: 0;
 }
 
+label {
+  font-size: 16px;
+}
+
 #preview-toggle {
   position: fixed;
   right: 10px;
