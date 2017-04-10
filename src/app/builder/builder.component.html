@@ -51,34 +51,30 @@
     <form #builderForm="ngForm">
       <section class="builder-step" id="step-3" *ngIf="props">
         <h4>Customize Your Player</h4>
-        <p>These fields are for overrides only. They should be set
+        <p>These fields are for overrides only. They should be altered
           if you want to override the episode's information in your RSS feed
           for the player.
         </p>
 
         <fieldset>
           <label for="title">Title</label>
-          <p>If you leave this blank, the player will default to  <em>{{this.defaults.title}}</em>.</p>
-          <input type="text" [(ngModel)]="props.title" id="title" name="title">
+          <input type="text" [(ngModel)]="props.title" id="title" [placeholder]="defaults.title" name="title">
         </fieldset>
 
         <fieldset>
           <label for="subtitle">Subtitle</label>
-          <p>If you leave this blank, the player will default to  <em>{{this.defaults.subtitle}}</em>.</p>
-          <input type="text" [(ngModel)]="props.subtitle" id="subtitle" name="subtitle">
+          <input type="text" [(ngModel)]="props.subtitle" id="subtitle" [placeholder]="defaults.subtitle" name="subtitle">
         </fieldset>
 
         <fieldset>
           <img [src]="props.imageUrl || defaults.imageUrl" id="artwork-preview">
           <label>Artwork URL</label>
-          <p>If you leave this blank, the player will default to  <em>{{this.defaults.imageUrl}}</em>.</p>
-          <input type="text" [(ngModel)]="props.imageUrl" id="imageUrl" name="imageUrl">
+          <input type="text" [(ngModel)]="props.imageUrl" id="imageUrl" [placeholder]="defaults.imageUrl" name="imageUrl">
         </fieldset>
 
         <fieldset>
           <label>Audio URL</label>
-          <p>If you leave this blank, the player will default to  <em>{{this.defaults.audioUrl}}</em>.</p>
-          <input type="text" [(ngModel)]="props.audioUrl" id="audioUrl" name="audioUrl">
+          <input type="text" [(ngModel)]="props.audioUrl" id="audioUrl" [placeholder]="defaults.audioUrl" name="audioUrl">
           <audio controls id="audio-preview">
             <source [src]="props.audioUrl || defaults.audioUrl" type="audio/mpeg">
           </audio>
@@ -86,8 +82,7 @@
 
         <fieldset>
           <label for="subscribeUrl">Subscription URL</label>
-          <p>If you leave this blank, the player will default to  <em>{{this.defaults.subscribeUrl}}</em>.</p>
-          <input type="text" [(ngModel)]="props.subscribeUrl" id="subscribeUrl" name="subscribeUrl">
+          <input type="text" [(ngModel)]="props.subscribeUrl" id="subscribeUrl" [placeholder]="defaults.subscribeUrl" name="subscribeUrl">
           <p>
             <small>If you provide a URL, a "Subscribe" button will appear in the player. This should be somewhere that makes is easier for people to subscribe to your show, such as the iTunes link for your show or a landing page on your own site.</small>
           </p>

@@ -175,3 +175,7 @@ label {
   display: block;
   width: 500px;
 }
+
+.builder-step input::placeholder {
+  color: darkgray;
+}
