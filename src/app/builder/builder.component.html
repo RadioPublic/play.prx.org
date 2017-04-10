@@ -35,9 +35,9 @@
   <div class="content">
     <section *ngIf="!editMode" class="builder-step" id="step-1">
       <form id="feed-selector" (submit)="onFeedUrlSubmit(feedUrlInput.value)">
-        <label for="theFeedUrl">Select podcast</label>
-        <input type="url" id="theFeedUrl" required pattern="^http.*"
-          name="theFeedUrl" [ngModel]="feedUrl" #feedUrlInput
+        <label for="feedUrl">Select podcast</label>
+        <input type="url" id="feedUrl" required pattern="^http.*"
+          name="feedUrl" [ngModel]="feedUrl" #feedUrlInput
           placeholder="A podcast's RSS feed URL, eg http://example.com/feed.xml">
         <button type="submit">Submit</button>
       </form>

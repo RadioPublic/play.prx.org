@@ -14,8 +14,9 @@ import { BuilderProperties } from './builder.properties';
 export class BuilderComponent implements OnInit {
 
   feedUrl: string;
-  props: BuilderProperties;
+  // episodeGuid: string;
   defaults: {};
+  props: BuilderProperties;
   previewIframeSrc: SafeResourceUrl;
   editMode = false;
 
@@ -25,9 +26,14 @@ export class BuilderComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.forEach((params: any) => {
-      if (params.feedUrl) {
+      if (params.uf && params.ge) {
         this.editMode = false;
-        this.feedUrl = params.feedUrl;
+        this.feedUrl = params.uf;
+        // this.episodeGuid = params.ge;
+        this.props = null;
+      } else if (params.feedUrl || params.uf) {
+        this.editMode = false;
+        this.feedUrl = params.feedUrl || params.uf;
         this.props = null;
       } else if (BuilderProperties.hasParams(params)) {
         this.editMode = true;
