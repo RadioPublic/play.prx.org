@@ -14,7 +14,7 @@ import { BuilderProperties } from './builder.properties';
 export class BuilderComponent implements OnInit {
 
   feedUrl: string;
-  // episodeGuid: string;
+  episodeGuid: string;
   defaults: {};
   props: BuilderProperties;
   previewIframeSrc: SafeResourceUrl;
@@ -26,15 +26,12 @@ export class BuilderComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.forEach((params: any) => {
-      if (params.uf && params.ge) {
+      if (params.uf) {
         this.editMode = false;
         this.feedUrl = params.uf;
-        // this.episodeGuid = params.ge;
-        this.props = null;
-      } else if (params.feedUrl || params.uf) {
-        this.editMode = false;
-        this.feedUrl = params.feedUrl || params.uf;
-        this.props = null;
+        if (params.ge) {
+          this.episodeGuid = params.ge;
+        }
       } else if (BuilderProperties.hasParams(params)) {
         this.editMode = true;
         this.feedUrl = null;
@@ -56,7 +53,7 @@ export class BuilderComponent implements OnInit {
 
   onFeedUrlSubmit(value: string) {
     if (value) {
-      this.router.navigate(['/'], { queryParams: { feedUrl: value } });
+      this.router.navigate(['/'], { queryParams: { uf: value } });
     }
   }
 

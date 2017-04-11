@@ -44,8 +44,8 @@
     </section>
 
     <section class="builder-step" *ngIf="feedUrl" id="step-2">
-      <label for="">Choose an Episode</label>
-      <play-episode-picker (select)="onEpisodeSelect($event)" [feedUrl]="feedUrl"></play-episode-picker>
+      <label for="">Select Episode</label>
+      <play-episode-picker (select)="onEpisodeSelect($event)" [feedUrl]="feedUrl" [selectedGUID]="episodeGuid"></play-episode-picker>
     </section>
 
     <form #builderForm="ngForm">
