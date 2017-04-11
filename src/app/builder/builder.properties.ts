@@ -25,8 +25,8 @@ export class BuilderProperties {
   }
 
   constructor(
-    public feedUrl: string,
-    public episodeGUID: string,
+    public feedUrl?: string,
+    public episodeGUID?: string,
     // overrides
     public title?: string,
     public subtitle?: string,
@@ -38,8 +38,10 @@ export class BuilderProperties {
     public subscribeTarget?: string
   ) {}
 
-  get overrideParams () {
+  get allParams () {
     return {
+      feedUrl: EMBED_FEED_URL_PARAM,
+      episodeGUID: EMBED_EPISODE_GUID_PARAM,
       title: EMBED_TITLE_PARAM,
       subtitle: EMBED_SUBTITLE_PARAM,
       ctaTitle: EMBED_CTA_TITLE_PARAM,
@@ -54,12 +56,9 @@ export class BuilderProperties {
   get paramString() {
     let str: string[] = [];
 
-    str.push(`${EMBED_FEED_URL_PARAM}=${this.encode(this.feedUrl)}`);
-    str.push(`${EMBED_EPISODE_GUID_PARAM}=${this.encode(this.episodeGUID)}`);
-
-    for (let param in this.overrideParams) {
+    for (let param in this.allParams) {
       if (this[param]) {
-        str.push(`${this.overrideParams[param]}=${this.encode(this[param])}`);
+        str.push(`${this.allParams[param]}=${this.encode(this[param])}`);
       }
     }
     return str.join('&');

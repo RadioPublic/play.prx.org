@@ -29,9 +29,8 @@ export class BuilderComponent implements OnInit {
       if (params.uf) {
         this.editMode = false;
         this.feedUrl = params.uf;
-        if (params.ge) {
-          this.episodeGuid = params.ge;
-        }
+        this.episodeGuid = params.ge;
+        this.props = null;
       } else if (BuilderProperties.hasParams(params)) {
         this.editMode = true;
         this.feedUrl = null;
