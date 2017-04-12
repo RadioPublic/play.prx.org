@@ -28,17 +28,18 @@ export class BuilderComponent implements OnInit {
     this.route.queryParams.forEach((params: any) => {
       if (params.uf) {
         this.editMode = false;
+        this.props = null;
         this.feedUrl = params.uf;
         this.episodeGuid = params.ge;
       } else if (BuilderProperties.hasParams(params)) {
         this.editMode = true;
-        this.feedUrl = null;
         this.props = BuilderProperties.decode(params);
+        this.feedUrl = null;
         this.setEmptyDefaults();
       } else {
         this.editMode = false;
-        this.feedUrl = null;
         this.props = null;
+        this.feedUrl = null;
       }
     });
     this.builderForm.control.valueChanges.debounceTime(3500).forEach(() => {
