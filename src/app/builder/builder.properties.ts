@@ -26,7 +26,7 @@ export class BuilderProperties {
 
   constructor(
     public feedUrl?: string,
-    public episodeGUID?: string,
+    public episodeGuid?: string,
     // overrides
     public title?: string,
     public subtitle?: string,
@@ -41,7 +41,7 @@ export class BuilderProperties {
   get allParams () {
     return {
       feedUrl: EMBED_FEED_URL_PARAM,
-      episodeGUID: EMBED_EPISODE_GUID_PARAM,
+      episodeGuid: EMBED_EPISODE_GUID_PARAM,
       title: EMBED_TITLE_PARAM,
       subtitle: EMBED_SUBTITLE_PARAM,
       ctaTitle: EMBED_CTA_TITLE_PARAM,
