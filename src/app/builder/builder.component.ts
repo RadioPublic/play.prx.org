@@ -30,11 +30,11 @@ export class BuilderComponent implements OnInit {
         this.editMode = false;
         this.feedUrl = params.uf;
         this.episodeGuid = params.ge;
-        this.props = null;
       } else if (BuilderProperties.hasParams(params)) {
         this.editMode = true;
         this.feedUrl = null;
         this.props = BuilderProperties.decode(params);
+        this.setEmptyDefaults();
       } else {
         this.editMode = false;
         this.feedUrl = null;
@@ -48,6 +48,16 @@ export class BuilderComponent implements OnInit {
 
   get _previewIframeSrc() {
     return this.sanitizer.bypassSecurityTrustResourceUrl(`/e?${this.props.paramString}`);
+  }
+
+  setEmptyDefaults() {
+    this.defaults = {
+      title:   '',
+      subtitle: '',
+      audioUrl: '',
+      imageUrl: '',
+      subscribeUrl: ''
+    };
   }
 
   onFeedUrlSubmit(value: string) {
