@@ -10,7 +10,7 @@ const customProxyUri = window['ENV']['FEED_PROXY_URL'] || '/proxy?url=';
   styleUrls: ['episode-picker.component.css'],
   template: `
     <select (change)="selectEpisode(select.value)" #select>
-      <option value="">Select an episode</option>
+      <option *ngIf="selectedEpisode" [value]="selectedEpisode.guid">{{selectedEpisode.title}}</option>
       <option *ngFor="let ep of episodes | async" [value]="ep.guid">{{ep.title}}</option>
     </select>
   `
@@ -19,10 +19,12 @@ const customProxyUri = window['ENV']['FEED_PROXY_URL'] || '/proxy?url=';
 export class EpisodePickerComponent implements OnChanges, OnInit {
 
   @Input() feedUrl: string;
+  @Input() selectedGUID: string;
   @Output() select = new EventEmitter<Episode>();
 
   episodes: Observable<Episode[]>;
   _episodes: Episode[];
+  selectedEpisode: Episode;
 
   constructor (private http: Http) {}
 
@@ -92,6 +94,12 @@ export class EpisodePickerComponent implements OnChanges, OnInit {
       }
 
       this._episodes = episodes;
+      if (this.selectedGUID) {
+        this.selectedEpisode = this._episodes.find(e => e.guid === this.selectedGUID);
+        this.select.emit(this.selectedEpisode);
+      } else {
+        this.select.emit(this._episodes[0]);
+      };
       return episodes;
     });
   }

@@ -14,6 +14,8 @@ import { BuilderProperties } from './builder.properties';
 export class BuilderComponent implements OnInit {
 
   feedUrl: string;
+  episodeGuid: string;
+  defaults: {};
   props: BuilderProperties;
   previewIframeSrc: SafeResourceUrl;
   editMode = false;
@@ -24,18 +26,20 @@ export class BuilderComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.forEach((params: any) => {
-      if (params.feedUrl) {
+      if (params.uf) {
         this.editMode = false;
-        this.feedUrl = params.feedUrl;
         this.props = null;
+        this.feedUrl = params.uf;
+        this.episodeGuid = params.ge;
       } else if (BuilderProperties.hasParams(params)) {
         this.editMode = true;
-        this.feedUrl = null;
         this.props = BuilderProperties.decode(params);
+        this.feedUrl = null;
+        this.setEmptyDefaults();
       } else {
         this.editMode = false;
-        this.feedUrl = null;
         this.props = null;
+        this.feedUrl = null;
       }
     });
     this.builderForm.control.valueChanges.debounceTime(3500).forEach(() => {
@@ -47,24 +51,42 @@ export class BuilderComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustResourceUrl(`/e?${this.props.paramString}`);
   }
 
+  setEmptyDefaults() {
+    this.defaults = {
+      title:   '',
+      subtitle: '',
+      audioUrl: '',
+      imageUrl: '',
+      subscribeUrl: ''
+    };
+  }
+
   onFeedUrlSubmit(value: string) {
     if (value) {
-      this.router.navigate(['/'], { queryParams: { feedUrl: value } });
+      this.router.navigate(['/'], { queryParams: { uf: value } });
     }
   }
 
   onEpisodeSelect(episode: Episode) {
     this.props = new BuilderProperties(
-      episode.title,
-      episode.artist,
-      '',
-      episode.url,
-      episode.imageUrl,
       this.feedUrl,
-      '',
-      this.feedUrl,
+      episode.guid,
+      '', // title
+      '', // subtitle
+      '', // CTA title
+      '', // audio url
+      '', // image
+      '', // CTA url
+      '', // subscriptionURL
       '_blank'
     );
+    this.defaults = {
+      title: episode.title,
+      subtitle: episode.artist,
+      audioUrl: episode.url,
+      imageUrl: episode.imageUrl,
+      subscribeUrl: this.feedUrl
+    };
   }
 
   resetCopyButton(el: Element) {

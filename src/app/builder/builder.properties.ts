@@ -1,17 +1,19 @@
-import { EMBED_TITLE_PARAM, EMBED_SUBTITLE_PARAM, EMBED_CTA_TITLE_PARAM,
-  EMBED_AUDIO_URL_PARAM, EMBED_IMAGE_URL_PARAM, EMBED_FEED_URL_PARAM,
+import { EMBED_FEED_URL_PARAM, EMBED_EPISODE_GUID_PARAM,
+  EMBED_TITLE_PARAM, EMBED_SUBTITLE_PARAM, EMBED_CTA_TITLE_PARAM,
+  EMBED_AUDIO_URL_PARAM, EMBED_IMAGE_URL_PARAM,
   EMBED_CTA_URL_PARAM, EMBED_SUBSCRIBE_URL_PARAM, EMBED_SUBSCRIBE_TARGET } from '../embed';
 
 export class BuilderProperties {
 
   static decode(params: any): BuilderProperties {
     return new BuilderProperties(
+      params[EMBED_FEED_URL_PARAM],
+      params[EMBED_EPISODE_GUID_PARAM],
       params[EMBED_TITLE_PARAM],
       params[EMBED_SUBTITLE_PARAM],
       params[EMBED_CTA_TITLE_PARAM],
       params[EMBED_AUDIO_URL_PARAM],
       params[EMBED_IMAGE_URL_PARAM],
-      params[EMBED_FEED_URL_PARAM],
       params[EMBED_CTA_URL_PARAM],
       params[EMBED_SUBSCRIBE_URL_PARAM],
       params[EMBED_SUBSCRIBE_TARGET]
@@ -23,30 +25,42 @@ export class BuilderProperties {
   }
 
   constructor(
+    public feedUrl?: string,
+    public episodeGuid?: string,
+    // overrides
     public title?: string,
     public subtitle?: string,
     public ctaTitle?: string,
     public audioUrl?: string,
     public imageUrl?: string,
-    public feedUrl?: string,
     public ctaUrl?: string,
     public subscribeUrl?: string,
     public subscribeTarget?: string
   ) {}
 
+  get allParams () {
+    return {
+      feedUrl: EMBED_FEED_URL_PARAM,
+      episodeGuid: EMBED_EPISODE_GUID_PARAM,
+      title: EMBED_TITLE_PARAM,
+      subtitle: EMBED_SUBTITLE_PARAM,
+      ctaTitle: EMBED_CTA_TITLE_PARAM,
+      audioUrl: EMBED_AUDIO_URL_PARAM,
+      imageUrl: EMBED_IMAGE_URL_PARAM,
+      ctaUrl: EMBED_CTA_URL_PARAM,
+      subscribeUrl: EMBED_SUBSCRIBE_URL_PARAM,
+      subscribeTarget: EMBED_SUBSCRIBE_TARGET
+    };
+  }
+
   get paramString() {
     let str: string[] = [];
 
-    str.push(`${EMBED_TITLE_PARAM}=${this.encode(this.title)}`);
-    str.push(`${EMBED_SUBTITLE_PARAM}=${this.encode(this.subtitle)}`);
-    str.push(`${EMBED_CTA_TITLE_PARAM}=${this.encode(this.ctaTitle)}`);
-    str.push(`${EMBED_AUDIO_URL_PARAM}=${this.encode(this.audioUrl)}`);
-    str.push(`${EMBED_IMAGE_URL_PARAM}=${this.encode(this.imageUrl)}`);
-    str.push(`${EMBED_FEED_URL_PARAM}=${this.encode(this.feedUrl)}`);
-    str.push(`${EMBED_CTA_URL_PARAM}=${this.encode(this.ctaUrl)}`);
-    str.push(`${EMBED_SUBSCRIBE_URL_PARAM}=${this.encode(this.subscribeUrl)}`);
-    str.push(`${EMBED_SUBSCRIBE_TARGET}=${this.encode(this.subscribeTarget)}`);
-
+    for (let param in this.allParams) {
+      if (this[param]) {
+        str.push(`${this.allParams[param]}=${this.encode(this[param])}`);
+      }
+    }
     return str.join('&');
   }
 

@@ -9,6 +9,10 @@
   z-index: 0;
 }
 
+label {
+  font-size: 16px;
+}
+
 #preview-toggle {
   position: fixed;
   right: 10px;
@@ -170,4 +174,24 @@
 .builder-step #audio-preview {
   display: block;
   width: 500px;
+}
+
+/*
+Placeholder default values in builder;
+resource: https://css-tricks.com/almanac/selectors/p/placeholder/
+*/
+.builder-step input::placeholder {
+  color: darkgray;
+}
+.builder-step input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: darkgray;
+}
+.builder-step input::-moz-placeholder { /* Firefox 19+ */
+  color: darkgray;
+}
+.builder-step input:-ms-input-placeholder { /* IE 10+ */
+  color: darkgray;
+}
+.builder-step input:-moz-placeholder { /* Firefox 18- */
+  color: darkgray;
 }
