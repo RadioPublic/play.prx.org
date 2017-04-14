@@ -41,9 +41,10 @@
           placeholder="A podcast's RSS feed URL, eg http://example.com/feed.xml">
         <button type="submit">Submit</button>
       </form>
+      <p *ngIf="feedError"><em>{{feedUrl}}</em> is not an RSS feed.</p>
     </section>
 
-    <section class="builder-step" *ngIf="feedUrl" id="step-2">
+    <section class="builder-step" *ngIf="feedUrl && !feedError" id="step-2">
       <label for="">Select Episode</label>
       <play-episode-picker (select)="onEpisodeSelect($event)" (invalidFeed)="onInvalidFeedNavigate($event)"
       [feedUrl]="feedUrl" [selectedGUID]="episodeGuid"></play-episode-picker>
