@@ -115,6 +115,10 @@ label {
   height: 20px;
 }
 
+.builder-step input[type='url'].error {
+  outline: 5px auto #e32
+}
+
 .builder-step button[type='submit'],
 .builder-step button.copy-code {
   background: #3889a4;

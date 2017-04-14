@@ -21,6 +21,7 @@ export class BuilderComponent implements OnInit {
   props: BuilderProperties;
   previewIframeSrc: SafeResourceUrl;
   editMode = false;
+  feedError = false;
 
   @ViewChild('builderForm') builderForm;
 
