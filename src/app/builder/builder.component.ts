@@ -66,6 +66,7 @@ export class BuilderComponent implements OnInit {
 
   onFeedUrlSubmit(value: string) {
     if (value) {
+      this.feedError = false;
       this.router.navigate(['/'], { queryParams: { uf: value } });
     }
   }
