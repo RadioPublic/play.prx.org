@@ -4,6 +4,8 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { Episode } from './episode';
 import { BuilderProperties } from './builder.properties';
+import { InvalidFeedError } from './builder-errors';
+
 
 @Component({
   selector: 'play-builder',
@@ -65,6 +67,10 @@ export class BuilderComponent implements OnInit {
     if (value) {
       this.router.navigate(['/'], { queryParams: { uf: value } });
     }
+  }
+
+  onInvalidFeedNavigate(error: InvalidFeedError) {
+    this.feedError = true;
   }
 
   onEpisodeSelect(episode: Episode) {

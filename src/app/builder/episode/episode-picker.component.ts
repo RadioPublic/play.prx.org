@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Episode } from './episode';
+import { InvalidFeedError } from '../builder-errors';
 
 const customProxyUri = window['ENV']['FEED_PROXY_URL'] || '/proxy?url=';
 
@@ -21,6 +22,7 @@ export class EpisodePickerComponent implements OnChanges, OnInit {
   @Input() feedUrl: string;
   @Input() selectedGUID: string;
   @Output() select = new EventEmitter<Episode>();
+  @Output() invalidFeed = new EventEmitter<InvalidFeedError>();
 
   episodes: Observable<Episode[]>;
   _episodes: Episode[];
@@ -49,13 +51,17 @@ export class EpisodePickerComponent implements OnChanges, OnInit {
 
   private getEpisodes() {
     this.episodes = this.http.get(this.proxiedFeedUri).map((res: Response) => {
+
       let episodes: Episode[] = [];
 
       let xml = res.text();
 
       let parser = new DOMParser();
       let doc = <XMLDocument> parser.parseFromString(xml, 'application/xml');
-
+      if (!doc.querySelector('channel')) {
+        this.invalidFeed.emit(new InvalidFeedError(this.feedUrl));
+        return;
+      }
       let img: string;
 
       let _img = Array.from(doc.querySelectorAll('channel > *[href]')).filter(e => e.nodeName === 'itunes:image')[0];
