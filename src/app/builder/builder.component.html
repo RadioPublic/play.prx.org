@@ -75,8 +75,7 @@
         <fieldset>
           <label>Audio URL</label>
           <input type="text" [(ngModel)]="props.audioUrl" id="audioUrl" [placeholder]="defaults.audioUrl" name="audioUrl">
-          <audio controls id="audio-preview">
-            <source [src]="props.audioUrl || defaults.audioUrl" type="audio/mpeg">
+          <audio controls id="audio-preview" [src]="props.audioUrl || defaults.audioUrl">
           </audio>
         </fieldset>
 
