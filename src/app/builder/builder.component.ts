@@ -21,7 +21,7 @@ export class BuilderComponent implements OnInit {
   props: BuilderProperties;
   previewIframeSrc: SafeResourceUrl;
   editMode = false;
-  updatingPlayer = false;
+  playLatest = false;
   feedError = false;
 
   @ViewChild('builderForm') builderForm;
@@ -55,9 +55,9 @@ export class BuilderComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustResourceUrl(`/e?${this.props.paramString}`);
   }
 
-  updatePlayer() {
-    this.updatingPlayer = !this.updatingPlayer;
-    if (this.updatingPlayer) {
+  togglePlayLatest() {
+    this.playLatest = !this.playLatest;
+    if (this.playLatest) {
       this.props.episodeGuid = '';
     }
   }
@@ -84,7 +84,7 @@ export class BuilderComponent implements OnInit {
   }
 
   onEpisodeSelect(episode: Episode) {
-    this.updatingPlayer = false;
+    this.playLatest = false;
     this.props = new BuilderProperties(
       this.feedUrl,
       episode.guid,
