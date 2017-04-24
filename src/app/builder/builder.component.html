@@ -56,8 +56,8 @@
         </fieldset>
     </section>
 
-    <form #builderForm="ngForm" *ngIf="!updatingPlayer">
-      <section class="builder-step" id="step-3" *ngIf="props">
+    <form #builderForm="ngForm">
+      <section class="builder-step" id="step-3" *ngIf="props && !updatingPlayer">
         <h4>Customize Your Player</h4>
         <p>These fields are for overrides only. They should be altered
           if you want to override the episode's information in your RSS feed

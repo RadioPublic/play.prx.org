@@ -46,11 +46,9 @@ export class BuilderComponent implements OnInit {
         this.feedUrl = null;
       }
     });
-    if (this.builderForm) {
-      this.builderForm.control.valueChanges.debounceTime(3500).forEach(() => {
-        this.previewIframeSrc = this._previewIframeSrc;
-      });
-    }
+    this.builderForm.control.valueChanges.debounceTime(3500).forEach(() => {
+      this.previewIframeSrc = this._previewIframeSrc;
+    });
   }
 
   get _previewIframeSrc() {
