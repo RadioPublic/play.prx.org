@@ -60,18 +60,7 @@ export class BuilderComponent implements OnInit {
   updatePlayer() {
     this.updatingPlayer = !this.updatingPlayer;
     if (this.updatingPlayer) {
-      this.props = new BuilderProperties(
-        this.feedUrl,
-        '', // guid,
-        '', // title
-        '', // subtitle
-        '', // CTA title
-        '', // audio url
-        '', // image
-        '', // CTA url
-        '', // subscriptionURL
-        '_blank'
-      );
+      this.props.episodeGuid = '';
     }
   }
 
