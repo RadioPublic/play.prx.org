@@ -57,6 +57,24 @@ export class BuilderComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustResourceUrl(`/e?${this.props.paramString}`);
   }
 
+  updatePlayer() {
+    this.updatingPlayer = !this.updatingPlayer;
+    if (this.updatingPlayer) {
+      this.props = new BuilderProperties(
+        this.feedUrl,
+        '', // guid,
+        '', // title
+        '', // subtitle
+        '', // CTA title
+        '', // audio url
+        '', // image
+        '', // CTA url
+        '', // subscriptionURL
+        '_blank'
+      );
+    }
+  }
+
   setEmptyDefaults() {
     this.defaults = {
       title:   '',
@@ -79,6 +97,7 @@ export class BuilderComponent implements OnInit {
   }
 
   onEpisodeSelect(episode: Episode) {
+    this.updatingPlayer = false;
     this.props = new BuilderProperties(
       this.feedUrl,
       episode.guid,
