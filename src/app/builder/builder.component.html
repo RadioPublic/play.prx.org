@@ -45,12 +45,15 @@
     </section>
 
     <section class="builder-step" *ngIf="feedUrl && !feedError" id="step-2">
+      <label for="updatingPlayer">Always play the most recent episode</label>
+      <input type="checkbox" [(ngModel)]="updatingPlayer">Player should auto update to always display and play the most recent episode from my feed.
+      <label for="">~ Or ~</label>
       <label for="">Select Episode</label>
       <play-episode-picker (select)="onEpisodeSelect($event)" (invalidFeed)="onInvalidFeedNavigate($event)"
       [feedUrl]="feedUrl" [selectedGUID]="episodeGuid"></play-episode-picker>
     </section>
 
-    <form #builderForm="ngForm">
+    <form #builderForm="ngForm" *ngIf="!updatingPlayer">
       <section class="builder-step" id="step-3" *ngIf="props">
         <h4>Customize Your Player</h4>
         <p>These fields are for overrides only. They should be altered
@@ -109,6 +112,7 @@
         </fieldset> -->
       </section>
     </form>
+    <hr>
 
     <section class="builder-step" id="step-4" *ngIf="props">
       <h4>Copy and Use Your Embed Code</h4>

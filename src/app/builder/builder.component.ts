@@ -21,6 +21,7 @@ export class BuilderComponent implements OnInit {
   props: BuilderProperties;
   previewIframeSrc: SafeResourceUrl;
   editMode = false;
+  updatingPlayer = false;
   feedError = false;
 
   @ViewChild('builderForm') builderForm;
@@ -45,9 +46,11 @@ export class BuilderComponent implements OnInit {
         this.feedUrl = null;
       }
     });
-    this.builderForm.control.valueChanges.debounceTime(3500).forEach(() => {
-      this.previewIframeSrc = this._previewIframeSrc;
-    });
+    if (this.builderForm) {
+      this.builderForm.control.valueChanges.debounceTime(3500).forEach(() => {
+        this.previewIframeSrc = this._previewIframeSrc;
+      });
+    }
   }
 
   get _previewIframeSrc() {
