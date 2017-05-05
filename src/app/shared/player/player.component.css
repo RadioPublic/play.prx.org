@@ -5,7 +5,8 @@
   -webkit-filter: blur(25px);
   -moz-filter: blur(25px);
   -o-filter: blur(25px);
-  margin: -25px;
+  top: -25px;
+  left: -25px;
   /* to account for the white-edge blurring from the filter: blur */
   min-height: 233px;
   width: calc(100% + 50px);
@@ -92,7 +93,8 @@ header {
 }
 
 h1,
-h2 {
+h2,
+h3 {
   margin: 0;
   border: 0;
   padding: 0;
@@ -103,6 +105,16 @@ h2 {
   color: #ffffff;
 }
 
+h3 {
+  color: rgba(255, 255, 255, 0.55);
+  margin-top: 6px;
+}
+
+h1 a, h2 a, h3 a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
 h1 {
   height: 20px;
   font-size: 16px;
@@ -110,6 +122,11 @@ h1 {
 }
 
 h2 {
+  height: 18px;
+  font-size: 14px;
+}
+
+h3 {
   height: 18px;
   font-size: 14px;
 }
@@ -161,6 +178,10 @@ nav a {
   cursor: pointer;
 }
 
+nav a:last-child {
+  margin-right: 0;
+}
+
 nav a:hover {
   color: #1e4e5c;
 }
@@ -168,8 +189,6 @@ nav a:hover {
 .nav-button {
   width: 32px;
   height: 32px;
-  border-radius: 50%;
-  border: 1.5px solid gray;
   background: inherit;
 }
 

@@ -22,10 +22,10 @@ export class DraperAdapter extends FeedAdapter {
     }
   }
 
-  processFeed(feedUrl: string, episodeGuid?: string): Observable<AdapterProperties> {
-    return super.processFeed(feedUrl, episodeGuid).map(props => {
+  processFeed(feedUrl: string, episodeGuid?: string, baseProperties?: AdapterProperties): Observable<AdapterProperties> {
+    return super.processFeed(feedUrl, episodeGuid, baseProperties).map(props => {
       props.subscribeTarget = "_top";
-      if (episodeGuid) {
+      if (episodeGuid && props.subscribeUrl.indexOf('/ep/') === -1) {
         if (!this.isEncoded(episodeGuid)) {
           episodeGuid = this.encodeGuid(episodeGuid);
         }
@@ -39,7 +39,9 @@ export class DraperAdapter extends FeedAdapter {
     props = super.processDoc(doc, props);
     props.feedArtworkUrl = this.getTagAttributeNS(doc, 'rp', 'image', 'href')
                         || props.feedArtworkUrl;
-    props.subscribeUrl = `https://play.radiopublic.com/${this.getTagTextNS(doc, 'rp', 'program-id')}`;
+    props.programId = this.getTagTextNS(doc, 'rp', 'program-id');
+    props.subscribeUrl = `https://play.radiopublic.com/${props.programId}`;
+    props.programLink = props.subscribeUrl;
     return props;
   }
 
@@ -47,10 +49,14 @@ export class DraperAdapter extends FeedAdapter {
     props = super.processEpisode(item, props);
     props.artworkUrl = this.getTagAttributeNS(item, 'rp', 'image', 'href')
                     || props.artworkUrl;
+    props.episodeLink = `${props.programLink}/ep/${this.encodeGuid(this.getTagText(item, 'guid'))}`;
     return props;
   }
 
   proxyUrl(feedId: string): string {
+    if (/^http/i.test(feedId)) {
+      return `https://draper.radiopublic.com/transform?url=${feedId}`;
+    }
     return `https://draper.radiopublic.com/transform?program_id=${feedId}`;
   }
 

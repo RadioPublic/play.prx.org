@@ -16,9 +16,10 @@ const PYM_CHILD_ID_PARAM = 'childId';
   template: `
     <play-share-modal *ngIf="showShareModal" (close)="hideModal()">
     </play-share-modal>
-    <play-player [feedArtworkUrl]="feedArtworkUrl" [audioUrl]="audioUrl" [title]="title" [subtitle]="subtitle"
-      [subscribeUrl]="subscribeUrl" [subscribeTarget]="subscribeTarget"
-      [artworkUrl]="artworkUrl" (share)="showModal()">
+    <play-player #player [feedArtworkUrl]="feedArtworkUrl" [audioUrl]="audioUrl" [title]="title" [subtitle]="subtitle"
+      [subscribeUrl]="subscribeUrl" [subscribeTarget]="subscribeTarget" (play)="setHasInteracted()"
+      [artworkUrl]="artworkUrl" (share)="showModal()" (pause)="showModal()" (complete)="showModal()"
+       [episodeLink]="episodeLink" [programLink]="programLink" [pointerFeedName]="pointerFeedName" [pointerFeedUrl]="pointerFeedUrl">
     </play-player>
   `
 })
@@ -35,7 +36,12 @@ export class EmbedComponent implements OnInit {
   subscribeTarget: string;
   artworkUrl: string;
   feedArtworkUrl: string;
+  programLink: string;
+  episodeLink: string;
+  programId: string;
   pymId?: string;
+  pointerFeedName: string;
+  pointerFeedUrl: string;
 
   constructor(private route: ActivatedRoute, private adapter: MergeAdapter) {}
 
@@ -65,6 +71,11 @@ export class EmbedComponent implements OnInit {
     this.subscribeTarget = ( properties.subscribeTarget || this.subscribeTarget || '_blank');
     this.artworkUrl = ( properties.artworkUrl || this.artworkUrl );
     this.feedArtworkUrl = ( properties.feedArtworkUrl || this.feedArtworkUrl );
+    this.programId = properties.programId;
+    this.episodeLink = properties.episodeLink;
+    this.programLink = properties.programLink;
+    this.pointerFeedName = properties.pointerFeedName;
+    this.pointerFeedUrl = properties.pointerFeedUrl;
 
     // fallback to feed image
     this.artworkUrl = this.artworkUrl || this.feedArtworkUrl;

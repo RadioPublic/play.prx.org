@@ -12,8 +12,9 @@
     <section>
       <header>
         <div class="titles">
-          <h1 [title]="title">{{title}}</h1>
-          <h2 [title]="subtitle">{{subtitle}}</h2>
+          <h1 [title]="title"><a [href]="episodeLink" target="_top">{{title}}</a></h1>
+          <h2 [title]="subtitle"><a [href]="programLink" target="_top">{{subtitle}}</a></h2>
+          <h3 *ngIf="pointerFeedName">Shared via <a [href]="pointerFeedUrl" target="_top">{{pointerFeedName}}</a></h3>
         </div>
         <div class="logo" id="upper-logo"><img *ngIf="logoSrc" [src]="logoSrc" alt=""></div>
       </header>
