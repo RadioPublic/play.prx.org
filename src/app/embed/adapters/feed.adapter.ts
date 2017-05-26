@@ -34,7 +34,7 @@ export class FeedAdapter implements DataAdapter {
     }
   }
 
-  processFeed(feedUrl: string, episodeGuid?: string, numEpisodes?: number): Observable<AdapterProperties> {
+  processFeed(feedUrl: string, episodeGuid?: string, numEpisodes?: number | string): Observable<AdapterProperties> {
     return this.fetchFeed(feedUrl).map(body => {
       let props = this.parseFeed(body, episodeGuid, numEpisodes);
       Object.keys(props).filter(k => props[k] === undefined).forEach(key => delete props[key]);
@@ -58,7 +58,7 @@ export class FeedAdapter implements DataAdapter {
     });
   }
 
-  parseFeed(xml: string, episodeGuid?: string, numEpisodes?: number): AdapterProperties {
+  parseFeed(xml: string, episodeGuid?: string, numEpisodes?: number | string): AdapterProperties {
     let parser = new DOMParser();
     let doc = <XMLDocument> parser.parseFromString(xml, 'application/xml');
     let props = this.processDoc(doc);
@@ -97,9 +97,12 @@ export class FeedAdapter implements DataAdapter {
     }
   }
 
-  parseFeedEpisodes(doc: XMLDocument, numEpisodes: number): AdapterProperties[] {
+  parseFeedEpisodes(doc: XMLDocument, numEpisodes: number | string): AdapterProperties[] {
     let episodes = Array.from(doc.querySelectorAll('item'));
-    return episodes.slice(0, numEpisodes).map((item, index) => {
+    if (!isNaN(+numEpisodes)) {
+      episodes = episodes.slice(0, +numEpisodes);
+    }
+    return episodes.map((item, index) => {
       let ep = this.processEpisode(item);
       ep.index = index;
       return ep;
