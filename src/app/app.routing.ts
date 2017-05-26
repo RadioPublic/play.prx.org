@@ -13,10 +13,10 @@ export const routes: Routes = [
 
 export const routingComponents: any[] = [
   BuilderComponent,
-  EpisodePickerComponent,
+  DemoComponent,
   EmbedComponent,
-  ShareModalComponent,
-  DemoComponent
+  EpisodePickerComponent,
+  ShareModalComponent
 ];
 
 export const routingProviders: any[] = [];

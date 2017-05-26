@@ -1,0 +1,27 @@
+<div class="playlist-container">
+  <header class="playlist-info">
+    <em>{{episodes.length}} episodes</em>
+    <small>{{ totalDuration | duration }}</small>
+  </header>
+  <ol>
+    <li class="playlist-entry" (click)="playlistItemClicked.emit(episode.index)" *ngFor="let episode of episodes">
+      <small class="entry-index">
+        {{ episode.index + 1 }}
+      </small>
+      <div class="entry-img">
+        <img *ngIf="episode.artworkUrl || channelArt" class="ep-art" [src]="episode.artworkUrl || channelArt"/>
+        <img  *ngIf="(episode.index) == episodeIndex && playing" class="pauseButton" src="/assets/images/large-semi-transparent-pause.svg" alt="" />
+      </div>
+      <div class="entry-title">
+        <h2>
+          {{ episode.title }}
+        </h2>
+        <div>
+          {{ subtitle }}
+        </div>
+      </div>
+      <small>
+        {{ episode.duration | duration }}
+      </small>
+    </li>
+  </ol>
