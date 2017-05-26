@@ -99,8 +99,8 @@ export class FeedAdapter implements DataAdapter {
 
   parseFeedEpisodes(doc: XMLDocument, numEpisodes: number | string): AdapterProperties[] {
     let episodes = Array.from(doc.querySelectorAll('item'));
-    if (typeof numEpisodes === 'number') {
-      episodes = episodes.slice(0, numEpisodes);
+    if (!isNaN(+numEpisodes)) {
+      episodes = episodes.slice(0, +numEpisodes);
     }
     return episodes.map((item, index) => {
       let ep = this.processEpisode(item);
