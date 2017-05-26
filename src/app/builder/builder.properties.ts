@@ -38,7 +38,7 @@ export class BuilderProperties {
     public ctaUrl?: string,
     public subscribeUrl?: string,
     public subscribeTarget?: string,
-    public playlistLength?: number
+    public playlistLength?: number | string
   ) {}
 
   get allParams () {
