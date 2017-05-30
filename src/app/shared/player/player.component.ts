@@ -63,7 +63,7 @@ export class PlayerComponent implements OnInit, OnChanges {
     });
     this.logger = new Logger(this.player, this.title, this.subtitle);
 
-    this.artworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.artworkUrl}')`);
+    this.setEpisodeArtworkSafe();
     this.feedArtworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.feedArtworkUrl}')`);
 
     this.duration = Observable.create((observer: Observer<number>) => {
@@ -107,6 +107,10 @@ export class PlayerComponent implements OnInit, OnChanges {
     }
   }
 
+  setEpisodeArtworkSafe() {
+    this.artworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.artworkUrl}')`);
+  }
+
   showShareModal() {
     this.share.emit(true);
   }
@@ -145,6 +149,7 @@ export class PlayerComponent implements OnInit, OnChanges {
       this.episodeIndex = index;
       this.title = newEpisode.title;
       this.artworkUrl = newEpisode.artworkUrl;
+      this.setEpisodeArtworkSafe();
       this.audioUrl = this.player.src = newEpisode.audioUrl;
       this.player.addEventListener('canplay', e => {
         this.player.play();
