@@ -1,7 +1,7 @@
 <div class="playlist-container">
   <header class="playlist-info">
     <em>{{episodes.length}} episodes</em>
-    <small>{{ totalDuration | duration }}</small>
+    <small>{{ estDuration(totalDuration) }}</small>
   </header>
   <ol>
     <li class="playlist-entry" (click)="playlistItemClicked.emit(episode.index)" *ngFor="let episode of episodes">
@@ -21,7 +21,7 @@
         </div>
       </div>
       <small>
-        {{ episode.duration | duration }}
+        {{ estDuration(episode.duration) }}
       </small>
     </li>
   </ol>
