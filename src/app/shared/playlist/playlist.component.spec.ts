@@ -58,4 +58,13 @@ describe('PlaylistComponent', () => {
     comp.episodes = [{duration: '27'}, {duration: '31'}];
     expect(comp.totalDuration).toEqual(58);
   });
+
+  it('can estimate durations', () => {
+    // This allows for discrepancy between player-detected duration, which can
+    // vary moment to moment based on what ads are served, and itunes:duration from feed.
+    // TODO: store ad duration with ad in Adzerk and use that to calculate duration instead.
+    expect(comp.estDuration(1643)).toEqual('27m');
+    expect(comp.estDuration(3661)).toEqual('1h 1m');
+    expect(comp.estDuration(4801312)).toEqual('55d 13h 41m');
+  });
 });
