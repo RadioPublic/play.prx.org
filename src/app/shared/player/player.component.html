@@ -30,7 +30,7 @@
             <button (click)="seekBy(30)" id="forward-control-button">
               <img src="/assets/images/forward-30.svg" alt="">
             </button>
-            <button *ngIf="showPlaylist" (click)="skipTrack()" id="skip-button">
+            <button *ngIf="showPlaylist" (click)="skipTrack()" id="skip-button-1">
               <img src="/assets/images/skip.svg" alt="">
             </button>
 
@@ -49,6 +49,9 @@
             <a (click)="showShareModal()" id="share-button">
               <img class="nav-button" src="/assets/images/share.svg" alt="">
             </a>
+            <button id="skip-button-2" *ngIf="showPlaylist" (click)="skipTrack()">
+              <img src="/assets/images/skip.svg" alt="">
+            </button>
           </nav>
           <div class="logo" id="lower-logo"><img *ngIf="logoSrc" [src]="logoSrc" alt=""></div>
         </div>
