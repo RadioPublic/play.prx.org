@@ -53,23 +53,21 @@ export class BuilderComponent implements OnInit {
   }
 
   get _previewIframeSrc() {
-    if (this.props) {
-      return this.sanitizer.bypassSecurityTrustResourceUrl(`/e?${this.props.paramString}`);
-    }
+    return this.sanitizer.bypassSecurityTrustResourceUrl(`/e?${this.props.paramString}`);
   }
 
   togglePlayLatest() {
     this.playLatest = !this.playLatest;
-    if (this.props && this.playLatest) {
+    if (this.playLatest) {
       this.props.episodeGuid = '';
     }
   }
 
   togglePlayPlaylist() {
     this.playPlaylist = !this.playPlaylist;
-    if (this.props && this.playPlaylist) {
+    if (this.playPlaylist) {
       this.props.playlistLength = this.props.playlistLength || 10;
-    } else if (this.props) {
+    } else {
       this.props.playlistLength = 0;
     }
     this.resetPreviewIframe();
