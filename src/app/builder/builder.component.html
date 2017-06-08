@@ -60,7 +60,7 @@
           <input type="checkbox" [checked]="playPlaylist" (change)="togglePlayPlaylist()">
           Make It A Playlist
         </label>
-        <fieldset *ngIf="playPlaylist">
+        <fieldset *ngIf="props && playPlaylist">
           <p>This will create a playlist from your RSS feed, starting with the most recent episode. The list of upcoming episodes will appear underneath the regular player.</p>
           <select [(ngModel)]="props.playlistLength">
             <option value="5">5 episodes in playlist</option>
@@ -82,9 +82,14 @@
 
       <fieldset *ngIf="!playLatest">
         <label>Or: Select Episode</label>
+        <p *ngIf="feedUrl && !props">
+          Loading episodes...
+        </p>
         <play-episode-picker  (select)="onEpisodeSelect($event)" (invalidFeed)="onInvalidFeedNavigate($event)"
         [feedUrl]="feedUrl" [selectedGUID]="episodeGuid"></play-episode-picker>
       </fieldset>
+
+
       <hr>
     </section>
 

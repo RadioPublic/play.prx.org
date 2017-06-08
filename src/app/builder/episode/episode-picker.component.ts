@@ -62,7 +62,6 @@ export class EpisodePickerComponent implements OnChanges, OnInit {
         this.invalidFeed.emit(new InvalidFeedError(this.feedUrl));
         return;
       }
-      let epImg: string;
       let feedImg: string;
 
       let _img = Array.from(doc.querySelectorAll('channel > *[href]')).filter(e => e.nodeName === 'itunes:image')[0];
@@ -85,6 +84,7 @@ export class EpisodePickerComponent implements OnChanges, OnInit {
 
         let encUrl = item.querySelector('enclosure').getAttribute('url');
 
+        let epImg = feedImg;
         let __img = Array.from(item.querySelectorAll('*[href]')).filter(e => e.nodeName === 'itunes:image')[0];
         if (__img) {
           epImg = __img.getAttribute('href');
