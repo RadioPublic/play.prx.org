@@ -2,7 +2,7 @@ import { EMBED_FEED_URL_PARAM, EMBED_EPISODE_GUID_PARAM,
   EMBED_TITLE_PARAM, EMBED_SUBTITLE_PARAM, EMBED_CTA_TITLE_PARAM,
   EMBED_AUDIO_URL_PARAM, EMBED_IMAGE_URL_PARAM,
   EMBED_CTA_URL_PARAM, EMBED_SUBSCRIBE_URL_PARAM, EMBED_SUBSCRIBE_TARGET,
-  EMBED_SHOW_PLAYLIST_PARAM } from '../embed';
+  EMBED_SHOW_PLAYLIST_PARAM, EMBED_EP_IMAGE_URL_PARAM } from '../embed';
 
 export class BuilderProperties {
 
@@ -15,6 +15,7 @@ export class BuilderProperties {
       params[EMBED_CTA_TITLE_PARAM],
       params[EMBED_AUDIO_URL_PARAM],
       params[EMBED_IMAGE_URL_PARAM],
+      params[EMBED_EP_IMAGE_URL_PARAM],
       params[EMBED_CTA_URL_PARAM],
       params[EMBED_SUBSCRIBE_URL_PARAM],
       params[EMBED_SUBSCRIBE_TARGET],
@@ -49,7 +50,8 @@ export class BuilderProperties {
       subtitle: EMBED_SUBTITLE_PARAM,
       ctaTitle: EMBED_CTA_TITLE_PARAM,
       audioUrl: EMBED_AUDIO_URL_PARAM,
-      imageUrl: EMBED_IMAGE_URL_PARAM,
+      feedImageUrl: EMBED_IMAGE_URL_PARAM,
+      epImageUrl: EMBED_EP_IMAGE_URL_PARAM,
       ctaUrl: EMBED_CTA_URL_PARAM,
       subscribeUrl: EMBED_SUBSCRIBE_URL_PARAM,
       subscribeTarget: EMBED_SUBSCRIBE_TARGET,
