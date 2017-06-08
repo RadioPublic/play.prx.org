@@ -109,13 +109,14 @@
         <fieldset>
           <img [src]="props.epImageUrl || defaults.epImageUrl" id="artwork-preview">
           <label>Episode Artwork URL</label>
+          <p><small>This artwork will be featured prominently in the foreground of the player.</small></p>
           <input type="text" [(ngModel)]="props.epImageUrl" id="epImageUrl" [placeholder]="defaults.epImageUrl" name="epImageUrl">
         </fieldset>
 
         <fieldset>
           <label>Feed Artwork URL</label>
+          <p><small>This artwork will fill the background of the player.</small></p>
           <input type="text" [(ngModel)]="props.feedImageUrl" id="feedImageUrl" [placeholder]="defaults.feedImageUrl" name="feedImageUrl">
-          <small>This artwork will fill the background of the player.</small>
         </fieldset>
 
         <fieldset>
