@@ -5,7 +5,8 @@ export class Episode {
     public guid: string,
     public title: string,
     public artist: string,
-    public imageUrl: string
+    public feedImageUrl: string,
+    public epImageUrl: string
   ) {}
 
   paramURL(): string {

@@ -6,6 +6,7 @@ export const EMBED_SUBTITLE_PARAM           = 'ts';
 export const EMBED_CTA_TITLE_PARAM          = 'tc';
 export const EMBED_AUDIO_URL_PARAM          = 'ua';
 export const EMBED_IMAGE_URL_PARAM          = 'ui';
+export const EMBED_EP_IMAGE_URL_PARAM       = 'ue';
 export const EMBED_FEED_URL_PARAM           = 'uf';
 export const EMBED_FEED_ID_PARAM            = 'if';
 export const EMBED_EPISODE_GUID_PARAM       = 'ge';

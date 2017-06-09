@@ -55,36 +55,40 @@
     </section>
 
     <section class="builder-step" *ngIf="feedUrl && !feedError" id="step-2">
-      <fieldset>
-        <label>
-          <input type="checkbox" [checked]="playPlaylist" (change)="togglePlayPlaylist()">
-          Make It A Playlist
-        </label>
-        <fieldset *ngIf="playPlaylist">
-          <p>This will create a playlist from your RSS feed, starting with the most recent episode. The list of upcoming episodes will appear underneath the regular player.</p>
-          <select [(ngModel)]="props.playlistLength">
-            <option value="5">5 episodes in playlist</option>
-            <option value="10">10 episodes in playlist</option>
-            <option value="15">15 episodes in playlist</option>
-            <option value="20">20 episodes in playlist</option>
-            <option value="all">All episodes in playlist</option>
-          </select>
+      <h3 *ngIf="feedUrl && !props">Loading episodes...</h3>
+      <section *ngIf="props">
+        <fieldset>
+          <label>
+            <input type="checkbox" [checked]="playPlaylist" (change)="togglePlayPlaylist()">
+            Make It A Playlist
+          </label>
+          <fieldset *ngIf="playPlaylist">
+            <p>This will create a playlist from your RSS feed, starting with the most recent episode. The list of upcoming episodes will appear underneath the regular player.</p>
+            <select [(ngModel)]="props.playlistLength">
+              <option value="5">5 episodes in playlist</option>
+              <option value="10">10 episodes in playlist</option>
+              <option value="15">15 episodes in playlist</option>
+              <option value="20">20 episodes in playlist</option>
+              <option value="all">All episodes in playlist</option>
+            </select>
+          </fieldset>
         </fieldset>
-      </fieldset>
 
-      <fieldset>
-        <label>
-          <input type="checkbox" [checked]="playLatest" (change)="togglePlayLatest()">
-          Always Play Most Recent Episode
-        </label>
-        <p *ngIf="playLatest">The player will automatically update to always play the most recent episode from your feed.</p>
-      </fieldset>
+        <fieldset>
+          <label>
+            <input type="checkbox" [checked]="playLatest" (change)="togglePlayLatest()">
+            Always Play Most Recent Episode
+          </label>
+          <p *ngIf="playLatest">The player will automatically update to always play the most recent episode from your feed.</p>
+        </fieldset>
+      </section>
 
       <fieldset *ngIf="!playLatest">
-        <label>Or: Select Episode</label>
+        <label *ngIf="props">Or: Select Episode</label>
         <play-episode-picker  (select)="onEpisodeSelect($event)" (invalidFeed)="onInvalidFeedNavigate($event)"
         [feedUrl]="feedUrl" [selectedGUID]="episodeGuid"></play-episode-picker>
       </fieldset>
+
       <hr>
     </section>
 
@@ -107,9 +111,16 @@
         </fieldset>
 
         <fieldset>
-          <img [src]="props.imageUrl || defaults.imageUrl" id="artwork-preview">
-          <label>Artwork URL</label>
-          <input type="text" [(ngModel)]="props.imageUrl" id="imageUrl" [placeholder]="defaults.imageUrl" name="imageUrl">
+          <img [src]="props.epImageUrl || defaults.epImageUrl" id="artwork-preview">
+          <label>Spotlight Artwork URL</label>
+          <p><small>This artwork, which defaults to the episode image, will feature prominently in the foreground of the player.</small></p>
+          <input type="text" [(ngModel)]="props.epImageUrl" id="epImageUrl" [placeholder]="defaults.epImageUrl" name="epImageUrl">
+        </fieldset>
+
+        <fieldset>
+          <label>Background Artwork URL</label>
+          <p><small>This artwork, which defaults to the feed image, will fill the background of the player.</small></p>
+          <input type="text" [(ngModel)]="props.feedImageUrl" id="feedImageUrl" [placeholder]="defaults.feedImageUrl" name="feedImageUrl">
         </fieldset>
 
         <fieldset>

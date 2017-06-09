@@ -82,7 +82,8 @@ export class BuilderComponent implements OnInit {
       title:   '',
       subtitle: '',
       audioUrl: '',
-      imageUrl: '',
+      feedImageUrl: '',
+      epImageUrl: '',
       subscribeUrl: ''
     };
   }
@@ -108,7 +109,8 @@ export class BuilderComponent implements OnInit {
       '', // subtitle
       '', // CTA title
       '', // audio url
-      '', // image
+      '', // feed image
+      '', // episode image
       '', // CTA url
       '', // subscriptionURL
       '_blank', // subscribe target
@@ -118,7 +120,8 @@ export class BuilderComponent implements OnInit {
       title: episode.title,
       subtitle: episode.artist,
       audioUrl: episode.url,
-      imageUrl: episode.imageUrl,
+      feedImageUrl: episode.feedImageUrl,
+      epImageUrl: episode.epImageUrl,
       subscribeUrl: this.feedUrl
     };
     this.resetPreviewIframe();
