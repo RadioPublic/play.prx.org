@@ -61,7 +61,9 @@ export class PlayerComponent implements OnInit, OnChanges {
         this.updatePlayingEpisode(this.episodeIndex);
       }
     });
-    this.logger = new Logger(this.player, this.title, this.subtitle);
+    if (this.title) {
+      this.logger = new Logger(this.player, this.title, this.subtitle);
+    }
 
     this.setEpisodeArtworkSafe();
     this.feedArtworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.feedArtworkUrl}')`);
