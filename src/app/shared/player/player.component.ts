@@ -61,7 +61,7 @@ export class PlayerComponent implements OnInit, OnChanges {
         this.updatePlayingEpisode(this.episodeIndex);
       }
     });
-    if (this.title) {
+    if (this.title && this.subtitle) {
       this.logger = new Logger(this.player, this.title, this.subtitle);
     }
 
