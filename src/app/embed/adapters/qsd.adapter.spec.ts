@@ -1,7 +1,7 @@
 import { testService, injectHttp } from '../../../testing';
 import { QSDAdapter } from './qsd.adapter';
-import { EMBED_AUDIO_URL_PARAM, EMBED_TITLE_PARAM, EMBED_SUBTITLE_PARAM,
-  EMBED_SUBSCRIBE_URL_PARAM, EMBED_SUBSCRIBE_TARGET, EMBED_IMAGE_URL_PARAM } from './../embed.constants';
+import { EMBED_AUDIO_URL_PARAM, EMBED_TITLE_PARAM, EMBED_SUBTITLE_PARAM, EMBED_SUBSCRIBE_URL_PARAM,
+  EMBED_SUBSCRIBE_TARGET, EMBED_IMAGE_URL_PARAM, EMBED_EP_IMAGE_URL_PARAM } from './../embed.constants';
 
 describe('QSDAdapter', () => {
 
@@ -13,7 +13,8 @@ describe('QSDAdapter', () => {
     subtitle:        EMBED_SUBTITLE_PARAM,
     subscribeUrl:    EMBED_SUBSCRIBE_URL_PARAM,
     subscribeTarget: EMBED_SUBSCRIBE_TARGET,
-    feedArtworkUrl:  EMBED_IMAGE_URL_PARAM
+    feedArtworkUrl:  EMBED_IMAGE_URL_PARAM,
+    artworkUrl:      EMBED_EP_IMAGE_URL_PARAM
   };
 
   // helper to sync-get properties
@@ -52,7 +53,7 @@ describe('QSDAdapter', () => {
     expect(props.subtitle).toEqual('the subtitle');
     expect(props.subscribeUrl).toEqual('subscribe-url');
     expect(props.subscribeTarget).toEqual('subscribe-target');
-    expect(props.artworkUrl).toBeUndefined();
+    expect(props.artworkUrl).toEqual('artwork-url');
     expect(props.feedArtworkUrl).toEqual('feed-artwork-url');
     expect(props.foobar).toBeUndefined();
   }));
