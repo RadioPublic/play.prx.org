@@ -36,3 +36,4 @@ Thumbs.db
 
 # dot environment
 /.env
+/.*.env
