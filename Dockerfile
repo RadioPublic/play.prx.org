@@ -1,4 +1,4 @@
-FROM mhart/alpine-node:6.5
+FROM mhart/alpine-node:8.1.2
 
 MAINTAINER PRX <sysadmin@prx.org>
 LABEL org.prx.app="yes"
@@ -21,16 +21,11 @@ EXPOSE 4300
 
 ADD . ./
 
-# TODO: someday https://github.com/sass/node-sass/issues/1589 will happen,
-# and building this will be way faster.
-RUN apk --update add --no-cache --virtual build-dependencies \
-    python=2.7.12-r0 git-perl bash make gcc g++ && \
-    npm set progress=false && \
-    npm install --no-optional --unsafe-perm --loglevel error && \
+RUN apk --no-cache add libsass && \
+    yarn install --ignore-optional && \
     npm run build && \
-    npm prune --production --loglevel error && \
-    npm cache clean && \
-    apk del build-dependencies && \
+    yarn install --production && \
+    yarn cache clean && \
     rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
 
 ENTRYPOINT ["/tini", "--", "./bin/application"]
