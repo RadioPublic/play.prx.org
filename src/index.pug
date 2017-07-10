@@ -14,7 +14,7 @@ html(lang='en')
     != css
     != js
     script!='window.ENV='+JSON.stringify(env)+';window.sl='+JSON.stringify(scripts)
-    if gaKey
+    if env.GA_KEY
       script.
         if(!navigator || !(navigator.doNotTrack == 1)) {
           var x = document.createElement('script');x.src="https://www.google-analytics.com/analytics.js";x.async=!!1;document.body.appendChild(x);
