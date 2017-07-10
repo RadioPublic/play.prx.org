@@ -27,8 +27,8 @@ export function testService(service: Type<any>, extraProviders: any[] = []) {
 };
 
 // http request helper
-interface HttpMocker { (responseBody: string|Object, status?: number): void; }
-interface HttpTestCallback { (thingWeAreTesting: any, mocker: HttpMocker): any; }
+type HttpMocker = (responseBody: string|Object, status?: number) => void;
+type HttpTestCallback = (thingWeAreTesting: any, mocker: HttpMocker) => any;
 export function injectHttp(testFn: HttpTestCallback) {
   return inject([this._testing, MockBackend], (testing, mockBackend) => {
     let mocker = (resp: string|Object, status = 200) => {

@@ -7,7 +7,7 @@ import {
   EMBED_SHOW_PLAYLIST_PARAM
 } from './../embed.constants';
 import { AdapterProperties, DataAdapter } from './adapter.properties';
-import { sha1 }  from './sha1';
+import { sha1 } from './sha1';
 
 const GUID_PREFIX = 's1!';
 

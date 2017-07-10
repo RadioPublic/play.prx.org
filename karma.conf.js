@@ -4,41 +4,25 @@
 module.exports = function (config) {
   config.set({
     basePath: '',
-    frameworks: ['jasmine', 'angular-cli'],
+    frameworks: ['jasmine', '@angular/cli'],
     plugins: [
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
-      require('karma-phantomjs-launcher'),
-      require('karma-spec-reporter'),
-      require('karma-remap-istanbul'),
-      require('angular-cli/plugins/karma')
+      require('karma-jasmine-html-reporter'),
+      require('karma-coverage-istanbul-reporter'),
+      require('@angular/cli/plugins/karma')
     ],
-    files: [
-      { pattern: './src/test.ts', watched: false },
-      { pattern: './src/assets/**/*.*', watched: false, included: false }
-    ],
-    proxies: {
-      '/assets/': '/base/src/assets/'
+    client:{
+      clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
-    preprocessors: {
-      './src/test.ts': ['angular-cli']
-    },
-    mime: {
-      'text/x-typescript': ['ts','tsx']
-    },
-    remapIstanbulReporter: {
-      reports: {
-        html: 'coverage',
-        lcovonly: './coverage/coverage.lcov'
-      }
+    coverageIstanbulReporter: {
+      reports: [ 'html', 'lcovonly' ],
+      fixWebpackSourcePaths: true
     },
     angularCli: {
-      config: './angular-cli.json',
       environment: 'dev'
     },
-    reporters: process.env.CODECOV
-      ? ['spec', 'karma-remap-istanbul']
-      : ['spec'],
+    reporters: process.env.CODECOV ? ['spec', 'coverage-istanbul'] : ['spec', 'kjhtml'],
     specReporter: {
       maxLogLines: 5,
       suppressErrorSummary: true,

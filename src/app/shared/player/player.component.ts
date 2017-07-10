@@ -34,8 +34,8 @@ export class PlayerComponent implements OnInit, OnChanges {
 
   // for playlist feature
   episodeIndex = 0;
+  player: DovetailAudio;
 
-  private player: DovetailAudio;
   private logger: Logger;
 
   private currentSegmentType: string; // TODO Maybe this should be an enum
@@ -45,10 +45,10 @@ export class PlayerComponent implements OnInit, OnChanges {
   // True if playback is being held until seeking is completed
   private isHeld: boolean;
 
-  private currentTime: Observable<number>;
-  private duration: Observable<number>;
+  currentTime: Observable<number>;
+  duration: Observable<number>;
 
-  private logoSrc: string;
+  logoSrc: string;
 
   constructor(private sanitizer: DomSanitizer) {}
 
@@ -266,7 +266,7 @@ export class PlayerComponent implements OnInit, OnChanges {
     }
   }
 
-  private togglePlayPause() {
+  togglePlayPause() {
     if (this.player.paused) {
       this.player.play();
     } else {
@@ -282,12 +282,11 @@ export class PlayerComponent implements OnInit, OnChanges {
     this.player.currentTime = this.boundedTime(time);
   }
 
-  private seekBy(seconds: number) {
+  seekBy(seconds: number) {
     this.seekTo(this.player.currentTime + seconds);
   }
 
   private seekToRelative(ratio: number) {
     this.seekTo(this.player.duration * ratio);
   }
-
 }
