@@ -35,7 +35,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   // for playlist feature
   episodeIndex = 0;
   player: DovetailAudio;
-  
+
   private logger: Logger;
 
   private currentSegmentType: string; // TODO Maybe this should be an enum
@@ -289,5 +289,4 @@ export class PlayerComponent implements OnInit, OnChanges {
   private seekToRelative(ratio: number) {
     this.seekTo(this.player.duration * ratio);
   }
-
 }

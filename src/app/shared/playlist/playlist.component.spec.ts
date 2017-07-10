@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By }              from '@angular/platform-browser';
-import { DebugElement }    from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { DebugElement } from '@angular/core';
 
 import { PlaylistComponent } from './playlist.component';
 import { DurationPipe } from '../duration';

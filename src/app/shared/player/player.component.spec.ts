@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By }              from '@angular/platform-browser';
-import { DebugElement }    from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { DebugElement } from '@angular/core';
 
 import { PlayerComponent } from './player.component';
 import { ProgressComponent } from '../progress';
