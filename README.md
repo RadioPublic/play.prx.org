@@ -7,7 +7,8 @@ Embeddable audio playback!
 Clone the project, install dependencies, and start with these defaults in your `.env` file:
 
 ```sh
-npm install
+# optional: npm install yarn --global
+yarn install
 cp env-example .env
 ```
 
@@ -38,7 +39,7 @@ TODO: hot reloading not supported yet - this just builds the prod js.
 docker-compose build
 
 # install dev dependencies locally, so docker can mount those folders
-npm install
+yarn install
 
 # run the docker image, will detect changes to local file system
 docker-compose up
