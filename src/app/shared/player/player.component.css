@@ -19,7 +19,7 @@
 content {
   font-family: "Source Sans Pro";
   background: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3));
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   top: 0;
@@ -243,5 +243,8 @@ play-progress {
 @media (min-width: 600px) {
   #upper-logo {
     display: block;
+  }
+  #skip-button-2 {
+    display: none;
   }
 }

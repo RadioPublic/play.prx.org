@@ -24,11 +24,16 @@ export class PlayerComponent implements OnInit, OnChanges {
   @Input() subscribeTarget: string;
   @Input() artworkUrl: string;
   @Input() feedArtworkUrl: string;
+  @Input() episodes: any[];
+  @Input() showPlaylist: boolean;
   @Output() share = new EventEmitter<boolean>();
 
   artworkSafe: SafeStyle;
   feedArtworkSafe: SafeStyle;
   artworkSafeLoaded: SafeStyle;
+
+  // for playlist feature
+  episodeIndex = 0;
 
   private player: DovetailAudio;
   private logger: Logger;
@@ -50,9 +55,17 @@ export class PlayerComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.player = new DovetailAudio(this.audioUrl);
     this.player.addEventListener('segmentstart', e => this.currentSegmentType = e[SEGMENT_TYPE]);
-    this.logger = new Logger(this.player, this.title, this.subtitle);
+    this.player.addEventListener('ended', e => {
+      if (this.episodes && this.episodes.length > 0) {
+        this.episodeIndex++;
+        this.updatePlayingEpisode(this.episodeIndex);
+      }
+    });
+    if (this.title && this.subtitle) {
+      this.logger = new Logger(this.player, this.title, this.subtitle);
+    }
 
-    this.artworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.artworkUrl}')`);
+    this.setEpisodeArtworkSafe();
     this.feedArtworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.feedArtworkUrl}')`);
 
     this.duration = Observable.create((observer: Observer<number>) => {
@@ -90,6 +103,14 @@ export class PlayerComponent implements OnInit, OnChanges {
     if (this.player && changes.audioUrl) {
       this.player.src = this.audioUrl;
     }
+    if (changes.episodes) {
+      const playingFirstEp = this.showPlaylist && this.episodes && this.audioUrl === this.episodes[0].audioUrl;
+      this.episodeIndex = playingFirstEp ?  0 : -1;
+    }
+  }
+
+  setEpisodeArtworkSafe() {
+    this.artworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.artworkUrl}')`);
   }
 
   showShareModal() {
@@ -112,6 +133,33 @@ export class PlayerComponent implements OnInit, OnChanges {
     }
   }
 
+  skipTrack() {
+    this.navigatePlaylist(this.episodeIndex + 1);
+  }
+
+  navigatePlaylist(index: number) {
+    if (this.episodeIndex === index) {
+      this.togglePlayPause();
+    } else {
+      this.updatePlayingEpisode(index);
+    }
+  }
+
+  updatePlayingEpisode(index: number) {
+    let newEpisode = this.episodes[index];
+    if (newEpisode) {
+      this.episodeIndex = index;
+      this.title = newEpisode.title;
+      this.artworkUrl = newEpisode.artworkUrl;
+      this.setEpisodeArtworkSafe();
+      this.audioUrl = this.player.src = newEpisode.audioUrl;
+      this.player.addEventListener('canplay', e => {
+        this.player.play();
+        this.player.removeEventListener();
+      });
+    }
+  }
+
   cyclePlaybackRate(): void {
     if (this.player.playbackRate === 1) {
       this.player.playbackRate = 1.25;
@@ -126,6 +174,10 @@ export class PlayerComponent implements OnInit, OnChanges {
 
   artworkLoaded() {
     this.artworkSafeLoaded = this.artworkSafe;
+  }
+
+  isPaused() {
+    return this.player.paused;
   }
 
   handleHotkey(event: KeyboardEvent): void {

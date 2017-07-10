@@ -1,0 +1,83 @@
+/* Reset */
+ol {
+  list-style: none;
+}
+header, div, h2, em, small, ol, li, img {
+  font-family: 'Open Sans', sans-serif;
+  font: inherit;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+
+.playlist-container {
+  top: 185px;
+  position: fixed;
+  height: calc(100% - 185px);
+  width: 100%;
+  background: white;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+}
+.playlist-info {
+  margin: 10px;
+  color: grey;
+}
+.playlist-info > em {
+  font-weight: bolder;
+}
+.playlist-info > em:after {
+  padding-left: 10px;
+  padding-right: 10px;
+  font-weight: lighter;
+  content: '\00B7';
+}
+.playlist-entry {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 10px 0 10px;
+  height: 60px;
+  padding: 10px;
+  border-bottom: 1px solid lightgrey;
+}
+.playlist-entry:last-child {
+  border: none;
+}
+.entry-img {
+  width: 40px;
+  max-width: 40px;
+  height: 40px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 5px;
+}
+.entry-img > .ep-art {
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid lightgrey;
+  width: 100%;
+  height: 100%;
+}
+.entry-img > .pauseButton {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+}
+.entry-index {
+  flex-basis: 15px;
+}
+.entry-title {
+  flex-basis: 70%;
+}
+h2 {
+  font-weight: bold;
+  font-size: 16px;
+}
+small {
+  color: grey;
+  font-weight: lighter;
+}

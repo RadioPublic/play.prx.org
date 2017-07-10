@@ -1,6 +1,6 @@
 import { testService, injectHttp } from '../../../testing';
 import { FeedAdapter } from './feed.adapter';
-import { EMBED_FEED_URL_PARAM, EMBED_EPISODE_GUID_PARAM } from '../embed.constants';
+import { EMBED_FEED_URL_PARAM, EMBED_EPISODE_GUID_PARAM, EMBED_SHOW_PLAYLIST_PARAM } from '../embed.constants';
 
 describe('FeedAdapter', () => {
 
@@ -23,11 +23,13 @@ describe('FeedAdapter', () => {
           <guid isPermaLink="false">guid-1</guid>
           <title>Title #1</title>
           <itunes:image href="http://item1/image.png"/>
+          <itunes:duration>1:00</itunes:duration>
           <enclosure url="http://item1/enclosure.mp3"/>
           <feedburner:origEnclosureLink>http://item1/original.mp3</feedburner:origEnclosureLink>
         </item>
         <item>
           <guid isPermaLink="false">guid-2</guid>
+          <itunes:duration>38:00:12</itunes:duration>
           <title>Title #2</title>
           <enclosure url="http://item2/enclosure.mp3"/>
         </item>
@@ -36,10 +38,11 @@ describe('FeedAdapter', () => {
   `;
 
   // helper to sync-get properties
-  const getProperties = (feed, feedUrl = null, guid = null): any => {
+  const getProperties = (feed, feedUrl = null, guid = null, numEps = null): any => {
     let params = {}, props = {};
     if (feedUrl) { params[EMBED_FEED_URL_PARAM] = feedUrl; }
     if (guid) { params[EMBED_EPISODE_GUID_PARAM] = guid; }
+    if (numEps) { params[EMBED_SHOW_PLAYLIST_PARAM] = numEps; }
     feed.getProperties(params).subscribe(result => {
       Object.keys(result).forEach(k => props[k] = result[k]);
     });
@@ -48,15 +51,16 @@ describe('FeedAdapter', () => {
 
   it('only runs when feedUrl is set', injectHttp((feed: FeedAdapter, mocker) => {
     mocker(TEST_FEED);
-    expect(getProperties(feed, null, null)).toEqual({});
-    expect(getProperties(feed, 'http://some.where/feed.xml', null)).not.toEqual({});
-    expect(getProperties(feed, null, '1234')).toEqual({});
-    expect(getProperties(feed, 'http://some.where/feed.xml', '1234')).not.toEqual({});
+    expect(getProperties(feed, null, null, null)).toEqual({});
+    expect(getProperties(feed, 'http://some.where/feed.xml', null, null)).not.toEqual({});
+    expect(getProperties(feed, null, '1234', null)).toEqual({});
+    expect(getProperties(feed, 'http://some.where/feed.xml', '1234', null)).not.toEqual({});
+    expect(getProperties(feed, 'http://some.where/feed.xml', '1234', 2)).not.toEqual({});
   }));
 
   it('parses feeds', injectHttp((feed: FeedAdapter, mocker) => {
     mocker(TEST_FEED);
-    let props = getProperties(feed, 'http://some.where/feed.xml', 'guid-1');
+    let props = getProperties(feed, 'http://some.where/feed.xml', 'guid-1', 2);
     expect(props.audioUrl).toEqual('http://item1/original.mp3');
     expect(props.title).toEqual('Title #1');
     expect(props.subtitle).toEqual('The Channel Title');
@@ -64,24 +68,25 @@ describe('FeedAdapter', () => {
     expect(props.subscribeTarget).toBeUndefined();
     expect(props.artworkUrl).toEqual('http://item1/image.png');
     expect(props.feedArtworkUrl).toEqual('http://channel/image.png');
+    expect(props.episodes.length).toEqual(2);
   }));
 
   it('does not fallback to channel artwork at this level', injectHttp((feed: FeedAdapter, mocker) => {
     mocker(TEST_FEED);
-    let props = getProperties(feed, 'http://some.where/feed.xml', 'guid-2');
+    let props = getProperties(feed, 'http://some.where/feed.xml', 'guid-2', null);
     expect(props.artworkUrl).toBeUndefined();
     expect(props.feedArtworkUrl).toEqual('http://channel/image.png');
   }));
 
   it('falls back to the enclosure for audioUrl', injectHttp((feed: FeedAdapter, mocker) => {
     mocker(TEST_FEED);
-    let props = getProperties(feed, 'http://some.where/feed.xml', 'guid-2');
+    let props = getProperties(feed, 'http://some.where/feed.xml', 'guid-2', null);
     expect(props.audioUrl).toEqual('http://item2/enclosure.mp3');
   }));
 
   it('can not find a guid', injectHttp((feed: FeedAdapter, mocker) => {
     mocker(TEST_FEED);
-    let props = getProperties(feed, 'http://some.where/feed.xml', 'guid-not-found');
+    let props = getProperties(feed, 'http://some.where/feed.xml', 'guid-not-found', null);
     expect(props.audioUrl).toBeUndefined();
     expect(props.title).toBeUndefined();
     expect(props.subtitle).toEqual('The Channel Title');
@@ -93,17 +98,17 @@ describe('FeedAdapter', () => {
 
   it('can not find anything at all', injectHttp((feed: FeedAdapter, mocker) => {
     mocker('');
-    expect(getProperties(feed, 'whatev', 'guid')).toEqual({});
+    expect(getProperties(feed, 'whatev', 'guid', null)).toEqual({});
   }));
 
   it('handles parser errors', injectHttp((feed: FeedAdapter, mocker) => {
     mocker('{"some":"json"}');
-    expect(getProperties(feed, 'whatev', 'guid')).toEqual({});
+    expect(getProperties(feed, 'whatev', 'guid', null)).toEqual({});
   }));
 
   it('handles http errors', injectHttp((feed: FeedAdapter, mocker) => {
     mocker('', 500);
-    expect(getProperties(feed, 'whatev', 'guid')).toEqual({});
+    expect(getProperties(feed, 'whatev', 'guid', null)).toEqual({});
   }));
 
   it('configures a proxy url', injectHttp((feed: FeedAdapter, mocker) => {
@@ -114,7 +119,7 @@ describe('FeedAdapter', () => {
 
   it('defaults to the first item', injectHttp((feed: FeedAdapter, mocker) => {
     mocker(TEST_FEED);
-    expect(getProperties(feed, 'whatev').title).toEqual("Title #1");
+    expect(getProperties(feed, 'whatev').title).toEqual('Title #1');
   }));
 
 });

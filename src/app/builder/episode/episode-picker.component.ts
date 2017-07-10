@@ -62,11 +62,11 @@ export class EpisodePickerComponent implements OnChanges, OnInit {
         this.invalidFeed.emit(new InvalidFeedError(this.feedUrl));
         return;
       }
-      let img: string;
+      let feedImg: string;
 
       let _img = Array.from(doc.querySelectorAll('channel > *[href]')).filter(e => e.nodeName === 'itunes:image')[0];
       if (_img) {
-        img = _img.getAttribute('href');
+        feedImg = _img.getAttribute('href');
       }
 
       let artist = doc.querySelector('channel > title').innerHTML;
@@ -84,9 +84,10 @@ export class EpisodePickerComponent implements OnChanges, OnInit {
 
         let encUrl = item.querySelector('enclosure').getAttribute('url');
 
+        let epImg = feedImg;
         let __img = Array.from(item.querySelectorAll('*[href]')).filter(e => e.nodeName === 'itunes:image')[0];
         if (__img) {
-          img = __img.getAttribute('href');
+          epImg = __img.getAttribute('href');
         }
 
         let fbOrigEncUrl = item.querySelector('origEnclosureLink');
@@ -96,7 +97,7 @@ export class EpisodePickerComponent implements OnChanges, OnInit {
 
         let guid = item.querySelector('guid').innerHTML;
 
-        episodes.push(new Episode(encUrl, guid, title, artist, img));
+        episodes.push(new Episode(encUrl, guid, title, artist, feedImg, epImg));
       }
 
       this._episodes = episodes;

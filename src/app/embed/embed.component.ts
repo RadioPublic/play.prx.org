@@ -5,6 +5,7 @@ import { QSDAdapter } from './adapters/qsd.adapter';
 import { DraperAdapter } from './adapters/draper.adapter';
 import { FeedAdapter } from './adapters/feed.adapter';
 import { AdapterProperties } from './adapters/adapter.properties';
+import { EMBED_SHOW_PLAYLIST_PARAM } from './embed.constants';
 
 const PYM_MESSAGE_DELIMITER = 'xPYMx';
 const PYM_CHILD_ID_PARAM = 'childId';
@@ -17,8 +18,8 @@ const PYM_CHILD_ID_PARAM = 'childId';
     <play-share-modal *ngIf="showShareModal" (close)="hideModal()">
     </play-share-modal>
     <play-player [feedArtworkUrl]="feedArtworkUrl" [audioUrl]="audioUrl" [title]="title" [subtitle]="subtitle"
-      [subscribeUrl]="subscribeUrl" [subscribeTarget]="subscribeTarget"
-      [artworkUrl]="artworkUrl" (share)="showModal()">
+      [subscribeUrl]="subscribeUrl" [subscribeTarget]="subscribeTarget" [artworkUrl]="artworkUrl" (share)="showModal()"
+      [showPlaylist]="showPlaylist" [episodes]="episodes">
     </play-player>
   `
 })
@@ -37,11 +38,16 @@ export class EmbedComponent implements OnInit {
   feedArtworkUrl: string;
   pymId?: string;
 
+  // playlist
+  showPlaylist: boolean;
+  episodes: AdapterProperties[];
+
   constructor(private route: ActivatedRoute, private adapter: MergeAdapter) {}
 
   ngOnInit() {
     this.route.queryParams.forEach(params => {
       this.pymId = params[PYM_CHILD_ID_PARAM];
+      this.showPlaylist = typeof params[EMBED_SHOW_PLAYLIST_PARAM] !== 'undefined';
       this.setEmbedHeight();
       this.adapter.getProperties(params).subscribe(props => {
         this.assignEpisodePropertiesToPlayer(props);
@@ -65,6 +71,7 @@ export class EmbedComponent implements OnInit {
     this.subscribeTarget = ( properties.subscribeTarget || this.subscribeTarget || '_blank');
     this.artworkUrl = ( properties.artworkUrl || this.artworkUrl );
     this.feedArtworkUrl = ( properties.feedArtworkUrl || this.feedArtworkUrl );
+    this.episodes = properties.episodes || [];
 
     // fallback to feed image
     this.artworkUrl = this.artworkUrl || this.feedArtworkUrl;

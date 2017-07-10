@@ -40,6 +40,11 @@ label {
   height: 185px;
   margin: 120px auto;
 }
+#preview-playlist-wrap {
+  width: 600px;
+  height: 650px;
+  margin: 120px auto;
+}
 
 .container {
   background-color: #fff;
@@ -100,8 +105,8 @@ label {
   margin-bottom: 12px;
 }
 
-.builder-step {
-
+.builder-step input[type='checkbox'] {
+  vertical-align: middle;
 }
 
 .builder-step input[type='text'],
@@ -161,6 +166,7 @@ label {
   font-family: 'Open Sans', sans-serif;
   width: 500px;
   height: 40px;
+  display: block;
 }
 
 .builder-step fieldset p {
