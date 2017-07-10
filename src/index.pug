@@ -6,17 +6,21 @@ html(lang='en')
     base(href='/')
     meta(name='viewport' content='width=device-width, initial-scale=1')
     link(rel='icon' type='image/x-icon' href='/assets/images/favicon.png')
-    != css
-    if env.GA_KEY
-      script.
-        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-        ga('create', '#{env.GA_KEY}', 'auto');
-      script(async src='https://www.google-analytics.com/analytics.js')
-  body(margin: 0)
+    for script in scripts
+      link(rel="preload", href=script, as="script")
+  body(style="margin: 0")
     play-root
       != loadingMarkup
+    != css
     != js
-    script(type='text/javascript')
-      != 'window.ENV=' + JSON.stringify(env)
-    for script in scripts
-      script(src=script)
+    script!='window.ENV='+JSON.stringify(env)+';window.sl='+JSON.stringify(scripts)
+    if env.GA_KEY
+      script.
+        if(!navigator || !(navigator.doNotTrack == 1)) {
+          var x = document.createElement('script');x.src="https://www.google-analytics.com/analytics.js";x.async=!!1;document.body.appendChild(x);
+          window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+          ga('create', window.ENV.GA_KEY, 'auto');x=window.location.search.match(/referrer=([^&]+)/i);if(x && x[1]){
+          ga('set', 'referrer', decodeURIComponent(x[1]))}ga('send', 'pageview')}
+
+    script
+      != ';window.onload=function(){(function l(i,d,j){if(sl[i]){j=d.createElement("script");j.async=!!1;j.src=sl[i];j.onload=function(){l(i+1,d)};d.body.appendChild(j)}})(0,document)}'
