@@ -5,7 +5,7 @@ import { FeedAdapter } from './feed.adapter';
 import { QSDAdapter } from './qsd.adapter';
 import { AdapterProperties, PropNames, DataAdapter } from './adapter.properties';
 
-const NO_EMIT_YET = Symbol();
+const NO_EMIT_YET = Symbol() as AdapterProperties;
 
 @Injectable()
 export class MergeAdapter {

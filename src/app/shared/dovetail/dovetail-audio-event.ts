@@ -22,11 +22,11 @@ export class DovetailAudioEvent {
   }
 }
 
-function createEvent(name):Event {
+function createEvent(name): Event {
   try {
     return new Event(name);
   } catch (e) {
-    let event:any = document.createEvent('CustomEvent');
+    let event: any = document.createEvent('CustomEvent');
     event.initCustomEvent(name, false, false, undefined);
     return <Event>event;
   }

@@ -15,9 +15,9 @@ import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter,
 
 export class ProgressComponent {
 
-  @Input() value: number = 0;
-  @Input() minimum: number = 0;
-  @Input() maximum: number = 1;
+  @Input() value = 0;
+  @Input() minimum = 0;
+  @Input() maximum = 1;
   @Input() disabled = false;
 
   @Output() seek = new EventEmitter<number>();

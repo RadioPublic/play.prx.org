@@ -19,7 +19,7 @@
   "angular-cli": {},
   "scripts": {
     "start": "node lib/server.js dev",
-    "lint": "tslint \"src/**/*.ts\"",
+    "lint": "ng lint",
     "test": "ng test",
     "pree2e": "webdriver-manager update",
     "e2e": "protractor",
@@ -41,7 +41,6 @@
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/platform-server": "^4.0.0",
     "@angular/router": "^4.0.0",
-    "codelyzer": "^3.0.0-beta.4",
     "connect-gzip-static": "^1.0.0",
     "core-js": "^2.4.1",
     "dotenv": "^2.0.0",
@@ -54,15 +53,14 @@
     "rxjs": "^5.0.3",
     "siphon-media-query": "^1.0.0",
     "ts-helpers": "^1.1.1",
-    "tslint": "^4.4.2",
-    "typescript": "^2.2.1",
+    "tslint": "^5.3.2",
+    "typescript": "^2.4.1",
     "zone.js": "^0.8.5"
   },
   "devDependencies": {
-    "@angular/cli": "^1.0.0-rc.0",
     "@types/jasmine": "^2.2.30",
     "@types/node": "^6.0.42",
-    "codelyzer": "^3.0.0-beta.4",
+    "codelyzer": "^3.0.1",
     "jasmine-core": "2.4.1",
     "jasmine-spec-reporter": "2.5.0",
     "karma": "1.2.0",
@@ -73,8 +71,6 @@
     "karma-spec-reporter": "0.0.26",
     "protractor": "4.0.9",
     "ts-node": "1.2.1",
-    "tslint": "3.13.0",
-    "typescript": "~2.1.0",
     "webdriver-manager": "10.2.5"
   },
   "optionalDependencies": {
