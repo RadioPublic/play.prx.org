@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output, OnInit, OnChanges } from '@angular/core';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import { Observable, Observer } from 'rxjs';
+import { MediaSessionService } from './mediasession.service';
 import 'player.js';
 
 import { DovetailAudio } from '../dovetail';
@@ -50,7 +51,7 @@ export class PlayerComponent implements OnInit, OnChanges {
 
   logoSrc: string;
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(private sanitizer: DomSanitizer, private sessionService: MediaSessionService) {}
 
   ngOnInit() {
     this.player = new DovetailAudio(this.audioUrl);
@@ -64,6 +65,9 @@ export class PlayerComponent implements OnInit, OnChanges {
     if (this.title && this.subtitle) {
       this.logger = new Logger(this.player, this.title, this.subtitle);
     }
+
+    this.sessionService.setSeekBackwardListener(() => this.seekBy(-10));
+    this.sessionService.setSeekForwardListener(() => this.seekBy(30));
 
     this.setEpisodeArtworkSafe();
     this.feedArtworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.feedArtworkUrl}')`);
@@ -92,10 +96,12 @@ export class PlayerComponent implements OnInit, OnChanges {
     if (this.player) {
       if (changes.audioUrl || changes.title || changes.subtitle) {
         this.logger = new Logger(this.player, this.title, this.subtitle);
+        this.sessionService.setMediaMetadata(this.title, this.subtitle, null, this.feedArtworkUrl);
       }
     }
     if (changes.feedArtworkUrl) {
       this.feedArtworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.feedArtworkUrl}')`);
+      this.sessionService.setMediaMetadata(this.title, this.subtitle, null, this.feedArtworkUrl);
     }
     if (changes.artworkUrl) {
       this.artworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.artworkUrl}')`);
@@ -268,7 +274,7 @@ export class PlayerComponent implements OnInit, OnChanges {
 
   togglePlayPause() {
     if (this.player.paused) {
-      this.player.play();
+      this.player.play().then(_ => this.sessionService.playbackStarted());
     } else {
       this.player.pause();
     }

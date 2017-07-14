@@ -11,6 +11,7 @@ type AllUnion = [
 ];
 
 type AllResult = [DovetailResponse, AdzerkResponse];
+type PromiseResolver<x> = (value?: x | PromiseLike<x>) => void;
 
 function sumDuration(collector: number, entry: {duration?: number}) {
   return collector + entry.duration || 0;
@@ -53,7 +54,7 @@ export class DovetailAudio extends ExtendableAudio {
 
   private currentPromise: Promise<any>;
   private currentAdzerkPromise: Promise<AdzerkResponse>;
-  private resumeOnLoad = false;
+  private resumeOnLoad: false|PromiseResolver<void> = false;
   private _playbackRate: number;
 
   private _imgElem: HTMLImageElement;
@@ -69,14 +70,20 @@ export class DovetailAudio extends ExtendableAudio {
     this.addEventListener(SEGMENT_END, this.$$logImpression.bind(this));
   }
 
-  play() {
+  play(): Promise<void> {
     this.$$sendEvent(PLAY);
     if (this._dovetailLoading) {
-      this.resumeOnLoad = true;
+      return new Promise<void>(resolve => {
+        this.resumeOnLoad = resolve;
+      });
     } else if (this.arrangement.entries[this.index].unplayable) {
-      this.skipToFile(this.index + 1, true);
+      return new Promise<void>(resolve => {
+        this.skipToFile(this.index + 1, resolve);
+      });
     } else {
-      this._audio.play();
+      return new Promise<void>(resolve => {
+        resolve(this._audio.play());
+      });
     }
   }
 
@@ -267,7 +274,7 @@ export class DovetailAudio extends ExtendableAudio {
   private listenerOnEnded(event: Event) {
     event.stopImmediatePropagation();
     if (this._audio.src === this.arrangement.entries[this.index].audioUrl) {
-      if (!this.skipToFile(this.index + 1, true)) {
+      if (!this.skipToFile(this.index + 1, _ => {})) {
         this.$$sendEvent(ENDED);
       }
     }
@@ -291,7 +298,7 @@ export class DovetailAudio extends ExtendableAudio {
     if (typeof handler === 'function') { handler.call(this, e); }
   }
 
-  private skipToFile(index: number, resume = false) {
+  private skipToFile(index: number, resume: false|PromiseResolver<void> = false): boolean {
     if (this.index !== index && this.arrangement.entries.length > index) {
       if (this.index !== -1) {
         const eventData: SegmentEventData = {
@@ -311,7 +318,7 @@ export class DovetailAudio extends ExtendableAudio {
 
       this._audio.src = arrangement.audioUrl;
       this._audio.playbackRate = this.playbackRate;
-      if (resume) { this._audio.play(); }
+      if (resume) { resume(this._audio.play()); }
 
       this.$$sendEvent(SEGMENT_START, {
         segment: arrangement,
