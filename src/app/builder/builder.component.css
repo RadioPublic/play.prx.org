@@ -120,8 +120,12 @@ label {
   height: 20px;
 }
 
-.builder-step input[type='url'].error {
-  outline: 5px auto #e32
+.error {
+  outline: 5px auto #e32;
+}
+
+.warning {
+  outline: 5px auto #f59f51;
 }
 
 .builder-step button[type='submit'],

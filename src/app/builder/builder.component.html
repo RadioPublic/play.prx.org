@@ -46,12 +46,13 @@
     <section *ngIf="!editMode" class="builder-step" id="step-1">
       <form id="feed-selector" (submit)="onFeedUrlSubmit(feedUrlInput.value)">
         <label for="feedUrl">Select podcast</label>
-        <input [class.error]="this.feedError" type="url" id="feedUrl" required pattern="^http.*"
+        <input [class.warning]="this.sslError" [class.error]="this.feedError" type="url" id="feedUrl" required pattern="^http.*"
           name="feedUrl" [ngModel]="feedUrl" #feedUrlInput
-          placeholder="A podcast's RSS feed URL, eg http://example.com/feed.xml">
+          placeholder="A podcast's RSS feed URL, eg https://example.com/feed.xml">
         <button type="submit">Submit</button>
       </form>
       <p *ngIf="feedError"><em>{{feedUrl}}</em> is not an RSS feed.</p>
+      <p *ngIf="sslError"><em>{{sslError}}</em></p>
     </section>
 
     <section class="builder-step" *ngIf="feedUrl && !feedError" id="step-2">

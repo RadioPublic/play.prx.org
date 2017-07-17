@@ -92,10 +92,10 @@ export class EpisodePickerComponent implements OnChanges, OnInit {
 
         let fbOrigEncUrl = item.querySelector('origEnclosureLink');
         if (fbOrigEncUrl) {
-          encUrl = fbOrigEncUrl.innerHTML;
+          encUrl = fbOrigEncUrl.textContent;
         }
 
-        let guid = item.querySelector('guid').innerHTML;
+        let guid = item.querySelector('guid').textContent;
 
         episodes.push(new Episode(encUrl, guid, title, artist, feedImg, epImg));
       }
