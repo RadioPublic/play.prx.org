@@ -10,6 +10,7 @@ import { AdapterProperties, DataAdapter } from './adapter.properties';
 import { sha1 }  from './sha1';
 
 const GUID_PREFIX = 's1!';
+const CDATA = '<![CDATA[';
 
 @Injectable()
 export class FeedAdapter implements DataAdapter {
@@ -22,7 +23,7 @@ export class FeedAdapter implements DataAdapter {
 
   getProperties(params): Observable<AdapterProperties> {
     let feedUrl = params[EMBED_FEED_URL_PARAM];
-    let episodeGuid = params[EMBED_EPISODE_GUID_PARAM];
+    let episodeGuid = this.removeCDATA(params[EMBED_EPISODE_GUID_PARAM]);
     let numEpisodes;
     if (typeof params[EMBED_SHOW_PLAYLIST_PARAM] !== 'undefined') {
       numEpisodes = params[EMBED_SHOW_PLAYLIST_PARAM] || 10;
@@ -132,6 +133,14 @@ export class FeedAdapter implements DataAdapter {
     } else {
       return `/proxy?url=${feedUrl}`;
     }
+  }
+
+  protected hasCDATA(guid): boolean {
+    return (guid.indexOf(CDATA) > -1);
+  }
+
+  protected removeCDATA(guid): string {
+    return this.hasCDATA(guid) ? guid.replace(CDATA, '').replace(/\]\]\>/, '') : guid;
   }
 
   protected isEncoded(guid): boolean {
