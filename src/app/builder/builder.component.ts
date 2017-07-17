@@ -24,6 +24,7 @@ export class BuilderComponent implements OnInit {
   playLatest = false;
   playPlaylist = false;
   feedError = false;
+  sslError: string = null;
 
   @ViewChild('builderForm') builderForm;
 
@@ -100,6 +101,7 @@ export class BuilderComponent implements OnInit {
   }
 
   onEpisodeSelect(episode: Episode) {
+    this.checkForSSL(episode);
     this.playLatest = false;
     let playlistEps = this.props && this.props.playlistLength ? this.props.playlistLength : 0;
     this.props = new BuilderProperties(
@@ -131,6 +133,21 @@ export class BuilderComponent implements OnInit {
     el.innerHTML = 'Copy';
   }
 
+  checkForSSL(ep: Episode) {
+    this.sslError = null;
+    const urls = {
+      'Audio URL': ep.url,
+      'Feed Image URL': ep.feedImageUrl,
+      'Spotlight Artwork URL': ep.epImageUrl
+    };
+    Object.keys(urls).forEach(field => {
+      if (urls[field].match(/http:\/\//)) {
+        this.sslError = `Play.prx.org supports SSL. In order to comply, the ${field} should be served over HTTPS. ` +
+        `This insecure URL may cause some unpredictable behavior.`
+        return;
+      }
+    })
+  }
   // Copies the HTML code in an input associated with the element (<button>)
   // that is passed in
   copyCode(inp: HTMLInputElement, button: Element) {

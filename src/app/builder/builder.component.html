@@ -52,6 +52,7 @@
         <button type="submit">Submit</button>
       </form>
       <p *ngIf="feedError"><em>{{feedUrl}}</em> is not an RSS feed.</p>
+      <p *ngIf="sslError"><em>{{sslError}}</em></p>
     </section>
 
     <section class="builder-step" *ngIf="feedUrl && !feedError" id="step-2">
