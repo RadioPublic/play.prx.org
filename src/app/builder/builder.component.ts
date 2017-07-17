@@ -50,6 +50,7 @@ export class BuilderComponent implements OnInit {
     });
     this.builderForm.control.valueChanges.debounceTime(3500).forEach(() => {
       this.resetPreviewIframe();
+      this.checkForSSL();
     });
   }
 
@@ -101,7 +102,6 @@ export class BuilderComponent implements OnInit {
   }
 
   onEpisodeSelect(episode: Episode) {
-    this.checkForSSL(episode);
     this.playLatest = false;
     let playlistEps = this.props && this.props.playlistLength ? this.props.playlistLength : 0;
     this.props = new BuilderProperties(
@@ -126,6 +126,7 @@ export class BuilderComponent implements OnInit {
       epImageUrl: episode.epImageUrl,
       subscribeUrl: this.feedUrl
     };
+    this.checkForSSL();
     this.resetPreviewIframe();
   }
 
@@ -133,20 +134,23 @@ export class BuilderComponent implements OnInit {
     el.innerHTML = 'Copy';
   }
 
-  checkForSSL(ep: Episode) {
+  checkForSSL() {
     this.sslError = null;
-    const urls = {
-      'Audio URL': ep.url,
-      'Feed Image URL': ep.feedImageUrl,
-      'Spotlight Artwork URL': ep.epImageUrl
-    };
-    Object.keys(urls).forEach(field => {
-      if (urls[field].match(/http:\/\//)) {
-        this.sslError = `Play.prx.org supports SSL. In order to comply, the ${field} should be served over HTTPS. ` +
-        `This insecure URL may cause some unpredictable behavior.`
-        return;
-      }
-    })
+    if (this.props || this.defaults) {
+      const urlFields = {
+        audioUrl: 'Audio URL',
+        epImageUrl: 'Spotlight Artwork URL',
+        feedImageUrl: 'Background Artwork URL'
+      };
+      Object.keys(urlFields).forEach(field => {
+        let fieldToCheck = this.props[field] || this.defaults[field];
+        if (fieldToCheck && fieldToCheck.match(/http:\/\//)) {
+          this.sslError = `Play.prx.org supports SSL. In order to comply, the ${urlFields[field]} ` +
+          ` should be served over HTTPS. This insecure URL may cause some unpredictable behavior.`;
+          return;
+        }
+      });
+    }
   }
   // Copies the HTML code in an input associated with the element (<button>)
   // that is passed in
