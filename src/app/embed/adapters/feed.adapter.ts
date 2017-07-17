@@ -136,7 +136,7 @@ export class FeedAdapter implements DataAdapter {
   }
 
   protected hasCDATA(guid): boolean {
-    return (guid.indexOf(CDATA) > -1);
+    return guid ? (guid.indexOf(CDATA) > -1) : false;
   }
 
   protected removeCDATA(guid): string {
