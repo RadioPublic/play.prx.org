@@ -171,6 +171,7 @@ nav a:hover {
   border-radius: 50%;
   border: 1.5px solid gray;
   background: inherit;
+  margin-bottom: 2px; /* This is a bit of a hack to fix border clipping */
 }
 
 .scrubber {
