@@ -1,0 +1,8 @@
+play:
+  build: .
+  ports:
+    - "4300:4300"
+  command: serve
+  environment:
+    LOGO_NAME: 'prx'
+    LOCAL_ENV: 'true'
