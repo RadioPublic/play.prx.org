@@ -19,14 +19,19 @@ RUN chmod +x /tini
 WORKDIR /app
 EXPOSE 4300
 
-ADD . ./
+ADD ./package.json ./
+ADD ./yarn.lock ./
 
-RUN apk --no-cache add libsass && \
-    yarn install --ignore-optional && \
-    npm run build && \
-    yarn install --production && \
+RUN apk --no-cache add libsass curl && \
+    curl -Ls "https://github.com/dustinblackman/phantomized/releases/download/2.1.1/dockerized-phantomjs.tar.gz" | tar xz -C / && \
+    yarn install --no-progress --silent && \
+    apk del curl && \
     yarn cache clean && \
-    rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
+    rm -rf /usr/share/man /tmp/* /var/tmp/* /var/cache/apk/* /root/.npm /root/.node-gyp
+
+ADD . ./
+RUN npm run build
+
 
 ENTRYPOINT ["/tini", "--", "./bin/application"]
 CMD [ "serve" ]
