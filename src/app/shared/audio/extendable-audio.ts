@@ -17,7 +17,15 @@ export class ExtendableAudio {
   volume: number;
 
   constructor(url) {
-    this._audio = new Audio();
+    if (typeof window['Audio'] !== 'undefined') {
+      this._audio = new Audio();
+    } else {
+      // Basically make audio a noop on phantom or browsers with no Audio support
+      this._audio = ({addEventListener: noop} as any) as HTMLAudioElement;
+      // TODO: maybe we should detect this and throw up a warning for those
+      // people on ie6?
+    }
+
     // This is our proxy for DOM events
     this._documentFragment = document.createDocumentFragment();
     this._toSetUrl = url;
@@ -58,3 +66,5 @@ export class ExtendableAudio {
   }
 
 }
+
+function noop() { }

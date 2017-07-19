@@ -24,12 +24,16 @@ export class DraperAdapter extends FeedAdapter {
 
   processFeed(feedUrl: string, episodeGuid?: string): Observable<AdapterProperties> {
     return super.processFeed(feedUrl, episodeGuid).map(props => {
-      props.subscribeTarget = '_top';
+      if (Object.keys(props).length) {
+        props.subscribeTarget = '_top';
+      }
       if (episodeGuid) {
         if (!this.isEncoded(episodeGuid)) {
           episodeGuid = this.encodeGuid(episodeGuid);
         }
-        props.subscribeUrl = `${props.subscribeUrl}/ep/${episodeGuid}`;
+        if (props.subscribeUrl && !/\/ep\//.test(props.subscribeUrl)) {
+          props.subscribeUrl = `${props.subscribeUrl}/ep/${episodeGuid}`;
+        }
       }
       return props;
     });
