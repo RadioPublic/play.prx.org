@@ -148,7 +148,7 @@ export class FeedAdapter implements DataAdapter {
   }
 
   protected encodeGuid(guid): string {
-    return `${GUID_PREFIX}${sha1.hash(guid)};`;
+    return `${GUID_PREFIX}${sha1.hash(guid)}`;
   }
 
   protected getTagText(el: Element | XMLDocument, tag: string): string {

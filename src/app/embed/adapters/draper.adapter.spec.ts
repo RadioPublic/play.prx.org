@@ -20,6 +20,7 @@ describe('DraperAdapter', () => {
         <title>The Channel Title</title>
         <itunes:image href="http://channel/image.png"/>
         <rp:image href="http://channel/rp/image.png"/>
+        <rp:program-id>foo</rp:program-id>
         <atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="self" href="http://atom/self/link"/>
         <atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="hub" href="http://pubsubhubbub.appspot.com/"/>
         <item></item>
@@ -67,8 +68,8 @@ describe('DraperAdapter', () => {
     expect(props.audioUrl).toEqual('http://item1/original.mp3');
     expect(props.title).toEqual('Title #1');
     expect(props.subtitle).toEqual('The Channel Title');
-    expect(props.subscribeUrl).toEqual('http://atom/self/link');
-    expect(props.subscribeTarget).toBeUndefined();
+    expect(props.subscribeUrl).toEqual('https://play.radiopublic.com/foo/ep/s1!e661165c969fa6801bb8a7711daa73544b5149e9');
+    expect(props.subscribeTarget).toEqual('_top');
     expect(props.artworkUrl).toEqual('http://item1/rp/image.png');
     expect(props.feedArtworkUrl).toEqual('http://channel/rp/image.png');
   }));
@@ -85,8 +86,8 @@ describe('DraperAdapter', () => {
     expect(props.audioUrl).toBeUndefined();
     expect(props.title).toBeUndefined();
     expect(props.subtitle).toEqual('The Channel Title');
-    expect(props.subscribeUrl).toEqual('http://atom/self/link');
-    expect(props.subscribeTarget).toBeUndefined();
+    expect(props.subscribeUrl).toEqual('https://play.radiopublic.com/foo/ep/s1!f0ac9c9a4b7ad98f1663f828eb6b5587dfce3434');
+    expect(props.subscribeTarget).toEqual('_top');
     expect(props.artworkUrl).toBeUndefined();
     expect(props.feedArtworkUrl).toEqual('http://channel/rp/image.png');
   }));
