@@ -51,7 +51,8 @@
           placeholder="A podcast's RSS feed URL, eg https://example.com/feed.xml">
         <button type="submit">Submit</button>
       </form>
-      <p *ngIf="feedError"><em>{{feedUrl}}</em> is not an RSS feed.</p>
+      <p *ngIf="feedError && feedUrl"><em>{{feedUrl}}</em> is not an RSS feed.</p>
+      <p *ngIf="feedError && !feedUrl">Please make sure you have a valid URL.</p>
       <p *ngIf="sslError"><em>{{sslError}}</em></p>
     </section>
 

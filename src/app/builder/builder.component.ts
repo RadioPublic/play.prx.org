@@ -91,9 +91,14 @@ export class BuilderComponent implements OnInit {
   }
 
   onFeedUrlSubmit(value: string) {
+    this.feedError = false;
     if (value) {
-      this.feedError = false;
-      this.router.navigate(['/'], { queryParams: { uf: value } });
+      value = /^https?:\/\//i.test(value) ? value : `http://${value}`;
+      if (/(http|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/.test(value)) {
+        this.router.navigate(['/'], { queryParams: { uf: value } });
+      } else {
+        this.feedError = true;
+      }
     }
   }
 
