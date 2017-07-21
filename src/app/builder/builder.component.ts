@@ -92,6 +92,7 @@ export class BuilderComponent implements OnInit {
 
   onFeedUrlSubmit(value: string) {
     if (value) {
+      value = /^https?:\/\//i.test(value) ? value : `http://${value}`;
       this.feedError = false;
       this.router.navigate(['/'], { queryParams: { uf: value } });
     }
