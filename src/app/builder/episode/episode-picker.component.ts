@@ -108,6 +108,9 @@ export class EpisodePickerComponent implements OnChanges, OnInit {
         this.select.emit(this._episodes[0]);
       };
       return episodes;
+    }).catch(err => {
+      this.invalidFeed.emit(new InvalidFeedError(this.feedUrl));
+      return [];
     });
   }
 
