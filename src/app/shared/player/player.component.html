@@ -4,7 +4,7 @@
     <div class="metadata">
       <div class="artwork">
         <div class="artworkBackground" [class.loaded]="!!artworkSafeLoaded" [style.background-image]="artworkSafeLoaded"></div>
-        <img [src]="artworkUrl" (load)="artworkLoaded()" style="display:none"/>
+        <img *ngIf="artworkUrl" [src]="artworkUrl" (load)="artworkLoaded()" style="display:none"/>
         <button (click)="togglePlayPause()" id="large-playback-control-button">
           <img src="/assets/images/large-semi-transparent-play.svg" alt="" *ngIf="player.paused">
           <img class="pauseButton" src="/assets/images/large-semi-transparent-pause.svg" alt="" *ngIf="!player.paused">

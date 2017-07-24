@@ -70,7 +70,11 @@ export class PlayerComponent implements OnInit, OnChanges {
     this.sessionService.setSeekForwardListener(() => this.seekBy(30));
 
     this.setEpisodeArtworkSafe();
-    this.feedArtworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.feedArtworkUrl}')`);
+    if (this.feedArtworkUrl) {
+      this.feedArtworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.feedArtworkUrl}')`);
+    } else {
+      this.feedArtworkSafe = this.sanitizer.bypassSecurityTrustStyle(`none`);
+    }
 
     this.duration = Observable.create((observer: Observer<number>) => {
       observer.next(0);
@@ -116,7 +120,11 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   setEpisodeArtworkSafe() {
-    this.artworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.artworkUrl}')`);
+    if (this.artworkUrl) {
+      this.artworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.artworkUrl}')`);
+    } else {
+      this.artworkSafe = this.sanitizer.bypassSecurityTrustStyle(`none`);
+    }
   }
 
   showShareModal() {
