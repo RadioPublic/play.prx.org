@@ -27,7 +27,6 @@ export class MediaSessionService {
     playbackStarted() {
         this.triggered = true;
         if (this.title && 'mediaSession' in navigator) {
-            console.log('media session ')
             navigator['mediaSession'].metadata = new window['MediaMetadata']({
                 title: this.title,
                 artist: this.artist,
