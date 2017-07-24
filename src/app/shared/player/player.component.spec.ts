@@ -3,6 +3,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { PlayerComponent } from './player.component';
+import { MediaSessionService } from './mediasession.service';
 import { ProgressComponent } from '../progress';
 import { PlaylistComponent } from '../playlist';
 import { DurationPipe } from '../duration';
@@ -17,6 +18,7 @@ describe('PlayerComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ PlayerComponent, DurationPipe, ProgressComponent, PlaylistComponent ],
+      providers: [ MediaSessionService ]
     });
     fixture = TestBed.createComponent(PlayerComponent);
     comp = fixture.componentInstance;
