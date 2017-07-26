@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
 
+.player-container {
+  height: 100%;
+}
+
 .background-img {
   filter: blur(25px);
   -webkit-filter: blur(25px);
@@ -7,10 +11,10 @@
   -o-filter: blur(25px);
   margin: -25px;
   /* to account for the white-edge blurring from the filter: blur */
-  min-height: 233px;
+  min-height: calc(100% + 50px);
   width: calc(100% + 50px);
   /* 183px of content (sans border) + 50 to account for the -25px margins */
-  background-size: 100% auto;
+  background-size: cover;
   position: relative;
   z-index: -1;
   background-position: center center;
@@ -27,10 +31,36 @@ content {
   border-radius: 5px;
   border: 1px solid #e6e6e6;
   box-sizing: border-box;
-  height: 185px;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+@media (max-height: 174px) {
+  content {
+    --artwork-size: 100px;
+  }
+}
+
+@media (max-height: 160px) {
+  content {
+    --artwork-size: 90px;
+  }
+}
+
+@media (min-height: 185px) {
+  content {
+    --artwork-size: 125px;
+  }
+}
+
+@media (min-height: 195px) {
+  content {
+    --artwork-size: 135px;
+  }
 }
 
 .metadata {
+  flex: calc(var(--artwork-size) + 30px) 0 0;
   display: flex;
 }
 
@@ -40,11 +70,10 @@ section {
 }
 
 .artwork {
+  width: var(--artwork-size);
+  height: var(--artwork-size);
+  box-sizing: border-box;
   position: relative;
-  max-width: 115px;
-  width: 115px;
-  min-width: 115px;
-  height: 115px;
   margin: 15px;
   border-radius: 5px;
   border: solid 1px #ffffff;
