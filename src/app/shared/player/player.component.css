@@ -20,7 +20,27 @@
   background-position: center center;
 }
 
+.overlayContent {
+  position: absolute;
+  color: white;
+  margin-left: 16px;
+  top: 125px;
+  opacity: 0;
+  transform: scale(2.0);
+  pointer-events: none;
+  transition: top var(--overlay-animation-duration), opacity var(--overlay-animation-duration), transform var(--overlay-animation-duration);
+}
+
+.overlayed .overlayContent {
+  opacity: 1;
+  top: 65px;
+  transform: scale(1.0);
+  pointer-events: all;
+}
+
 content {
+  --overlay-animation-duration: 0.2s;
+  --artwork-size: 117px;
   font-family: "Source Sans Pro";
   background: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3));
   position: fixed;
@@ -62,9 +82,9 @@ content {
 .metadata {
   flex: calc(var(--artwork-size) + 30px) 0 0;
   display: flex;
+  position: relative;
 }
 
-.artwork,
 section {
   flex-grow: 1;
 }
@@ -78,6 +98,14 @@ section {
   border-radius: 5px;
   border: solid 1px #ffffff;
   background-color: white;
+  align-self: flex-start;
+  transition: width var(--overlay-animation-duration), height var(--overlay-animation-duration);
+}
+
+.overlayed .artwork {
+  flex: auto 0 0;
+  width: 52px;
+  height: 52px;
 }
 
 .artwork .artworkBackground {
@@ -95,10 +123,24 @@ section {
 }
 
 #large-playback-control-button {
+  margin: auto !important;
   position: absolute;
-  top: calc(50% - 30px);
-  left: calc(50% - 30px);
-  display: none;
+  width: 60px; height: 60px;
+  transition: width var(--overlay-animation-duration), height var(--overlay-animation-duration), opacity var(--overlay-animation-duration);
+  top: 0; left: 0; bottom: 0; right: 0;
+  pointer-events: none;
+  opacity: 0;
+  cursor: pointer;
+}
+
+#large-playback-control-button img {
+  width: 100%;
+  height: auto;
+}
+
+.overlayed #large-playback-control-button {
+  width: 40px;
+  height: 40px;
 }
 
 section {
@@ -106,7 +148,6 @@ section {
   flex-flow: column nowrap;
   justify-content: space-between;
   margin: 20px 15px 15px 0;
-  overflow: hidden;
 }
 
 header {
@@ -160,18 +201,53 @@ h2 {
   max-height: 30px;
 }
 
+#lower-logo {
+  position: absolute;
+  right: 10px;
+  top: 100%;
+  transition: top var(--overlay-animation-duration);
+  margin-top: -40px;
+}
+
+.overlayed #lower-logo {
+  top: 55px;
+}
+
 .buttons {
   display: flex;
+  opacity: 1;
+  position: relative;
+  top: 0;
+  transition: opacity var(--overlay-animation-duration), top var(--overlay-animation-duration);
+}
+
+.buttons button {
+  transition:  width var(--overlay-animation-duration), height var(--overlay-animation-duration);
+}
+
+.overlayed .buttons {
+  top: -50px;
+  opacity: 0;
+}
+
+.overlayed .buttons button {
+  width: 0; height: 0;
 }
 
 button {
-  min-width: 30px;
+  width: 30px;
+  height: 30px;
   margin-right: 15px;
   border: 0;
   padding: 0;
   background: none;
   cursor: pointer;
   justify-content: center;
+}
+
+button img {
+  height: 100%;
+  width: auto;
 }
 
 button:focus {
@@ -181,6 +257,15 @@ button:focus {
 nav {
   display: flex;
   align-items: center;
+  opacity: 1;
+  position: relative;
+  top: 0;
+  transition: opacity var(--overlay-animation-duration), top var(--overlay-animation-duration);
+}
+
+.overlayed nav {
+  opacity: 0;
+  top: -50px;
 }
 
 nav a {
@@ -201,12 +286,31 @@ nav a:hover {
   border: 1.5px solid gray;
   background: inherit;
   margin-bottom: 2px; /* This is a bit of a hack to fix border clipping */
+  transition: width var(--overlay-animation-duration), height var(--overlay-animation-duration);
+}
+
+.overlayed .nav-button {
+  width: 0;
+  height: 0;
 }
 
 .scrubber {
   display: flex;
   justify-content: space-around;
+  flex: auto 0 0;
+  margin-bottom: 14px;
+  margin-top: 0px;
+  opacity: 1;
+  position: relative;
+  top: 0;
+  transition: opacity var(--overlay-animation-duration), top var(--overlay-animation-duration);
 }
+
+.overlayed .scrubber {
+  opacity: 0;
+  top: 20px;
+}
+
 
 play-progress {
   cursor: col-resize;
@@ -216,7 +320,7 @@ play-progress {
   border-radius: 100px;
   background-color: #ffffff;
   display: block;
-  margin: 6px 0;
+  margin-top: 6px;
   position: relative;
 }
 
@@ -227,7 +331,7 @@ play-progress {
   line-height: 1.5;
   color: #ffffff;
   opacity: 0;
-  transition: opacity 0.5s;
+  transition: opacity var(--overlay-animation-duration);
 }
 
 .playback-progress.loaded, .duration.loaded {
@@ -263,7 +367,10 @@ play-progress {
     display: none;
   }
 
-  #large-playback-control-button,
+  #large-playback-control-button {
+    opacity: 1;
+    pointer-events: all;
+  }
   #lower-logo
   {
     display: block;
@@ -276,5 +383,9 @@ play-progress {
   }
   #skip-button-2 {
     display: none;
+  }
+  .overlayed #large-playback-control-button {
+    opacity: 1;
+    pointer-events: all;
   }
 }
