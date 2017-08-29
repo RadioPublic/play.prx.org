@@ -28,7 +28,7 @@
   opacity: 0;
   transform: scale(2.0);
   pointer-events: none;
-  transition: top var(--overlay-animation-duration), opacity var(--overlay-animation-duration), transform var(--overlay-animation-duration);
+  transition: top 0.2s, opacity 0.2s, transform 0.2s;
 }
 
 .overlayed .overlayContent {
@@ -39,8 +39,6 @@
 }
 
 content {
-  --overlay-animation-duration: 0.2s;
-  --artwork-size: 117px;
   font-family: "Source Sans Pro";
   background: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3));
   position: fixed;
@@ -55,43 +53,15 @@ content {
   flex-flow: column nowrap;
 }
 
-@media (max-height: 174px) {
-  content {
-    --artwork-size: 100px;
-  }
-}
-
-@media (max-height: 160px) {
-  content {
-    --artwork-size: 90px;
-  }
-}
-
-@media (min-height: 185px) {
-  content {
-    --artwork-size: 125px;
-  }
-}
-
-@media (min-height: 195px) {
-  content {
-    --artwork-size: 135px;
-  }
-}
-
 .metadata {
-  flex: calc(var(--artwork-size) + 30px) 0 0;
+  flex: 0 0 calc(117px + 30px);
   display: flex;
   position: relative;
 }
 
-section {
-  flex-grow: 1;
-}
-
 .artwork {
-  width: var(--artwork-size);
-  height: var(--artwork-size);
+  width: 117px;
+  height: 117px;
   box-sizing: border-box;
   position: relative;
   margin: 15px;
@@ -99,7 +69,53 @@ section {
   border: solid 1px #ffffff;
   background-color: white;
   align-self: flex-start;
-  transition: width var(--overlay-animation-duration), height var(--overlay-animation-duration);
+  transition: width 0.2s, height 0.2s;
+}
+
+/* size the artwork appropriately according to the screen size */
+
+@media (max-height: 174px) {
+  .artwork {
+    width: 100px;
+    height: 100px;
+  }
+  .metadata {
+    flex: 0 0 calc(100px + 30px);
+  }
+}
+
+@media (max-height: 160px) {
+  .artwork {
+    width: 90px;
+    height: 90px;
+  }
+  .metadata {
+    flex: 0 0 calc(90px + 30px);
+  }
+}
+
+@media (min-height: 185px) {
+  .artwork {
+    width: 125px;
+    height: 125px;
+  }
+  .metadata {
+    flex: 0 0 calc(125px + 30px);
+  }
+}
+
+@media (min-height: 195px) {
+  .artwork {
+    width: 135px;
+    height: 135px;
+  }
+  .metadata {
+    flex: 0 0 calc(135px + 30px);
+  }
+}
+
+section {
+  flex-grow: 1;
 }
 
 .overlayed .artwork {
@@ -126,7 +142,7 @@ section {
   margin: auto !important;
   position: absolute;
   width: 60px; height: 60px;
-  transition: width var(--overlay-animation-duration), height var(--overlay-animation-duration), opacity var(--overlay-animation-duration);
+  transition: width 0.2s, height 0.2s, opacity 0.2s;
   top: 0; left: 0; bottom: 0; right: 0;
   pointer-events: none;
   opacity: 0;
@@ -205,7 +221,7 @@ h2 {
   position: absolute;
   right: 10px;
   top: 100%;
-  transition: top var(--overlay-animation-duration);
+  transition: top 0.2s;
   margin-top: -40px;
 }
 
@@ -218,11 +234,11 @@ h2 {
   opacity: 1;
   position: relative;
   top: 0;
-  transition: opacity var(--overlay-animation-duration), top var(--overlay-animation-duration);
+  transition: opacity 0.2s, top 0.2s;
 }
 
 .buttons button {
-  transition:  width var(--overlay-animation-duration), height var(--overlay-animation-duration);
+  transition:  width 0.2s, height 0.2s;
 }
 
 .overlayed .buttons {
@@ -260,7 +276,7 @@ nav {
   opacity: 1;
   position: relative;
   top: 0;
-  transition: opacity var(--overlay-animation-duration), top var(--overlay-animation-duration);
+  transition: opacity 0.2s, top 0.2s;
 }
 
 .overlayed nav {
@@ -286,7 +302,7 @@ nav a:hover {
   border: 1.5px solid gray;
   background: inherit;
   margin-bottom: 2px; /* This is a bit of a hack to fix border clipping */
-  transition: width var(--overlay-animation-duration), height var(--overlay-animation-duration);
+  transition: width 0.2s, height 0.2s;
 }
 
 .overlayed .nav-button {
@@ -303,7 +319,7 @@ nav a:hover {
   opacity: 1;
   position: relative;
   top: 0;
-  transition: opacity var(--overlay-animation-duration), top var(--overlay-animation-duration);
+  transition: opacity 0.2s, top 0.2s;
 }
 
 .overlayed .scrubber {
@@ -331,7 +347,7 @@ play-progress {
   line-height: 1.5;
   color: #ffffff;
   opacity: 0;
-  transition: opacity var(--overlay-animation-duration);
+  transition: opacity 0.2s;
 }
 
 .playback-progress.loaded, .duration.loaded {
