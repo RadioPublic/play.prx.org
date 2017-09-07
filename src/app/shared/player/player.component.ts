@@ -33,6 +33,9 @@ export class PlayerComponent implements OnInit, OnChanges {
   feedArtworkSafe: SafeStyle;
   artworkSafeLoaded: SafeStyle;
 
+  overlayEnabled = false;
+  overlayText = "";
+
   // for playlist feature
   episodeIndex = 0;
   player: DovetailAudio;

@@ -1,4 +1,4 @@
-<div class="player-container">
+<div class="player-container" [class.overlayed]="overlayEnabled">
   <div class="background-img" [style.background-image]="feedArtworkSafe"></div>
   <content>
     <div class="metadata">
@@ -68,6 +68,8 @@
       </play-progress>
       <span class="duration" [class.loaded]="duration | async ">{{duration | async | duration}}</span>
     </div>
+
+    <div class="overlayContent">{{overlayText}}</div>
   </content>
   <play-playlist
     *ngIf="showPlaylist && episodes && episodes.length"

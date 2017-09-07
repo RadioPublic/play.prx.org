@@ -11,9 +11,9 @@ header, div, h2, em, small, ol, li, img {
 }
 
 .playlist-container {
-  top: 185px;
+  top: 200px;
   position: fixed;
-  height: calc(100% - 185px);
+  height: calc(100% - 200px);
   width: 100%;
   background: white;
   overflow: scroll;
