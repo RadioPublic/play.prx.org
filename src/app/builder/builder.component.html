@@ -7,17 +7,8 @@
   *ngIf="props">Preview</a>
 
 <div id="preview-overlay" #previewOverlay style="display: none;">
-  <!-- <iframe
-    #previewHorizontal
-    *ngIf="previewIframeSrc"
-    frameborder="0"
-    height="200"
-    id="preview-horizontal"
-    width="95%"
-    [src]="previewIframeSrc"></iframe> -->
   <div *ngIf="!playPlaylist" id="preview-horizontal-wrap">
     <iframe
-      #previewSquare
       *ngIf="previewIframeSrc"
       frameborder="0"
       height="185"
@@ -27,7 +18,6 @@
   </div>
   <div *ngIf="playPlaylist" id="preview-playlist-wrap">
     <iframe
-      #previewPlaylist
       *ngIf="previewIframeSrc"
       frameborder="0"
       height="650"
@@ -231,7 +221,7 @@
       <fieldset>
         <label for="embed-code-raw">Embed player URL</label>
         <input type="text" readonly [ngModel]="props.embeddableUrl"
-          id="embed-code-raw" name="embedcoderaw" #codeInputRaw>
+          id="embed-code-raw" #codeInputRaw>
         <button class="copy-code"
           (mouseover)="resetCopyButton(copyBtnRaw)"
           (click)="copyCode(codeInputRaw, copyBtnRaw)"
