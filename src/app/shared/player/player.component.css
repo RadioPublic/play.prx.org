@@ -174,7 +174,7 @@ section {
   flex-flow: column nowrap;
   justify-content: space-between;
   margin: 20px 15px 15px 0;
-  max-width: calc(100% - 135px);
+  max-width: calc(100% - 180px); /*art width + artwork + section margin = 180px;*/
 }
 
 header {
