@@ -7,17 +7,8 @@
   *ngIf="props">Preview</a>
 
 <div id="preview-overlay" #previewOverlay style="display: none;">
-  <!-- <iframe
-    #previewHorizontal
-    *ngIf="previewIframeSrc"
-    frameborder="0"
-    height="200"
-    id="preview-horizontal"
-    width="95%"
-    [src]="previewIframeSrc"></iframe> -->
   <div *ngIf="!playPlaylist" id="preview-horizontal-wrap">
     <iframe
-      #previewSquare
       *ngIf="previewIframeSrc"
       frameborder="0"
       height="185"
@@ -27,7 +18,6 @@
   </div>
   <div *ngIf="playPlaylist" id="preview-playlist-wrap">
     <iframe
-      #previewPlaylist
       *ngIf="previewIframeSrc"
       frameborder="0"
       height="650"
@@ -196,9 +186,9 @@
 
       <section *ngIf="!playPlaylist">
         <fieldset>
-          <label for="embed-code-horizontal">Horizontal Episode Player</label>
+          <label for="embed-code-horizontal">Flexible Width Episode Player</label>
           <input type="text" readonly [ngModel]="props.horizontalIframeHtml"
-            id="embed-code-horizontal" name="embedcodehorizontal" #codeInputHorizontal>
+            id="embed-code-horizontal" #codeInputHorizontal>
           <button class="copy-code"
             (mouseover)="resetCopyButton(copyBtnHorizontal)"
             (click)="copyCode(codeInputHorizontal, copyBtnHorizontal)"
@@ -209,15 +199,15 @@
         </fieldset>
 
         <fieldset>
-          <label for="embed-code-square">Square Episode Player</label>
-          <input type="text" readonly [ngModel]="props.squareIframeHtml"
-            id="embed-code-square" name="embedcodesquare" #codeInputSquare>
+          <label for="embed-code-fixed-width">Fixed Width Episode Player</label>
+          <input type="text" readonly [ngModel]="props.fixedWidthIframeHtml"
+            id="embed-code-fixed-width" #codeInputFixedWidth>
           <button class="copy-code"
-            (mouseover)="resetCopyButton(copyBtnSquare)"
-            (click)="copyCode(codeInputSquare, copyBtnSquare)"
-            #copyBtnSquare>Copy</button>
+            (mouseover)="resetCopyButton(copyBtnFixedWidth)"
+            (click)="copyCode(codeInputFixedWidth, copyBtnFixedWidth)"
+            #copyBtnFixedWidth>Copy</button>
           <p>
-            <small>This player is 500 by 500 pixels and displays the artwork in large, prominent format.</small>
+            <small>This player is 200 pixels tall and 500 pixels wide.</small>
           </p>
         </fieldset>
       </section>
@@ -231,7 +221,7 @@
       <fieldset>
         <label for="embed-code-raw">Embed player URL</label>
         <input type="text" readonly [ngModel]="props.embeddableUrl"
-          id="embed-code-raw" name="embedcoderaw" #codeInputRaw>
+          id="embed-code-raw" #codeInputRaw>
         <button class="copy-code"
           (mouseover)="resetCopyButton(copyBtnRaw)"
           (click)="copyCode(codeInputRaw, copyBtnRaw)"

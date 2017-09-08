@@ -79,8 +79,8 @@ export class BuilderProperties {
     return `<iframe frameborder="0" height="${height}" width="${width}" src="${url}"></iframe>`;
   }
 
-  get squareIframeHtml() {
-    return this.iframeHtml('500', '500');
+  get fixedWidthIframeHtml() {
+    return this.iframeHtml('500', '200');
   }
 
   get horizontalIframeHtml() {
