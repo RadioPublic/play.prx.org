@@ -54,6 +54,8 @@ export class PlayerComponent implements OnInit, OnChanges {
 
   logoSrc: string;
 
+  initialLoading = true;
+
   constructor(private sanitizer: DomSanitizer, private sessionService: MediaSessionService) {}
 
   ngOnInit() {
@@ -102,6 +104,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   ngOnChanges(changes: any) {
     if (this.player) {
       if (changes.audioUrl || changes.title || changes.subtitle) {
+        this.initialLoading = false;
         this.logger = new Logger(this.player, this.title, this.subtitle);
         this.sessionService.setMediaMetadata(this.title, this.subtitle, null, this.feedArtworkUrl);
       }
