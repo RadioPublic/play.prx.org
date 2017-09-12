@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit, OnChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, OnChanges, ContentChild, TemplateRef } from '@angular/core';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import { Observable, Observer } from 'rxjs';
 import { MediaSessionService } from './mediasession.service';
@@ -53,6 +53,10 @@ export class PlayerComponent implements OnInit, OnChanges {
   duration: Observable<number>;
 
   logoSrc: string;
+
+  @ContentChild(TemplateRef)
+  overlayTemplate: TemplateRef<any>;
+  overlayContext = {dismiss: this.dismissOverlay.bind(this)};
 
   constructor(private sanitizer: DomSanitizer, private sessionService: MediaSessionService) {}
 
@@ -289,6 +293,14 @@ export class PlayerComponent implements OnInit, OnChanges {
     } else {
       this.player.pause();
     }
+  }
+
+  displayOverlay() {
+    this.overlayEnabled = true;
+  }
+
+  dismissOverlay() {
+    this.overlayEnabled = false;
   }
 
   private boundedTime(time: number) {

@@ -1,10 +1,11 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MergeAdapter } from './adapters/merge.adapter';
 import { QSDAdapter } from './adapters/qsd.adapter';
 import { DraperAdapter } from './adapters/draper.adapter';
 import { FeedAdapter } from './adapters/feed.adapter';
 import { AdapterProperties } from './adapters/adapter.properties';
+import { PlayerComponent } from '../shared/player/player.component';
 import { EMBED_SHOW_PLAYLIST_PARAM } from './embed.constants';
 
 const PYM_MESSAGE_DELIMITER = 'xPYMx';
@@ -15,11 +16,13 @@ const PYM_CHILD_ID_PARAM = 'childId';
   styleUrls: ['embed.component.css'],
   providers: [MergeAdapter, QSDAdapter, DraperAdapter, FeedAdapter],
   template: `
-    <play-share-modal *ngIf="showShareModal" (close)="hideModal()">
-    </play-share-modal>
+    <play-share-modal *ngIf="showShareModal" (close)="hideModal()"></play-share-modal>
     <play-player [feedArtworkUrl]="feedArtworkUrl" [audioUrl]="audioUrl" [title]="title" [subtitle]="subtitle"
       [subscribeUrl]="subscribeUrl" [subscribeTarget]="subscribeTarget" [artworkUrl]="artworkUrl" (share)="showModal()"
       [showPlaylist]="showPlaylist" [episodes]="episodes">
+      <ng-template let-dismiss="dismiss">
+        <p>Placeholder for overlay content (could put share modal here if we wanted)</p>
+      </ng-template>
     </play-player>
   `
 })
@@ -41,6 +44,8 @@ export class EmbedComponent implements OnInit {
   // playlist
   showPlaylist: boolean;
   episodes: AdapterProperties[];
+
+  @ViewChild(PlayerComponent) private player: PlayerComponent;
 
   constructor(private route: ActivatedRoute, private adapter: MergeAdapter) {}
 
