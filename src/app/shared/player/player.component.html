@@ -43,11 +43,14 @@
           </div>
 
           <nav>
+            <a *ngIf="subscribeUrl" [href]="audioUrl" (click)="requestDownload($event)" [target]="subscribeTarget">
+              <img class="nav-button" src="/assets/images/download.svg" alt="download">
+            </a>
             <a [href]="subscribeUrl" *ngIf="subscribeUrl" [target]="subscribeTarget">
-              <img class="nav-button" src="/assets/images/plus-sign-subscribe.svg" alt="">
+              <img class="nav-button" src="/assets/images/plus-sign-subscribe.svg" alt="subscribe">
             </a>
             <a (click)="showShareModal()" id="share-button">
-              <img class="nav-button" src="/assets/images/share.svg" alt="">
+              <img class="nav-button" src="/assets/images/share.svg" alt="share">
             </a>
             <button id="skip-button-2" *ngIf="showPlaylist" (click)="skipTrack()">
               <img src="/assets/images/skip.svg" alt="">

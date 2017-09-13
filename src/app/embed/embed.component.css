@@ -9,3 +9,45 @@ play-player {
   border-radius: 5px;
   overflow: hidden;
 }
+
+p {
+  margin: 4px 0;
+  font-size: 0.9em;
+}
+
+
+a {
+  color: white;
+  font-weight: bold;
+}
+
+ul.app-selection {
+  list-style-type: none;
+  margin: 0; padding: 0;
+  text-align: center;
+}
+
+li {
+  line-height: 40px;
+  display: inline-block;
+}
+
+p.aside {
+  font-size: 0.8em;
+  opacity: 0.8;
+  text-align: center
+}
+
+
+.app-overlay {
+  display: flex;
+  flex-flow: column nowrap;
+  align-content: space-between;
+}
+
+
+.app-selection img {
+  height: 40px;
+  display: inline-block;
+  vertical-align: middle;
+}

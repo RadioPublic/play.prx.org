@@ -19,9 +19,19 @@ const PYM_CHILD_ID_PARAM = 'childId';
     <play-share-modal *ngIf="showShareModal" (close)="hideModal()"></play-share-modal>
     <play-player [feedArtworkUrl]="feedArtworkUrl" [audioUrl]="audioUrl" [title]="title" [subtitle]="subtitle"
       [subscribeUrl]="subscribeUrl" [subscribeTarget]="subscribeTarget" [artworkUrl]="artworkUrl" (share)="showModal()"
-      [showPlaylist]="showPlaylist" [episodes]="episodes">
+      [showPlaylist]="showPlaylist" [episodes]="episodes" (play)="onPlay($event)" (pause)="onPause($event)"
+      (ended)="onEnded($event)" (download)="onDownload($event)">
       <ng-template let-dismiss="dismiss">
-        <p>Placeholder for overlay content (could put share modal here if we wanted)</p>
+        <div class="app-overlay">
+          <p>Never miss an episode from <strong>{{this.subtitle}}</strong> and other great podcasts when you download the free RadioPublic app.</p>
+          <ul class="app-selection">
+            <li *ngIf="!isiOSDevice"><a [href]="playStoreLink()"><img src="/assets/images/google-play.png" alt="Google Play Store" /></a></li>
+            <li *ngIf="!isAndroidDevice"><a [href]="appStoreLink()"><img src="/assets/images/app-store.svg" alt="App Store" /></a></li>
+            <li *ngIf="isiOSDevice">or the <a [href]="playStoreLink()">Google Play Store</a></li>
+            <li *ngIf="isAndroidDevice">or the <a href="appStoreLink()">App Store</a></li>
+          </ul>
+          <p class="aside" *ngIf="downloadRequested">You can also <a [href]="audioUrl" [target]="subscribeTarget">download the audio file</a> if you're on a computer.</p>
+        </div>
       </ng-template>
     </play-player>
   `
@@ -30,6 +40,8 @@ const PYM_CHILD_ID_PARAM = 'childId';
 export class EmbedComponent implements OnInit {
 
   showShareModal = false;
+  hasInteracted = false;
+  downloadRequested = false;
 
   // player params
   audioUrl: string;
@@ -44,6 +56,9 @@ export class EmbedComponent implements OnInit {
   // playlist
   showPlaylist: boolean;
   episodes: AdapterProperties[];
+
+  isiOSDevice = /iphone|ipad|ios/i.test(navigator.userAgent);
+  isAndroidDevice = /android/i.test(navigator.userAgent);
 
   @ViewChild(PlayerComponent) private player: PlayerComponent;
 
@@ -66,6 +81,34 @@ export class EmbedComponent implements OnInit {
 
   hideModal() {
     this.showShareModal = false;
+  }
+
+  onPlay(e) {
+    this.hasInteracted = true;
+    this.player.dismissOverlay();
+  }
+
+  onPause(e) {
+    this.hasInteracted = true;
+    this.player.displayOverlay();
+  }
+
+  onEnded(e) {
+    this.player.displayOverlay();
+  }
+
+  onDownload(e) {
+    e.preventDefault();
+    this.downloadRequested = true;
+    this.player.displayOverlay();
+  }
+
+  playStoreLink() {
+    return `${this.subscribeUrl}?getApp=1&platform=android`;
+  }
+
+  appStoreLink() {
+    return `${this.subscribeUrl}?getApp=1&platform=ios`;
   }
 
   private assignEpisodePropertiesToPlayer(properties: AdapterProperties) {
