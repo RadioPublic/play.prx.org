@@ -14,12 +14,6 @@ import { Component, EventEmitter, Output } from '@angular/core';
     <button (mouseover)="reset(small)" (click)="copy(small)" data-copytarget="#share-embed-small" #small>Copy</button>
     </div>
 
-    <div class="embed-code">
-    <strong>Square</strong>
-    <input type="text" [value]="squareCode" id="share-embed-square" readonly>
-    <button (mouseover)="reset(square)" (click)="copy(square)" data-copytarget="#share-embed-square" #square>Copy</button>
-    </div>
-
     <a [href]="customizeHref" id="customize-btn" target="_blank">Customize this player</a>
   `
 })
@@ -31,12 +25,6 @@ export class ShareModalComponent {
   get horizontalCode() {
     let href = window.location.href;
     let iframe = `<iframe frameborder="0" height="200" scrolling="no" src="${href}" width="100%"></iframe>`;
-    return iframe;
-  }
-
-  get squareCode() {
-    let href = window.location.href;
-    let iframe = `<iframe frameborder="0" height="500" scrolling="no" src="${href}" width="500"></iframe>`;
     return iframe;
   }
 
