@@ -69,7 +69,7 @@
       <span class="duration" [class.loaded]="duration | async ">{{duration | async | duration}}</span>
     </div>
 
-    <div class="overlayContent">{{overlayText}}</div>
+    <div class="overlayContent"><ng-container *ngTemplateOutlet="overlayTemplate; context:overlayContext"></ng-container></div>
   </content>
   <play-playlist
     *ngIf="showPlaylist && episodes && episodes.length"
