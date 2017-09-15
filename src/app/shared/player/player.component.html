@@ -6,7 +6,7 @@
         <div class="artworkBackground" [class.loaded]="!!artworkSafeLoaded" [style.background-image]="artworkSafeLoaded"></div>
         <img *ngIf="artworkUrl" [src]="artworkUrl" (load)="artworkLoaded()" style="display:none"/>
         <button (click)="togglePlayPause()" id="large-playback-control-button">
-          <img src="/assets/images/large-semi-transparent-play.svg" alt="" *ngIf="player.paused">
+          <img src="/assets/images/large-semi-transparent-play.svg" alt="" *ngIf="player.paused" load-render>
           <img class="pauseButton" src="/assets/images/large-semi-transparent-pause.svg" alt="" *ngIf="!player.paused">
         </button>
       </div>
@@ -16,7 +16,7 @@
             <h1 [title]="title">{{title}}</h1>
             <h2 [title]="subtitle">{{subtitle}}</h2>
           </div>
-          <div class="logo" id="upper-logo"><img *ngIf="logoSrc" [src]="logoSrc" alt=""></div>
+          <div class="logo" id="upper-logo"><img load-render *ngIf="logoSrc" [src]="logoSrc" alt=""></div>
         </header>
         <div class="controls">
           <div class="buttons" (window:keydown)="handleHotkey($event)">
@@ -24,7 +24,7 @@
               <img src="/assets/images/back-5.svg" alt="">
             </button>
             <button (click)="togglePlayPause()" id="playback-control-button">
-              <img src="/assets/images/play.svg" alt="" *ngIf="player.paused">
+              <img src="/assets/images/play.svg" alt="" *ngIf="player.paused" load-render>
               <img class="pauseButton" src="/assets/images/pause.svg" alt="" *ngIf="!player.paused">
             </button>
             <button (click)="seekBy(30)" id="forward-control-button">
@@ -43,7 +43,7 @@
           </div>
 
           <nav>
-            <a [href]="subscribeUrl" *ngIf="subscribeUrl" [target]="subscribeTarget">
+            <a [href]="subscribeUrl" load-render *ngIf="subscribeUrl || initialLoading" [target]="subscribeTarget">
               <img class="nav-button" src="/assets/images/plus-sign-subscribe.svg" alt="">
             </a>
             <a (click)="showShareModal()" id="share-button">
@@ -53,7 +53,7 @@
               <img src="/assets/images/skip.svg" alt="">
             </button>
           </nav>
-          <div class="logo" id="lower-logo"><img *ngIf="logoSrc" [src]="logoSrc" alt=""></div>
+          <div class="logo" id="lower-logo"><img load-render *ngIf="logoSrc" [src]="logoSrc" alt=""></div>
         </div>
       </section>
     </div>
