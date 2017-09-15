@@ -6,6 +6,8 @@ html(lang='en')
     base(href='/')
     meta(name='viewport' content='width=device-width, initial-scale=1')
     link(rel='icon' type='image/x-icon' href='/assets/images/favicon.png')
+    noscript#ds
+      link(rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro")
     for script in scripts
       link(rel="preload", href=script, as="script")
   body(style="margin: 0")
@@ -23,4 +25,4 @@ html(lang='en')
           ga('set', 'referrer', decodeURIComponent(x[1]))}ga('send', 'pageview')}
 
     script
-      != ';window.onload=function(){(function l(i,d,j){if(sl[i]){j=d.createElement("script");j.async=!!1;j.src=sl[i];j.onload=function(){l(i+1,d)};d.body.appendChild(j)}})(0,document)}'
+      != ';window.onload=function(){(function l(i,d,j){if(sl[i]){j=d.createElement("script");j.async=!!1;j.src=sl[i];j.onload=function(){l(i+1,d)};d.body.appendChild(j)}})(0,document)};(function(d,x){x(function(){window.setTimeout(function(s,r){s=d.getElementById("ds"),r=d.createElement("div");r.innerHTML=s.textContent;d.body.appendChild(r);s.parentElement.removeChild(s)},0)})})(document,requestAnimationFrame||mozRequestAnimationFrame||webkitRequestAnimationFrame||msRequestAnimationFrame||function(c){window.addEventListener("load",c)})'

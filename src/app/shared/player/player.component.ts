@@ -58,6 +58,9 @@ export class PlayerComponent implements OnInit, OnChanges {
 
   logoSrc: string;
 
+
+  initialLoading = true;
+
   @ContentChild(TemplateRef)
   overlayTemplate: TemplateRef<any>;
   overlayContext = {dismiss: this.dismissOverlay.bind(this)};
@@ -127,6 +130,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   ngOnChanges(changes: any) {
     if (this.player) {
       if (changes.audioUrl || changes.title || changes.subtitle) {
+        this.initialLoading = false;
         this.logger = new Logger(this.player, this.title, this.subtitle);
         this.sessionService.setMediaMetadata(this.title, this.subtitle, null, this.feedArtworkUrl);
       }
