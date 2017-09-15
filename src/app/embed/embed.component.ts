@@ -22,7 +22,7 @@ const PYM_CHILD_ID_PARAM = 'childId';
       [showPlaylist]="showPlaylist" [episodes]="episodes" (play)="onPlay($event)" (pause)="onPause($event)"
       (ended)="onEnded($event)" (download)="onDownload($event)">
       <ng-template let-dismiss="dismiss">
-        <div class="app-overlay">
+        <div class="app-overlay" (window:keydown)="handleKeypress($event)">
           <p>Never miss an episode from <strong>{{this.subtitle}}</strong> and other great podcasts when you download the free RadioPublic app.</p>
           <ul class="app-selection">
             <li *ngIf="!isiOSDevice"><a [href]="playStoreLink()"><img src="/assets/images/google-play.png" alt="Google Play Store" /></a></li>
@@ -123,6 +123,14 @@ export class EmbedComponent implements OnInit {
 
     // fallback to feed image
     this.artworkUrl = this.artworkUrl || this.feedArtworkUrl;
+  }
+
+  handleKeypress(event) {
+    const key = event.code || event.key;
+    if (key === 'Escape') {
+      event.preventDefault();
+      this.player.dismissOverlay();
+    }
   }
 
   @HostListener("window:resize", [])

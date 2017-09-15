@@ -35,11 +35,11 @@ li {
 p.aside {
   font-size: 0.8em;
   opacity: 0.8;
-  text-align: center
 }
 
 
 .app-overlay {
+  text-align: center;
   display: flex;
   flex-flow: column nowrap;
   align-content: space-between;
