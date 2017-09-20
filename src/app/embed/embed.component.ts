@@ -94,7 +94,9 @@ export class EmbedComponent implements OnInit {
   }
 
   onEnded(e) {
-    this.player.displayOverlay();
+    if (!e.hasNextTrack) {
+      this.player.displayOverlay();
+    }
   }
 
   onDownload(e) {
