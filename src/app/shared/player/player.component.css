@@ -21,8 +21,12 @@
 .overlayContent {
   position: absolute;
   color: white;
-  margin-left: 16px;
+  margin: 5px 14px;
   top: 125px;
+  bottom: 0;
+  left: 0; right: 0;
+  width: auto;
+  height: auto;
   opacity: 0;
   transform: scale(2.0);
   pointer-events: none;

@@ -10,6 +10,11 @@ import { Logger } from '../logger';
 const SEGMENT_TYPE = 'segmentType';
 const playerjsAdapter = window['playerjs']['HTML5Adapter'];
 
+export interface EndedEvent extends Event {
+  hasNextTrack: boolean;
+  nextTrackIndex: number;
+}
+
 @Component({
   selector: 'play-player',
   styleUrls: ['player.component.css'],
@@ -28,6 +33,10 @@ export class PlayerComponent implements OnInit, OnChanges {
   @Input() episodes: any[];
   @Input() showPlaylist: boolean;
   @Output() share = new EventEmitter<boolean>();
+  @Output() play = new EventEmitter<Event>();
+  @Output() pause = new EventEmitter<Event>();
+  @Output() ended = new EventEmitter<EndedEvent>();
+  @Output() download = new EventEmitter<Event>();
 
   artworkSafe: SafeStyle;
   feedArtworkSafe: SafeStyle;
@@ -61,17 +70,38 @@ export class PlayerComponent implements OnInit, OnChanges {
   overlayTemplate: TemplateRef<any>;
   overlayContext = {dismiss: this.dismissOverlay.bind(this)};
 
+  private isEnded = false;
+
   constructor(private sanitizer: DomSanitizer, private sessionService: MediaSessionService) {}
 
   ngOnInit() {
     this.player = new DovetailAudio(this.audioUrl);
     this.player.addEventListener('segmentstart', e => this.currentSegmentType = e[SEGMENT_TYPE]);
-    this.player.addEventListener('ended', e => {
-      if (this.episodes && this.episodes.length > 0) {
-        this.episodeIndex++;
-        this.updatePlayingEpisode(this.episodeIndex);
+    this.player.addEventListener('ended', (e: EndedEvent) => {
+      this.isEnded = true;
+      if (this.episodes && this.episodes.length > this.episodeIndex + 1) {
+        e.nextTrackIndex = this.episodeIndex + 1;
+        e.hasNextTrack = true;
+        this.ended.emit(e);
+        if (!e.defaultPrevented) {
+          this.episodeIndex = e.nextTrackIndex;
+          this.updatePlayingEpisode(this.episodeIndex);
+          this.isEnded = false;
+        }
+      } else {
+        e.hasNextTrack = false;
+        this.ended.emit(e);
       }
     });
+
+    this.player.addEventListener('playing', (e: Event) => {
+      this.play.emit(e);
+    });
+
+    this.player.addEventListener('pause', (e: Event) => {
+      this.pause.emit(e);
+    });
+
     if (this.title && this.subtitle) {
       this.logger = new Logger(this.player, this.title, this.subtitle);
     }
@@ -293,10 +323,17 @@ export class PlayerComponent implements OnInit, OnChanges {
 
   togglePlayPause() {
     if (this.player.paused) {
+      if (this.isEnded) {
+        this.seekTo(0);
+      }
       this.player.play().then(_ => this.sessionService.playbackStarted());
     } else {
       this.player.pause();
     }
+  }
+
+  requestDownload(event) {
+    this.download.emit(event);
   }
 
   displayOverlay() {
@@ -312,6 +349,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   private seekTo(time: number) {
+    this.isEnded = false;
     this.player.currentTime = this.boundedTime(time);
   }
 
