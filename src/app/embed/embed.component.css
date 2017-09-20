@@ -42,7 +42,9 @@ p.aside {
   text-align: center;
   display: flex;
   flex-flow: column nowrap;
-  align-content: space-between;
+  height: 100%;
+  justify-content: space-around;
+  justify-content: space-evenly;
 }
 
 
