@@ -106,11 +106,11 @@ export class EmbedComponent implements OnInit {
   }
 
   playStoreLink() {
-    return `${this.subscribeUrl}?getApp=1&platform=android`;
+    return `https://play.radiopublic.com/${encodeURIComponent(this.subscribeUrl)}?getApp=1&platform=android`;
   }
 
   appStoreLink() {
-    return `${this.subscribeUrl}?getApp=1&platform=ios`;
+    return `https://play.radiopublic.com/${encodeURIComponent(this.subscribeUrl)}?getApp=1&platform=ios`;
   }
 
   private assignEpisodePropertiesToPlayer(properties: AdapterProperties) {
