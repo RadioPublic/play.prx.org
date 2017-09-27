@@ -7,7 +7,7 @@ const ACCEPT = 'Accept';
 const MIME_TYPE = 'application/vnd.dovetail.v1+json';
 const CONTENT_TYPE = 'Content-Type';
 const APPLICATION_JSON = 'application/json';
-export const DOVETAIL_MATCHER = /\/dovetail(-.+)?\.prxu\.org\//;
+export const DOVETAIL_MATCHER = /\/dovetail(.+)?\.prxu\.org\//;
 
 export interface DovetailResponse {
   program: {
