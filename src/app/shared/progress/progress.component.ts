@@ -79,7 +79,7 @@ export class ProgressComponent {
 
     if (event.target === this.el.nativeElement) {
       this.onBasicMousemove(event);
-    } else if (event.target === this.el.nativeElement.querySelector('scrub-detector')) {
+    } else if (event.target === this.el.nativeElement.querySelector('.scrub-detector')) {
       this.onFancyMousemove(event);
     }
 
