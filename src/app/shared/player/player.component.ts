@@ -95,11 +95,15 @@ export class PlayerComponent implements OnInit, OnChanges {
     });
 
     this.player.addEventListener('playing', (e: Event) => {
-      this.play.emit(e);
+      if (!this.isScrubbing) {
+        this.play.emit(e);
+      }
     });
 
     this.player.addEventListener('pause', (e: Event) => {
-      this.pause.emit(e);
+      if (!this.isScrubbing) {
+        this.pause.emit(e);
+      }
     });
 
     if (this.title && this.subtitle) {
