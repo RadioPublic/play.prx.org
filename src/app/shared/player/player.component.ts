@@ -94,7 +94,7 @@ export class PlayerComponent implements OnInit, OnChanges {
       }
     });
 
-    this.player.addEventListener('playing', (e: Event) => {
+    this.player.addEventListener('play', (e: Event) => {
       if (!this.isScrubbing) {
         this.play.emit(e);
       }
