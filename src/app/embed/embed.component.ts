@@ -23,14 +23,20 @@ const PYM_CHILD_ID_PARAM = 'childId';
       (ended)="onEnded($event)" (download)="onDownload($event)" [duration]="duration">
       <ng-template let-dismiss="dismiss">
         <div class="app-overlay" (window:keydown)="handleKeypress($event)">
-          <p>Never miss an episode from <strong>{{this.subtitle}}</strong> and other great podcasts when you download the free RadioPublic app.</p>
+          <p>Never miss an episode from <strong>{{this.subtitle}}</strong>
+            and other great podcasts when you download the free RadioPublic app.</p>
           <ul class="app-selection">
-            <li *ngIf="!isiOSDevice"><a [href]="playStoreLink()" [target]="subscribeTarget"><img src="/assets/images/google-play.png" alt="Google Play Store" /></a></li>
-            <li *ngIf="!isAndroidDevice"><a [href]="appStoreLink()" [target]="subscribeTarget"><img src="/assets/images/app-store.svg" alt="App Store" /></a></li>
-            <li *ngIf="isiOSDevice">or the <a [href]="playStoreLink()" [target]="subscribeTarget">Google Play Store</a></li>
-            <li *ngIf="isAndroidDevice">or the <a href="appStoreLink()" [target]="subscribeTarget">App Store</a></li>
+            <li *ngIf="!isiOSDevice"><a [href]="playStoreLink()"
+              [target]="subscribeTarget"><img src="/assets/images/google-play.png" alt="Google Play Store" /></a></li>
+            <li *ngIf="!isAndroidDevice"><a [href]="appStoreLink()"
+              [target]="subscribeTarget"><img src="/assets/images/app-store.svg" alt="App Store" /></a></li>
+            <li *ngIf="isiOSDevice">or the <a [href]="playStoreLink()"
+              [target]="subscribeTarget">Google Play Store</a></li>
+            <li *ngIf="isAndroidDevice">or the <a href="appStoreLink()"
+              [target]="subscribeTarget">App Store</a></li>
           </ul>
-          <p class="aside" *ngIf="downloadRequested">You can also <a [href]="audioUrl" [target]="subscribeTarget">download the audio file</a> if you're on a computer.</p>
+          <p class="aside" *ngIf="downloadRequested">You can also <a [href]="audioUrl"
+            [target]="subscribeTarget">download the audio file</a> if you're on a computer.</p>
         </div>
       </ng-template>
     </play-player>
