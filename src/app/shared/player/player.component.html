@@ -62,14 +62,14 @@
     </div>
 
     <div class="scrubber" (window:keydown)="handleHotkey($event)">
-      <span class="playback-progress" [class.loaded]="duration | async">{{currentTime | async | duration}}</span>
+      <span class="playback-progress" [class.loaded]="currentDuration | async">{{currentTime | async | duration}}</span>
       <play-progress
         [value]="currentTime | async"
-        [maximum]="duration | async"
+        [maximum]="currentDuration | async"
         (seek)="onSeek($event)"
         (scrubbing)="onScrub($event)">
       </play-progress>
-      <span class="duration" [class.loaded]="duration | async ">{{duration | async | duration}}</span>
+      <span class="duration" [class.loaded]="currentDuration | async ">{{currentDuration | async | duration}}</span>
     </div>
 
     <div class="overlayContent"><ng-container *ngTemplateOutlet="overlayTemplate; context:overlayContext"></ng-container></div>
