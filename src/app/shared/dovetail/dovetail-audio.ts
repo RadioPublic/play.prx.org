@@ -108,6 +108,10 @@ export class DovetailAudio extends ExtendableAudio {
     }
   }
 
+  get paused(): boolean {
+    return this._audio.paused && !this._dovetailLoading;
+  }
+
   get playbackRate() {
     if (!this._playbackRate) {
       this._playbackRate = this._audio.playbackRate;
