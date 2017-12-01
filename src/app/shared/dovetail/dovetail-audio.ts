@@ -81,8 +81,20 @@ export class DovetailAudio extends ExtendableAudio {
         this.skipToFile(this.index + 1, resolve);
       });
     } else {
-      return new Promise<void>(resolve => {
-        resolve(this._audio.play());
+      return new Promise<void> ((resolve, reject) => {
+        this._audio.play().then(
+          () => resolve(),
+          err => {
+            if (this._dovetailLoading) {
+              this.resumeOnLoad = resolve;
+            } else if (this._dovetailOriginalUrl && err.name === 'NotSupportedError') {
+              this._dovetailLoading = true;
+              this.resumeOnLoad = resolve;
+            } else {
+              reject(err);
+            }
+          }
+        );
       });
     }
   }
