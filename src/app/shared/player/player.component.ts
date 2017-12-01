@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, OnInit, OnChanges, ContentChild, TemplateRef } from '@angular/core';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
-import { Observable, Observer, ReplaySubject } from 'rxjs';
+import { Observable, Observer } from 'rxjs';
 import { MediaSessionService } from './mediasession.service';
 import 'player.js';
 
@@ -60,7 +60,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   private isHeld: boolean;
 
   currentTime: Observable<number>;
-  currentDuration: ReplaySubject<number>;
+  currentDuration: Observable<number>;
 
   logoSrc: string;
 
