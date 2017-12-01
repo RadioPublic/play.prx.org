@@ -20,7 +20,7 @@ const PYM_CHILD_ID_PARAM = 'childId';
     <play-player [feedArtworkUrl]="feedArtworkUrl" [audioUrl]="audioUrl" [title]="title" [subtitle]="subtitle"
       [subscribeUrl]="subscribeUrl" [subscribeTarget]="subscribeTarget" [artworkUrl]="artworkUrl" (share)="showModal()"
       [showPlaylist]="showPlaylist" [episodes]="episodes" (play)="onPlay($event)" (pause)="onPause($event)"
-      (ended)="onEnded($event)" (download)="onDownload($event)">
+      (ended)="onEnded($event)" (download)="onDownload($event)" [duration]="duration">
       <ng-template let-dismiss="dismiss">
         <div class="app-overlay" (window:keydown)="handleKeypress($event)">
           <p>Never miss an episode from <strong>{{this.subtitle}}</strong> and other great podcasts when you download the free RadioPublic app.</p>
@@ -45,6 +45,7 @@ export class EmbedComponent implements OnInit {
 
   // player params
   audioUrl: string;
+  duration: number;
   title: string;
   subtitle: string;
   subscribeUrl: string;
@@ -115,6 +116,7 @@ export class EmbedComponent implements OnInit {
 
   private assignEpisodePropertiesToPlayer(properties: AdapterProperties) {
     this.audioUrl = ( properties.audioUrl || this.audioUrl );
+    this.duration = ( properties.duration || this.duration || 0 );
     this.title = ( properties.title || this.title );
     this.subtitle = ( properties.subtitle || this.subtitle );
     this.subscribeUrl = ( properties.subscribeUrl || this.subscribeUrl );
