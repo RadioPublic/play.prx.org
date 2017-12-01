@@ -61,7 +61,7 @@
       </section>
     </div>
 
-    <div class="scrubber" (window:keydown)="handleHotkey($event)">
+    <div class="scrubber">
       <span class="playback-progress" [class.loaded]="currentDuration | async">{{currentTime | async | duration}}</span>
       <play-progress
         [value]="currentTime | async"
