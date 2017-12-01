@@ -81,21 +81,7 @@ export class DovetailAudio extends ExtendableAudio {
         this.skipToFile(this.index + 1, resolve);
       });
     } else {
-      return new Promise<void> ((resolve, reject) => {
-        this._audio.play().then(
-          () => resolve(),
-          err => {
-            if (this._dovetailLoading) {
-              this.resumeOnLoad = resolve;
-            } else if (this._dovetailOriginalUrl && err.name === 'NotSupportedError') {
-              this._dovetailLoading = true;
-              this.resumeOnLoad = resolve;
-            } else {
-              reject(err);
-            }
-          }
-        );
-      });
+      return this.playItSafe();
     }
   }
 
@@ -178,6 +164,24 @@ export class DovetailAudio extends ExtendableAudio {
       url += (url.indexOf('?') < 0 ? '?' : '&') + 'debug';
     }
     this.setSegments(this.fallback(url));
+  }
+
+  private playItSafe() {
+    return new Promise<void>((resolve, reject) => {
+      this._audio.play().then(
+        () => resolve(),
+        err => {
+          if (this._dovetailLoading) {
+            this.resumeOnLoad = resolve;
+          } else if (this._dovetailOriginalUrl && err.name === 'NotSupportedError') {
+            this._dovetailLoading = true;
+            this.resumeOnLoad = resolve;
+          } else {
+            reject(err);
+          }
+        }
+      );
+    });
   }
 
   private fallback(url: string): DovetailArrangementEntry[] {
@@ -334,7 +338,7 @@ export class DovetailAudio extends ExtendableAudio {
 
       this._audio.src = arrangement.audioUrl;
       this._audio.playbackRate = this.playbackRate;
-      if (resume) { resume(this._audio.play()); }
+      if (resume) { resume(this.playItSafe()); }
 
       this.$$sendEvent(SEGMENT_START, {
         segment: arrangement,
