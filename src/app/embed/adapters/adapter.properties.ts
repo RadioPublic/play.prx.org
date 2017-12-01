@@ -2,6 +2,7 @@ import { Observable } from 'rxjs/Observable';
 
 export const PropNames = [
   'audioUrl',
+  'duration',
   'title',
   'subtitle',
   'subscribeUrl',
