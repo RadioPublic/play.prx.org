@@ -18,7 +18,6 @@ export class ExtendableAudio {
   constructor(url) {
     if (typeof window['Audio'] !== 'undefined') {
       this._audio = new Audio();
-      this._audio.preload = 'none';
     } else {
       // Basically make audio a noop on phantom or browsers with no Audio support
       this._audio = ({addEventListener: noop} as any) as HTMLAudioElement;
