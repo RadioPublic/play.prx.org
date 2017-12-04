@@ -1,6 +1,6 @@
 /// <reference path="./extendable-audio.d.ts" />
 
-const SKIP_PROPERTIES = ['dispatchEvent', 'addEventListener', 'removeEventListener'];
+const SKIP_PROPERTIES = ['dispatchEvent', 'addEventListener', 'removeEventListener', 'paused'];
 
 export class ExtendableAudio {
 
@@ -13,7 +13,6 @@ export class ExtendableAudio {
   ondurationchange: Function;
   ontimeupdate: Function;
   onseeking: Function;
-  paused: boolean;
   volume: number;
 
   constructor(url) {
@@ -63,6 +62,10 @@ export class ExtendableAudio {
 
   removeEventListener() {
     return this._documentFragment.removeEventListener.apply(this._documentFragment, arguments);
+  }
+
+  get paused(): boolean {
+    return this._audio.paused;
   }
 
 }

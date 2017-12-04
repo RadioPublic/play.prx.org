@@ -24,6 +24,7 @@ export interface EndedEvent extends Event {
 export class PlayerComponent implements OnInit, OnChanges {
 
   @Input() audioUrl: string;
+  @Input() duration: number;
   @Input() title: string;
   @Input() subtitle: string;
   @Input() subscribeUrl: string;
@@ -59,7 +60,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   private isHeld: boolean;
 
   currentTime: Observable<number>;
-  duration: Observable<number>;
+  currentDuration: Observable<number>;
 
   logoSrc: string;
 
@@ -71,6 +72,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   overlayContext = {dismiss: this.dismissOverlay.bind(this)};
 
   private isEnded = false;
+  private currentDurationObserver: Observer<number>;
 
   constructor(private sanitizer: DomSanitizer, private sessionService: MediaSessionService) {}
 
@@ -120,8 +122,9 @@ export class PlayerComponent implements OnInit, OnChanges {
       this.feedArtworkSafe = this.sanitizer.bypassSecurityTrustStyle(`none`);
     }
 
-    this.duration = Observable.create((observer: Observer<number>) => {
-      observer.next(0);
+    this.currentDuration = Observable.create((observer: Observer<number>) => {
+      this.currentDurationObserver = observer;
+      observer.next(this.duration);
       this.player.ondurationchange = () => observer.next(this.player.duration);
       return (): void => this.player.ondurationchange = undefined;
     }).share();
@@ -147,6 +150,9 @@ export class PlayerComponent implements OnInit, OnChanges {
         this.logger = new Logger(this.player, this.title, this.subtitle);
         this.sessionService.setMediaMetadata(this.title, this.subtitle, null, this.feedArtworkUrl);
       }
+    }
+    if (changes.duration && this.currentDurationObserver) {
+      this.currentDurationObserver.next(this.duration);
     }
     if (changes.feedArtworkUrl) {
       this.feedArtworkSafe = this.sanitizer.bypassSecurityTrustStyle(`url('${this.feedArtworkUrl}')`);

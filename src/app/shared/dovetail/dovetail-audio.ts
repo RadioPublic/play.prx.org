@@ -60,7 +60,7 @@ export class DovetailAudio extends ExtendableAudio {
   private _imgElem: HTMLImageElement;
 
   constructor(url: string) {
-    super(url);
+    super(undefined);
     this._audio.addEventListener(ERROR, this.listenerOnError.bind(this));
     this._audio.addEventListener(DURATION_CHANGE, this.listenerOnDurationChange.bind(this));
     this._audio.addEventListener(ENDED, this.listenerOnEnded.bind(this));
@@ -68,22 +68,27 @@ export class DovetailAudio extends ExtendableAudio {
     this.$$forwardEvents(PROXIED_EVENTS);
     this.finishConstructor();
     this.addEventListener(SEGMENT_END, this.$$logImpression.bind(this));
+    this._toSetUrl = url;
   }
 
   play(): Promise<void> {
-    this.$$sendEvent(PLAY);
-    if (this._dovetailLoading) {
-      return new Promise<void>(resolve => {
-        this.resumeOnLoad = resolve;
-      });
-    } else if (this.arrangement.entries[this.index].unplayable) {
-      return new Promise<void>(resolve => {
-        this.skipToFile(this.index + 1, resolve);
-      });
+    if (this._toSetUrl) {
+      this.setSegments(this.fallback(this._toSetUrl));
+      this._toSetUrl = null;
+      return this.play();
     } else {
-      return new Promise<void>(resolve => {
-        resolve(this._audio.play());
-      });
+      this.$$sendEvent(PLAY);
+      if (this._dovetailLoading) {
+        return new Promise<void>(resolve => {
+          this.resumeOnLoad = resolve;
+        });
+      } else if (this.arrangement.entries[this.index] && this.arrangement.entries[this.index].unplayable) {
+        return new Promise<void>(resolve => {
+          this.skipToFile(this.index + 1, resolve);
+        });
+      } else {
+        return this.playItSafe();
+      }
     }
   }
 
@@ -94,6 +99,10 @@ export class DovetailAudio extends ExtendableAudio {
     } else {
       this._audio.pause();
     }
+  }
+
+  get paused(): boolean {
+    return this._audio.paused && !this._dovetailLoading;
   }
 
   get playbackRate() {
@@ -161,7 +170,32 @@ export class DovetailAudio extends ExtendableAudio {
       this._dovetailOriginalUrl = url;
       url += (url.indexOf('?') < 0 ? '?' : '&') + 'debug';
     }
-    this.setSegments(this.fallback(url));
+    if (this._audio.paused) {
+      this._toSetUrl = url;
+    } else {
+      this.setSegments(this.fallback(url));
+    }
+  }
+
+  private playItSafe(): Promise<void> {
+    let safePlay = new Promise<void>(resolve => resolve(this._audio.play()));
+    return safePlay.then(
+      () => null,
+      err => this.playErrorHandler(err)
+    );
+  }
+
+  private playErrorHandler(err): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      if (this._dovetailLoading) {
+        this.resumeOnLoad = resolve;
+      } else if (this._dovetailOriginalUrl && err.name === 'NotSupportedError') {
+        this._dovetailLoading = true;
+        this.resumeOnLoad = resolve;
+      } else {
+        reject(err);
+      }
+    });
   }
 
   private fallback(url: string): DovetailArrangementEntry[] {
@@ -318,7 +352,7 @@ export class DovetailAudio extends ExtendableAudio {
 
       this._audio.src = arrangement.audioUrl;
       this._audio.playbackRate = this.playbackRate;
-      if (resume) { resume(this._audio.play()); }
+      if (resume) { resume(this.playItSafe()); }
 
       this.$$sendEvent(SEGMENT_START, {
         segment: arrangement,
