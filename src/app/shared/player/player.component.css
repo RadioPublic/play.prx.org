@@ -25,6 +25,8 @@
   top: 125px;
   bottom: 0;
   left: 0; right: 0;
+  margin: auto;
+  max-width: 750px;
   width: auto;
   height: auto;
   opacity: 0;
@@ -54,12 +56,15 @@ content {
   display: flex;
   flex-flow: column nowrap;
   max-height: 200px;
+  align-items: center;
 }
 
 .metadata {
   flex: 0 0 calc(117px + 30px);
   display: flex;
   position: relative;
+  width: 100%;
+  max-width: 750px;
 }
 
 .artwork {
@@ -338,6 +343,8 @@ nav a:hover {
   position: relative;
   top: 0;
   transition: opacity 0.2s, top 0.2s;
+  width: 100%;
+  max-width: 750px;
 }
 
 .overlayed .scrubber {
@@ -421,6 +428,10 @@ play-progress {
   #lower-logo
   {
     display: block;
+  }
+
+  .overlayed .titles {
+    margin-right: 25px;
   }
 }
 

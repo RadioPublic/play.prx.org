@@ -7,9 +7,39 @@ import { FeedAdapter } from './adapters/feed.adapter';
 import { AdapterProperties } from './adapters/adapter.properties';
 import { PlayerComponent } from '../shared/player/player.component';
 import { EMBED_SHOW_PLAYLIST_PARAM } from './embed.constants';
+import { VisibilityService } from '../shared/visibility';
 
 const PYM_MESSAGE_DELIMITER = 'xPYMx';
 const PYM_CHILD_ID_PARAM = 'childId';
+
+// Category
+const CTA_MODAL = 'CTA Modal';
+
+// Action
+const DISPLAY = 'Display';
+const DISMISS = 'Dismiss';
+
+// Label
+const DOWNLOAD = 'download';
+const ENDED = 'ended';
+const PAUSED = 'paused';
+const BACKGROUNDED = 'backgrounded';
+
+// Category
+const EXIT = 'Exit';
+
+// Action
+const ANDROID = 'AndroidApp';
+const IOS = 'iOSApp';
+
+const BEACON = 'beacon';
+const EVENT = 'event';
+
+const RequestAnimationFrame = window['requestAnimationFrame']
+                           || window['mozRequestAnimationFrame']
+                           || window['webkitRequestAnimationFrame']
+                           || window['msRequestAnimationFrame']
+                           || (cb=>setTimeout(cb,0));
 
 @Component({
   selector: 'play-embed',
@@ -27,13 +57,13 @@ const PYM_CHILD_ID_PARAM = 'childId';
             and other great podcasts when you download the free RadioPublic app.</p>
           <ul class="app-selection">
             <li *ngIf="!isiOSDevice"><a [href]="playStoreLink()"
-              [target]="subscribeTarget"><img src="/assets/images/google-play.png" alt="Google Play Store" /></a></li>
+              [target]="subscribeTarget" (click)="noticeExit('AndroidApp')"><img src="/assets/images/google-play.png" alt="Google Play Store" /></a></li>
             <li *ngIf="!isAndroidDevice"><a [href]="appStoreLink()"
-              [target]="subscribeTarget"><img src="/assets/images/app-store.svg" alt="App Store" /></a></li>
+              [target]="subscribeTarget" (click)="noticeExit('iOSApp')"><img src="/assets/images/app-store.svg" alt="App Store" /></a></li>
             <li *ngIf="isiOSDevice">or the <a [href]="playStoreLink()"
-              [target]="subscribeTarget">Google Play Store</a></li>
+              [target]="subscribeTarget" (click)="noticeExit('AndroidApp')">Google Play Store</a></li>
             <li *ngIf="isAndroidDevice">or the <a href="appStoreLink()"
-              [target]="subscribeTarget">App Store</a></li>
+              [target]="subscribeTarget" (click)="noticeExit('iOSApp')">App Store</a></li>
           </ul>
           <p class="aside" *ngIf="downloadRequested">You can also <a [href]="audioUrl"
             [target]="subscribeTarget">download the audio file</a> if you're on a computer.</p>
@@ -60,6 +90,8 @@ export class EmbedComponent implements OnInit {
   feedArtworkUrl: string;
   pymId?: string;
 
+  modalDisplayReason?: string;
+
   // playlist
   showPlaylist: boolean;
   episodes: AdapterProperties[];
@@ -69,16 +101,20 @@ export class EmbedComponent implements OnInit {
 
   @ViewChild(PlayerComponent) private player: PlayerComponent;
 
-  constructor(private route: ActivatedRoute, private adapter: MergeAdapter) {}
+  constructor(private route: ActivatedRoute, private adapter: MergeAdapter, private visibility: VisibilityService) {}
 
   ngOnInit() {
     this.route.queryParams.forEach(params => {
       this.pymId = params[PYM_CHILD_ID_PARAM];
       this.showPlaylist = typeof params[EMBED_SHOW_PLAYLIST_PARAM] !== 'undefined';
       this.setEmbedHeight();
-      this.adapter.getProperties(params).subscribe(props => {
-        this.assignEpisodePropertiesToPlayer(props);
-      });
+      this.loadOnInFrame(params);
+    });
+    this.visibility.addVisibilityListener((event, hidden) => {
+      if (this.hasInteracted) {
+        this.player.displayOverlay();
+        this.modalDisplayReason = BACKGROUNDED;
+      }
     });
   }
 
@@ -92,16 +128,24 @@ export class EmbedComponent implements OnInit {
 
   onPlay(e) {
     this.hasInteracted = true;
+    if (this.modalDisplayReason) {
+      this.logEvent(CTA_MODAL, DISMISS, this.modalDisplayReason);
+      this.modalDisplayReason = undefined;
+    }
     this.player.dismissOverlay();
   }
 
   onPause(e) {
     this.hasInteracted = true;
+    this.modalDisplayReason = PAUSED;
+    this.logEvent(CTA_MODAL, DISPLAY, this.modalDisplayReason);
     this.player.displayOverlay();
   }
 
   onEnded(e) {
     if (!e.hasNextTrack) {
+      this.modalDisplayReason = ENDED;
+      this.logEvent(CTA_MODAL, DISPLAY, this.modalDisplayReason);
       this.player.displayOverlay();
     }
   }
@@ -109,6 +153,8 @@ export class EmbedComponent implements OnInit {
   onDownload(e) {
     e.preventDefault();
     this.downloadRequested = true;
+    this.modalDisplayReason = DOWNLOAD;
+    this.logEvent(CTA_MODAL, DISPLAY, this.modalDisplayReason);
     this.player.displayOverlay();
   }
 
@@ -135,10 +181,18 @@ export class EmbedComponent implements OnInit {
     this.artworkUrl = this.artworkUrl || this.feedArtworkUrl;
   }
 
+  noticeExit(platform: string) {
+    this.logEvent(EXIT, platform, this.modalDisplayReason);
+  }
+
   handleKeypress(event) {
     const key = event.code || event.key;
     if (key === 'Escape') {
       event.preventDefault();
+      if (this.modalDisplayReason) {
+        this.logEvent(CTA_MODAL, DISMISS, this.modalDisplayReason);
+        this.modalDisplayReason = undefined;
+      }
       this.player.dismissOverlay();
     }
   }
@@ -157,6 +211,23 @@ export class EmbedComponent implements OnInit {
         ].join(PYM_MESSAGE_DELIMITER), '*');
       }
     }
+  }
+
+  private logEvent(category: string, action: string, label: string) {
+    if (window['ga']) {
+      window['ga']('send', {
+        transport: BEACON, hitType: EVENT,
+        eventCategory: category, eventAction: action, eventLabel: label
+      });
+    }
+  }
+
+  private loadOnInFrame(params) {
+    RequestAnimationFrame(() => {
+      this.adapter.getProperties(params).subscribe(props => {
+        this.assignEpisodePropertiesToPlayer(props);
+      });
+    });
   }
 
 }

@@ -5,6 +5,7 @@ import { DurationPipe } from './duration';
 import { PlayerComponent, MediaSessionService } from './player';
 import { ProgressComponent } from './progress';
 import { PlaylistComponent } from './playlist';
+import { VisibilityService } from './visibility';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { PlaylistComponent } from './playlist';
     CommonModule
   ],
   providers: [
-    MediaSessionService
+    MediaSessionService,
+    VisibilityService
   ]
 })
 
