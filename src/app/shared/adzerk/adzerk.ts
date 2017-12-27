@@ -50,7 +50,7 @@ interface Ad {
   type: string;
 }
 
-interface Decision {
+export interface AdzerkDecision {
   adId: number;
   creativeId: number;
   flightId: number;
@@ -62,6 +62,6 @@ interface Decision {
 }
 
 export interface AdzerkResponse {
-  decisions: {[key: string]: Decision};
+  decisions: {[key: string]: AdzerkDecision};
   user?: User;
 }
