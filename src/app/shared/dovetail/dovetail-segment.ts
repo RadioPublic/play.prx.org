@@ -35,9 +35,11 @@ export class DovetailSegment {
     if (decision) {
       this.audioUrl = decision.contents[0].data.imageUrl;
       this.duration = 10;
+      // TODO: why only ads?
       if (this.type === 'ad' || this.type === 'houseAd') {
         this.afterTrackers.push(decision.impressionUrl);
       }
+      // TODO: also concat decision.contents[0].data.customData.pingbacks[]
     }
 
     // optional dovetail pixel tracker (for downloads and impressions)

@@ -45,6 +45,9 @@ interface Ad {
     fileName: string,
     imageUrl: string,
     width: number,
+    customData?: {
+      pingbacks?: string[],
+    },
   };
   template: string;
   type: string;
