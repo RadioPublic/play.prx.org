@@ -1,11 +1,6 @@
-import urlTemplate from 'url-template';
+import * as urlTemplate from 'url-template';
 import { AdzerkDecision } from '../adzerk';
 import { DovetailResponseEntry } from './dovetail-fetcher';
-
-export interface DovetailSegments {
-  segments: DovetailSegment[];
-  duration?: number;
-}
 
 export class DovetailSegment {
   
@@ -84,6 +79,7 @@ export class DovetailSegment {
   private trackUrls(urls: string[]) {
     while (this.pixels.length < urls.length) {
       const el = document.createElement('img');
+      el.className = 'dt-tracker';
       el.width = 1;
       el.height = 1;
       el.style.position = 'absolute';
