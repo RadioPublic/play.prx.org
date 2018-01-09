@@ -83,8 +83,7 @@ export class FeedAdapter implements DataAdapter {
 
     if (typeof episodeGuid !== 'undefined') {
       for (let i = 0; i < items.length; i++) {
-        // If the item doesn't include a `guid`, fall back to RadioPublic's `rp:item-id` tag.
-        let itemGuid = this.getTagText(items[i], 'guid') || this.getTagText(items[i], 'rp:item-id');
+        let itemGuid = this.getItemGuid(items[i]);
         if (itemGuid) {
           if (!this.isEncoded(itemGuid) && this.isEncoded(episodeGuid)) {
             itemGuid = this.encodeGuid(itemGuid);
@@ -150,6 +149,10 @@ export class FeedAdapter implements DataAdapter {
 
   protected encodeGuid(guid): string {
     return `${GUID_PREFIX}${sha1.hash(guid)}`;
+  }
+
+  protected getItemGuid(el: Element | XMLDocument): string {
+    return this.getTagText(el, 'guid');
   }
 
   protected getTagText(el: Element | XMLDocument, tag: string): string {
