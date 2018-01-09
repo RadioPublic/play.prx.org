@@ -59,4 +59,8 @@ export class DraperAdapter extends FeedAdapter {
     return `https://draper.radiopublic.com/transform?program_id=${feedId}`;
   }
 
+  protected getItemGuid(el: Element | XMLDocument): string {
+    // If the item has no guid, fall back to the rp:item-id added by Draper.
+    return super.getItemGuid(el) || this.getTagText(el, 'rp:item-id');
+  }
 }
