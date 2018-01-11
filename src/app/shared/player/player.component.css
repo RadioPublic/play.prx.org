@@ -424,6 +424,13 @@ play-progress {
   }
 }
 
+@media (max-width: 400px) {
+  #lower-logo
+  {
+    display: none;
+  }
+}
+
 @media (min-width: 600px) {
   #upper-logo {
     display: block;
