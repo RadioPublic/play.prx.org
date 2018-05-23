@@ -38,6 +38,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   @Output() pause = new EventEmitter<Event>();
   @Output() ended = new EventEmitter<EndedEvent>();
   @Output() download = new EventEmitter<Event>();
+  @Output() downloadUrl = new EventEmitter<string>();
 
   artworkSafe: SafeStyle;
   feedArtworkSafe: SafeStyle;
@@ -218,6 +219,7 @@ export class PlayerComponent implements OnInit, OnChanges {
       this.artworkUrl = newEpisode.artworkUrl;
       this.setEpisodeArtworkSafe();
       this.audioUrl = this.player.src = newEpisode.audioUrl;
+      this.downloadUrl.emit(this.audioUrl);
       this.player.addEventListener('canplay', e => {
         this.player.play();
         this.player.removeEventListener();
@@ -343,6 +345,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   }
 
   requestDownload(event) {
+    this.downloadUrl.emit(this.audioUrl);
     this.download.emit(event);
   }
 
