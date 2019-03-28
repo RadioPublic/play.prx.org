@@ -18,7 +18,9 @@ RUN cp ./aws-secrets/bin/* /usr/local/bin
 ADD ./package.json ./
 ADD ./yarn.lock ./
 
-RUN yarn install --ignore-scripts
+RUN yarn install --ignore-scripts && \
+    yarn cache clean && \
+    rm -rf /usr/share/man /tmp/* /var/tmp/* /var/cache/apk/* /root/.npm /root/.node-gyp
 
 ADD . ./
 RUN npm run build
