@@ -18,11 +18,7 @@ RUN cp ./aws-secrets/bin/* /usr/local/bin
 ADD ./package.json ./
 ADD ./yarn.lock ./
 
-RUN apk --no-cache add libsass curl && \
-    yarn install --no-progress --silent && \
-    apk del curl && \
-    yarn cache clean && \
-    rm -rf /usr/share/man /tmp/* /var/tmp/* /var/cache/apk/* /root/.npm /root/.node-gyp
+RUN yarn install --ignore-scripts
 
 ADD . ./
 RUN npm run build
