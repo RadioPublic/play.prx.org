@@ -18,9 +18,7 @@ RUN cp ./aws-secrets/bin/* /usr/local/bin
 ADD ./package.json ./
 ADD ./yarn.lock ./
 
-# TODO: any non-external way to get phantomjs
 RUN apk --no-cache add libsass curl && \
-    curl -Ls "https://github.com/dustinblackman/phantomized/releases/download/2.1.1a/dockerized-phantomjs.tar.gz" | tar xz -C / && \
     yarn install --no-progress --silent && \
     apk del curl && \
     yarn cache clean && \
