@@ -8,7 +8,7 @@ describe('DraperAdapter', () => {
   testService(DraperAdapter);
 
   beforeEach(() => {
-    jest.spyOn(FeedAdapter, 'logError').and.stub();
+    FeedAdapter['logError'] = jest.fn()
   });
 
   const TEST_DRAPE = `<?xml version="1.0" encoding="UTF-8" ?>

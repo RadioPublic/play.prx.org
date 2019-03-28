@@ -7,7 +7,7 @@ describe('FeedAdapter', () => {
   testService(FeedAdapter);
 
   beforeEach(() => {
-    jest.spyOn(FeedAdapter, 'logError').and.stub();
+    FeedAdapter['logError'] = jest.fn()
   });
 
   const TEST_FEED = `<?xml version="1.0" encoding="UTF-8" ?>
