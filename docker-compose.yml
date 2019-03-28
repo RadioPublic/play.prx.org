@@ -6,7 +6,7 @@ play:
     - ./lib:/app/lib
     - ./src:/app/src
     - ./.angular-cli.json:/app/.angular-cli.json
-    - ./karma.conf.js:/app/karma.conf.js
+    - ./jest.config.js:/app/jest.config.js
     - ./package.json:/app/package.json
     - ./protractor.conf.js:/app/protractor.conf.js
     - ./tsconfig.json:/app/tsconfig.json
