@@ -142,6 +142,10 @@ export class PlayerComponent implements OnInit, OnChanges {
       this.logoSrc = '';
     }
     playerjsAdapter(this.player).ready();
+
+    if (this.audioUrl) {
+      this.initialLoading = false;
+    }
   }
 
   ngOnChanges(changes: any) {

@@ -338,13 +338,13 @@ export class DovetailAudio extends ExtendableAudio {
   }
 
   private $$logDownload(event: DovetailSegmentEvent) {
-    if (event.segment.trackBefore()) {
+    if (event.segment && event.segment.trackBefore()) {
       this.$$debug(`Download: ${event.segment.id}`);
     }
   }
 
   private $$logImpression(event: DovetailSegmentEvent) {
-    if (event.segment.trackAfter()) {
+    if (event.segment && event.segment.trackAfter()) {
       this.$$debug(`Impress: ${event.segment.id}`);
     }
   }
