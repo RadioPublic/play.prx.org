@@ -5,6 +5,9 @@ env:
     PRX_ECR_REPOSITORY: "play.prx.org"
     PRX_ECR_CONFIG_PARAMETERS: "PlayEcrImageTag"
 phases:
+  install:
+    runtime-versions:
+      docker: 18
   build:
     commands:
       - "cd $(ls -d */|head -n 1)"
