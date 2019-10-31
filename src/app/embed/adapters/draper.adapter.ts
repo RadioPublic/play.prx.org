@@ -13,8 +13,8 @@ export class DraperAdapter extends FeedAdapter {
   }
 
   getProperties(params): Observable<AdapterProperties> {
-    let feedId = params[EMBED_FEED_ID_PARAM];
-    let episodeGuid = params[EMBED_EPISODE_GUID_PARAM];
+    const feedId = params[EMBED_FEED_ID_PARAM];
+    const episodeGuid = params[EMBED_EPISODE_GUID_PARAM];
     if (feedId) {
       return this.processFeed(feedId, episodeGuid);
     } else {
@@ -51,7 +51,7 @@ export class DraperAdapter extends FeedAdapter {
     props = super.processEpisode(item, props);
     props.artworkUrl = this.getTagAttributeNS(item, 'rp', 'image', 'href')
                     || props.artworkUrl;
-    props.duration = parseInt(this.getTagTextNS(item, 'rp', 'duration') || (props.duration||0).toString(), 10);
+    props.duration = parseInt(this.getTagTextNS(item, 'rp', 'duration') || (props.duration || 0).toString(), 10);
     return props;
   }
 
