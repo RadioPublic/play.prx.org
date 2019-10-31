@@ -66,7 +66,7 @@ export class FeedAdapter implements DataAdapter {
     const parser = new DOMParser();
     const doc = parser.parseFromString(xml, 'application/xml') as XMLDocument;
 
-    if (doc.getRootNode().childNodes[0].nodeName !== 'rss') {
+    if (!doc.getElementsByTagName('rss').length) {
       return {};
     }
 
