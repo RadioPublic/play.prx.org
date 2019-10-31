@@ -51,6 +51,7 @@ export class DraperAdapter extends FeedAdapter {
     props = super.processEpisode(item, props);
     props.artworkUrl = this.getTagAttributeNS(item, 'rp', 'image', 'href')
                     || props.artworkUrl;
+    props.duration = parseInt(this.getTagTextNS(item, 'rp', 'duration') || (props.duration||0).toString(), 10);
     return props;
   }
 
