@@ -11,6 +11,9 @@ import { sha1 } from './sha1';
 
 const GUID_PREFIX = 's1!';
 const CDATA = '<![CDATA[';
+const ATOM_NAMESPACE = 'http://www.w3.org/2005/Atom';
+const ITUNES_NAMESPACE = 'http://www.itunes.com/dtds/podcast-1.0.dtd';
+const FEEDBURNER_NAMESPACE = 'http://rssnamespace.org/feedburner/ext/1.0';
 
 @Injectable()
 export class FeedAdapter implements DataAdapter {
@@ -112,17 +115,18 @@ export class FeedAdapter implements DataAdapter {
 
   processDoc(doc: XMLDocument, props: AdapterProperties = {}): AdapterProperties {
     props.subtitle = this.getTagText(doc, 'title');
-    props.subscribeUrl = this.getTagAttributeNS(doc, 'atom', 'link', 'href'); // TODO: what if this isn't the first link?
-    props.feedArtworkUrl = this.getTagAttributeNS(doc, 'itunes', 'image', 'href');
+    props.subscribeUrl = this.getTagAttributeNS(doc, ATOM_NAMESPACE, 'link', 'href'); // TODO: what if this isn't the first link?
+    props.feedArtworkUrl = this.getTagAttributeNS(doc, ITUNES_NAMESPACE, 'image', 'href');
+
     return props;
   }
 
   processEpisode(item: Element, props: AdapterProperties = {}): AdapterProperties {
     props.title = this.getTagText(item, 'title');
-    props.audioUrl = this.getTagTextNS(item, 'feedburner', 'origEnclosureLink')
+    props.audioUrl = this.getTagTextNS(item, FEEDBURNER_NAMESPACE, 'origEnclosureLink')
                   || this.getTagAttribute(item, 'enclosure', 'url');
-    props.artworkUrl = this.getTagAttributeNS(item, 'itunes', 'image', 'href');
-    const duration = this.getTagTextNS(item, 'itunes', 'duration');
+    props.artworkUrl = this.getTagAttributeNS(item, ITUNES_NAMESPACE, 'image', 'href');
+    const duration = this.getTagTextNS(item, ITUNES_NAMESPACE, 'duration');
     props.duration = duration ? this.durationInSec(duration) : 0;
     return props;
   }
@@ -162,8 +166,8 @@ export class FeedAdapter implements DataAdapter {
     }
   }
 
-  protected getTagTextNS(el: Element | XMLDocument, ns: string, tag: string): string {
-    const namespace = el.lookupNamespaceURI(ns);
+
+  protected getTagTextNS(el: Element | XMLDocument, namespace: string, tag: string): string {
     const found = el.getElementsByTagNameNS(namespace, tag);
     if (found.length) {
       return found[0].textContent;
@@ -177,8 +181,7 @@ export class FeedAdapter implements DataAdapter {
     }
   }
 
-  protected getTagAttributeNS(el: Element | XMLDocument, ns: string, tag: string, attr: string): string {
-    const namespace = el.lookupNamespaceURI(ns);
+  protected getTagAttributeNS(el: Element | XMLDocument, namespace: string, tag: string, attr: string): string {
     const found = el.getElementsByTagNameNS(namespace, tag);
     if (found.length) {
       return found[0].getAttribute(attr);
