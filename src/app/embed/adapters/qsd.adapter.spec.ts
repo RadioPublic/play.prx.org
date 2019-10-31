@@ -19,7 +19,7 @@ describe('QSDAdapter', () => {
 
   // helper to sync-get properties
   const getProperties = (qsd, params = {}): any => {
-    let props = {};
+    const props = {};
     Object.keys(params).filter(k => mapParams[k]).forEach(k => {
       params[mapParams[k]] = params[k];
       delete params[k];
@@ -38,7 +38,7 @@ describe('QSDAdapter', () => {
   }));
 
   it('decodes params', injectHttp((qsd: QSDAdapter) => {
-    let props = getProperties(qsd, {
+    const props = getProperties(qsd, {
       audioUrl:        'audio-url',
       title:           'the title',
       subtitle:        'the subtitle',

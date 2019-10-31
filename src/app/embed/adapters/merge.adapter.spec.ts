@@ -8,9 +8,9 @@ import { QSDAdapter } from './qsd.adapter';
 
 describe('MergeAdapter', () => {
 
-  let qsd: Subject<AdapterProperties>,
-      draper: Subject<AdapterProperties>,
-      feed: Subject<AdapterProperties>;
+  let qsd: Subject<AdapterProperties>;
+  let draper: Subject<AdapterProperties>;
+  let feed: Subject<AdapterProperties>;
   testService(MergeAdapter, [
     {
       provide: QSDAdapter,

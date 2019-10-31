@@ -26,5 +26,5 @@ export interface AdapterProperties {
 }
 
 export interface DataAdapter {
-  getProperties: (params: Object) => Observable<AdapterProperties>;
+  getProperties: (params: {}) => Observable<AdapterProperties>;
 }

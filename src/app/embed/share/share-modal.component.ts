@@ -23,8 +23,8 @@ export class ShareModalComponent {
   @Output() close = new EventEmitter<boolean>();
 
   get horizontalCode() {
-    let href = window.location.href;
-    let iframe = `<iframe frameborder="0" height="200" scrolling="no" src="${href}" width="100%"></iframe>`;
+    const href = window.location.href;
+    const iframe = `<iframe frameborder="0" height="200" scrolling="no" src="${href}" width="100%"></iframe>`;
     return iframe;
   }
 
@@ -41,8 +41,8 @@ export class ShareModalComponent {
   }
 
   copy(el: any) {
-    let sel = el.dataset.copytarget;
-    let inp = document.querySelector(sel);
+    const sel = el.dataset.copytarget;
+    const inp = document.querySelector(sel);
 
     if (inp && inp['select']) {
       inp['select']();

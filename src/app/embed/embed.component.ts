@@ -39,7 +39,7 @@ const RequestAnimationFrame = window['requestAnimationFrame']
                            || window['mozRequestAnimationFrame']
                            || window['webkitRequestAnimationFrame']
                            || window['msRequestAnimationFrame']
-                           || (cb=>setTimeout(cb,0));
+                           || (cb => setTimeout(cb, 0));
 
 @Component({
   selector: 'play-embed',
@@ -56,8 +56,11 @@ const RequestAnimationFrame = window['requestAnimationFrame']
           <p>Never miss an episode from <strong>{{this.subtitle}}</strong>
             and other great podcasts when you download the free RadioPublic app.</p>
           <ul class="app-selection">
-            <li *ngIf="!isiOSDevice"><a [href]="playStoreLink()"
-              [target]="subscribeTarget" (click)="noticeExit('AndroidApp')"><img src="/assets/images/google-play.png" alt="Google Play Store" /></a></li>
+            <li *ngIf="!isiOSDevice">
+              <a [href]="playStoreLink()" [target]="subscribeTarget" (click)="noticeExit('AndroidApp')">
+                <img src="/assets/images/google-play.png" alt="Google Play Store" />
+              </a>
+            </li>
             <li *ngIf="!isAndroidDevice"><a [href]="appStoreLink()"
               [target]="subscribeTarget" (click)="noticeExit('iOSApp')"><img src="/assets/images/app-store.svg" alt="App Store" /></a></li>
             <li *ngIf="isiOSDevice">or the <a [href]="playStoreLink()"
@@ -202,7 +205,7 @@ export class EmbedComponent implements OnInit {
     }
   }
 
-  @HostListener("window:resize", [])
+  @HostListener('window:resize', [])
   setEmbedHeight() {
     if (window.parent && window.parent.postMessage) {
       window.parent.postMessage(JSON.stringify({
