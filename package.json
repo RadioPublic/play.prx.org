@@ -46,7 +46,7 @@
     "express": "^4.16.4",
     "http-proxy-middleware": "^0.19.1",
     "inline-css": "^2.2.2",
-    "morgan": "^1.7.0",
+    "morgan": "^1.9.1",
     "player.js": "0.0.11",
     "pug": "^2.0.0-beta6",
     "request": "^2.88.0",
