@@ -8,7 +8,7 @@ describe('DraperAdapter', () => {
   testService(DraperAdapter);
 
   beforeEach(() => {
-    FeedAdapter['logError'] = jest.fn()
+    FeedAdapter['logError'] = jest.fn();
   });
 
   const TEST_DRAPE = `<?xml version="1.0" encoding="UTF-8" ?>
@@ -45,7 +45,8 @@ describe('DraperAdapter', () => {
 
   // helper to sync-get properties
   const getProperties = (feed, feedId = null, guid = null): any => {
-    let params = {}, props = {};
+    const params = {};
+    const props = {};
     if (feedId) { params[EMBED_FEED_ID_PARAM] = feedId; }
     if (guid) { params[EMBED_EPISODE_GUID_PARAM] = guid; }
     feed.getProperties(params).subscribe(result => {
@@ -64,7 +65,7 @@ describe('DraperAdapter', () => {
 
   it('parses feeds', injectHttp((feed: DraperAdapter, mocker) => {
     mocker(TEST_DRAPE);
-    let props = getProperties(feed, 'http://some.where/feed.xml', 'guid-1');
+    const props = getProperties(feed, 'http://some.where/feed.xml', 'guid-1');
     expect(props.audioUrl).toEqual('http://item1/original.mp3');
     expect(props.title).toEqual('Title #1');
     expect(props.subtitle).toEqual('The Channel Title');
@@ -76,13 +77,13 @@ describe('DraperAdapter', () => {
 
   it('falls back to the itunes:image if no rp:image', injectHttp((feed: DraperAdapter, mocker) => {
     mocker(TEST_DRAPE);
-    let props = getProperties(feed, 'http://some.where/feed.xml', 'guid-2');
+    const props = getProperties(feed, 'http://some.where/feed.xml', 'guid-2');
     expect(props.artworkUrl).toEqual('http://item2/image.png');
   }));
 
   it('can not find a guid', injectHttp((feed: DraperAdapter, mocker) => {
     mocker(TEST_DRAPE);
-    let props = getProperties(feed, 'http://some.where/feed.xml', 'guid-not-found');
+    const props = getProperties(feed, 'http://some.where/feed.xml', 'guid-not-found');
     expect(props.audioUrl).toBeUndefined();
     expect(props.title).toBeUndefined();
     expect(props.subtitle).toEqual('The Channel Title');

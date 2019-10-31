@@ -30,8 +30,8 @@ export class MergeAdapter {
       .map(obs => obs.startWith(NO_EMIT_YET));
 
     return Observable.combineLatest(...chosenAdapters).map(sources => {
-      let data = [];
-      for (let source of sources) {
+      const data = [];
+      for (const source of sources) {
         if (source === NO_EMIT_YET) { break; }
         data.push(source);
       }
@@ -43,8 +43,8 @@ export class MergeAdapter {
     const mergedResult: AdapterProperties = {};
     const resultsInReversePriority = data.reverse();
 
-    for (let result of resultsInReversePriority)  {
-      for (let property of PropNames) {
+    for (const result of resultsInReversePriority)  {
+      for (const property of PropNames) {
         if (typeof result[property] !== 'undefined') {
           mergedResult[property] = result[property];
         }
@@ -58,7 +58,7 @@ export class MergeAdapter {
   }
 
   hasMinimumParams(props: AdapterProperties): boolean {
-    for (let key of MergeAdapter.REQUIRED) {
+    for (const key of MergeAdapter.REQUIRED) {
       if (props[key] === undefined) { return false; }
     }
     return true;

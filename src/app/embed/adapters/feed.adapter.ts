@@ -22,8 +22,8 @@ export class FeedAdapter implements DataAdapter {
   constructor(private http: Http) {}
 
   getProperties(params): Observable<AdapterProperties> {
-    let feedUrl = params[EMBED_FEED_URL_PARAM];
-    let episodeGuid = this.removeCDATA(params[EMBED_EPISODE_GUID_PARAM]);
+    const feedUrl = params[EMBED_FEED_URL_PARAM];
+    const episodeGuid = this.removeCDATA(params[EMBED_EPISODE_GUID_PARAM]);
     let numEpisodes;
     if (typeof params[EMBED_SHOW_PLAYLIST_PARAM] !== 'undefined') {
       numEpisodes = params[EMBED_SHOW_PLAYLIST_PARAM] || 10;
@@ -37,7 +37,7 @@ export class FeedAdapter implements DataAdapter {
 
   processFeed(feedUrl: string, episodeGuid?: string, numEpisodes?: number | string): Observable<AdapterProperties> {
     return this.fetchFeed(feedUrl).map(body => {
-      let props = this.parseFeed(body, episodeGuid, numEpisodes);
+      const props = this.parseFeed(body, episodeGuid, numEpisodes);
       Object.keys(props).filter(k => props[k] === undefined).forEach(key => delete props[key]);
       return props;
     }).catch(err => {
@@ -47,7 +47,7 @@ export class FeedAdapter implements DataAdapter {
   }
 
   fetchFeed(feedUrl: string): Observable<string> {
-    let proxied = this.proxyUrl(feedUrl);
+    const proxied = this.proxyUrl(feedUrl);
     return this.http.get(proxied).map(res => {
       if (res.ok && res.text()) {
         return res.text();
@@ -60,15 +60,15 @@ export class FeedAdapter implements DataAdapter {
   }
 
   parseFeed(xml: string, episodeGuid?: string, numEpisodes?: number | string): AdapterProperties {
-    let parser = new DOMParser();
-    let doc = <XMLDocument> parser.parseFromString(xml, 'application/xml');
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(xml, 'application/xml') as XMLDocument;
     let props = this.processDoc(doc);
 
     if (numEpisodes) {
-      let episodes = this.parseFeedEpisodes(doc, numEpisodes);
+      const episodes = this.parseFeedEpisodes(doc, numEpisodes);
       props.episodes = episodes;
     }
-    let episode = this.parseFeedEpisode(doc, episodeGuid);
+    const episode = this.parseFeedEpisode(doc, episodeGuid);
     if (episode) {
       props = this.processEpisode(episode, props);
     } else {
@@ -79,17 +79,17 @@ export class FeedAdapter implements DataAdapter {
   }
 
   parseFeedEpisode(doc: XMLDocument, episodeGuid?: string): Element {
-    let items = doc.querySelectorAll('item');
+    const items = doc.querySelectorAll('item');
 
     if (typeof episodeGuid !== 'undefined') {
-      for (let i = 0; i < items.length; i++) {
-        let itemGuid = this.getItemGuid(items[i]);
+      for (const item of Array.from(items)) {
+        let itemGuid = this.getItemGuid(item);
         if (itemGuid) {
           if (!this.isEncoded(itemGuid) && this.isEncoded(episodeGuid)) {
             itemGuid = this.encodeGuid(itemGuid);
           }
           if (itemGuid === episodeGuid) {
-            return items[i];
+            return item;
           }
         }
       }
@@ -104,7 +104,7 @@ export class FeedAdapter implements DataAdapter {
       episodes = episodes.slice(0, +numEpisodes);
     }
     return episodes.map((item, index) => {
-      let ep = this.processEpisode(item);
+      const ep = this.processEpisode(item);
       ep.index = index;
       return ep;
     });
@@ -122,7 +122,7 @@ export class FeedAdapter implements DataAdapter {
     props.audioUrl = this.getTagTextNS(item, 'feedburner', 'origEnclosureLink')
                   || this.getTagAttribute(item, 'enclosure', 'url');
     props.artworkUrl = this.getTagAttributeNS(item, 'itunes', 'image', 'href');
-    let duration = this.getTagTextNS(item, 'itunes', 'duration');
+    const duration = this.getTagTextNS(item, 'itunes', 'duration');
     props.duration = duration ? this.durationInSec(duration) : 0;
     return props;
   }
@@ -156,30 +156,30 @@ export class FeedAdapter implements DataAdapter {
   }
 
   protected getTagText(el: Element | XMLDocument, tag: string): string {
-    let found = el.getElementsByTagName(tag);
+    const found = el.getElementsByTagName(tag);
     if (found.length) {
       return found[0].textContent;
     }
   }
 
   protected getTagTextNS(el: Element | XMLDocument, ns: string, tag: string): string {
-    let namespace = el.lookupNamespaceURI(ns);
-    let found = el.getElementsByTagNameNS(namespace, tag);
+    const namespace = el.lookupNamespaceURI(ns);
+    const found = el.getElementsByTagNameNS(namespace, tag);
     if (found.length) {
       return found[0].textContent;
     }
   }
 
   protected getTagAttribute(el: Element | XMLDocument, tag: string, attr: string): string {
-    let found = el.getElementsByTagName(tag);
+    const found = el.getElementsByTagName(tag);
     if (found.length) {
       return found[0].getAttribute(attr);
     }
   }
 
   protected getTagAttributeNS(el: Element | XMLDocument, ns: string, tag: string, attr: string): string {
-    let namespace = el.lookupNamespaceURI(ns);
-    let found = el.getElementsByTagNameNS(namespace, tag);
+    const namespace = el.lookupNamespaceURI(ns);
+    const found = el.getElementsByTagNameNS(namespace, tag);
     if (found.length) {
       return found[0].getAttribute(attr);
     }

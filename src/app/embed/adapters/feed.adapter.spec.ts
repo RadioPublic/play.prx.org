@@ -7,7 +7,7 @@ describe('FeedAdapter', () => {
   testService(FeedAdapter);
 
   beforeEach(() => {
-    FeedAdapter['logError'] = jest.fn()
+    FeedAdapter['logError'] = jest.fn();
   });
 
   const TEST_FEED = `<?xml version="1.0" encoding="UTF-8" ?>
@@ -45,7 +45,8 @@ describe('FeedAdapter', () => {
 
   // helper to sync-get properties
   const getProperties = (feed, feedUrl = null, guid = null, numEps = null): any => {
-    let params = {}, props = {};
+    const params = {};
+    const props = {};
     if (feedUrl) { params[EMBED_FEED_URL_PARAM] = feedUrl; }
     if (guid) { params[EMBED_EPISODE_GUID_PARAM] = guid; }
     if (numEps) { params[EMBED_SHOW_PLAYLIST_PARAM] = numEps; }
@@ -66,7 +67,7 @@ describe('FeedAdapter', () => {
 
   it('parses feeds', injectHttp((feed: FeedAdapter, mocker) => {
     mocker(TEST_FEED);
-    let props = getProperties(feed, 'http://some.where/feed.xml', 'guid-1', 2);
+    const props = getProperties(feed, 'http://some.where/feed.xml', 'guid-1', 2);
     expect(props.audioUrl).toEqual('http://item1/original.mp3');
     expect(props.title).toEqual('Title #1');
     expect(props.subtitle).toEqual('The Channel Title');
@@ -79,20 +80,20 @@ describe('FeedAdapter', () => {
 
   it('does not fallback to channel artwork at this level', injectHttp((feed: FeedAdapter, mocker) => {
     mocker(TEST_FEED);
-    let props = getProperties(feed, 'http://some.where/feed.xml', 'guid-2', null);
+    const props = getProperties(feed, 'http://some.where/feed.xml', 'guid-2', null);
     expect(props.artworkUrl).toBeUndefined();
     expect(props.feedArtworkUrl).toEqual('http://channel/image.png');
   }));
 
   it('falls back to the enclosure for audioUrl', injectHttp((feed: FeedAdapter, mocker) => {
     mocker(TEST_FEED);
-    let props = getProperties(feed, 'http://some.where/feed.xml', 'guid-2', null);
+    const props = getProperties(feed, 'http://some.where/feed.xml', 'guid-2', null);
     expect(props.audioUrl).toEqual('http://item2/enclosure.mp3');
   }));
 
   it('can not find a guid', injectHttp((feed: FeedAdapter, mocker) => {
     mocker(TEST_FEED);
-    let props = getProperties(feed, 'http://some.where/feed.xml', 'guid-not-found', null);
+    const props = getProperties(feed, 'http://some.where/feed.xml', 'guid-not-found', null);
     expect(props.audioUrl).toBeUndefined();
     expect(props.title).toBeUndefined();
     expect(props.subtitle).toEqual('The Channel Title');
@@ -130,7 +131,7 @@ describe('FeedAdapter', () => {
 
   it('looks for a fully matched guid', injectHttp((feed: FeedAdapter, mocker) => {
     mocker(TEST_FEED);
-    let props = getProperties(feed, 'http://some.where/feed.xml', 'guid-2', 3);
+    const props = getProperties(feed, 'http://some.where/feed.xml', 'guid-2', 3);
     expect(props.episodes[2].title).toEqual('Title #2');
   }));
 
