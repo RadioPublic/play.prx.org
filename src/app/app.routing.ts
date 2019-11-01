@@ -4,6 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { BuilderComponent, EpisodePickerComponent } from './builder';
 import { EmbedComponent, ShareModalComponent } from './embed';
 import { DemoComponent } from './demo';
+import { AppLinksComponent } from './embed/app-links/app-links.component';
+import { AppIconComponent } from './embed/app-links/app-icon.component';
 
 export const routes: Routes = [
   { path: '',     component: BuilderComponent },
@@ -16,7 +18,9 @@ export const routingComponents: any[] = [
   DemoComponent,
   EmbedComponent,
   EpisodePickerComponent,
-  ShareModalComponent
+  ShareModalComponent,
+  AppLinksComponent,
+  AppIconComponent
 ];
 
 export const routingProviders: any[] = [];

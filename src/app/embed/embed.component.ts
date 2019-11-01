@@ -4,7 +4,7 @@ import { MergeAdapter } from './adapters/merge.adapter';
 import { QSDAdapter } from './adapters/qsd.adapter';
 import { DraperAdapter } from './adapters/draper.adapter';
 import { FeedAdapter } from './adapters/feed.adapter';
-import { AdapterProperties } from './adapters/adapter.properties';
+import { AdapterProperties, AppLinks } from './adapters/adapter.properties';
 import { PlayerComponent } from '../shared/player/player.component';
 import { EMBED_SHOW_PLAYLIST_PARAM } from './embed.constants';
 import { VisibilityService } from '../shared/visibility';
@@ -35,49 +35,62 @@ const IOS = 'iOSApp';
 const BEACON = 'beacon';
 const EVENT = 'event';
 
-const RequestAnimationFrame = window['requestAnimationFrame']
-                           || window['mozRequestAnimationFrame']
-                           || window['webkitRequestAnimationFrame']
-                           || window['msRequestAnimationFrame']
-                           || (cb => setTimeout(cb, 0));
+const RequestAnimationFrame =
+  window['requestAnimationFrame'] ||
+  window['mozRequestAnimationFrame'] ||
+  window['webkitRequestAnimationFrame'] ||
+  window['msRequestAnimationFrame'] ||
+  (cb => setTimeout(cb, 0));
 
 @Component({
   selector: 'play-embed',
   styleUrls: ['embed.component.css'],
   providers: [MergeAdapter, QSDAdapter, DraperAdapter, FeedAdapter],
   template: `
-    <play-share-modal *ngIf="showShareModal" (close)="hideModal()"></play-share-modal>
-    <play-player [feedArtworkUrl]="feedArtworkUrl" [audioUrl]="audioUrl" [title]="title" [subtitle]="subtitle"
-      [subscribeUrl]="subscribeUrl" [subscribeTarget]="subscribeTarget" [artworkUrl]="artworkUrl" (share)="showModal()"
-      [showPlaylist]="showPlaylist" [episodes]="episodes" (play)="onPlay($event)" (pause)="onPause($event)"
-      (ended)="onEnded($event)" (download)="onDownload($event)" (downloadUrl)="onDownloadUrl($event)" [duration]="duration">
+    <play-share-modal
+      *ngIf="showShareModal"
+      (close)="hideModal()"
+    ></play-share-modal>
+    <play-player
+      [feedArtworkUrl]="feedArtworkUrl"
+      [audioUrl]="audioUrl"
+      [title]="title"
+      [subtitle]="subtitle"
+      [subscribeUrl]="subscribeUrl"
+      [subscribeTarget]="subscribeTarget"
+      [artworkUrl]="artworkUrl"
+      (share)="showModal()"
+      [showPlaylist]="showPlaylist"
+      [episodes]="episodes"
+      (play)="onPlay($event)"
+      (pause)="onPause($event)"
+      (ended)="onEnded($event)"
+      (download)="onDownload($event)"
+      (downloadUrl)="onDownloadUrl($event)"
+      [duration]="duration"
+    >
       <ng-template let-dismiss="dismiss">
         <div class="app-overlay" (window:keydown)="handleKeypress($event)">
-          <p>Never miss an episode from <strong>{{this.subtitle}}</strong>
-            and other great podcasts when you download the free RadioPublic app.</p>
+          <p>
+            Never miss an episode from <strong>{{ this.subtitle }}</strong> and
+            other great podcasts when you download the free RadioPublic app.
+          </p>
           <ul class="app-selection">
-            <li *ngIf="!isiOSDevice">
-              <a [href]="playStoreLink()" [target]="subscribeTarget" (click)="noticeExit('AndroidApp')">
-                <img src="/assets/images/google-play.png" alt="Google Play Store" />
-              </a>
-            </li>
-            <li *ngIf="!isAndroidDevice"><a [href]="appStoreLink()"
-              [target]="subscribeTarget" (click)="noticeExit('iOSApp')"><img src="/assets/images/app-store.svg" alt="App Store" /></a></li>
-            <li *ngIf="isiOSDevice">or the <a [href]="playStoreLink()"
-              [target]="subscribeTarget" (click)="noticeExit('AndroidApp')">Google Play Store</a></li>
-            <li *ngIf="isAndroidDevice">or the <a href="appStoreLink()"
-              [target]="subscribeTarget" (click)="noticeExit('iOSApp')">App Store</a></li>
+            <app-links [appLinks]="appLinks"></app-links>
           </ul>
-          <p class="aside" *ngIf="downloadRequested">You can also <a [href]="downloadAudioUrl"
-            [target]="subscribeTarget">download the audio file</a> if you're on a computer.</p>
+          <p class="aside" *ngIf="downloadRequested">
+            You can also
+            <a [href]="downloadAudioUrl" [target]="subscribeTarget"
+              >download the audio file</a
+            >
+            if you're on a computer.
+          </p>
         </div>
       </ng-template>
     </play-player>
   `
 })
-
 export class EmbedComponent implements OnInit {
-
   showShareModal = false;
   hasInteracted = false;
   downloadRequested = false;
@@ -96,6 +109,8 @@ export class EmbedComponent implements OnInit {
 
   modalDisplayReason?: string;
 
+  appLinks?: AppLinks;
+
   // playlist
   showPlaylist: boolean;
   episodes: AdapterProperties[];
@@ -105,12 +120,17 @@ export class EmbedComponent implements OnInit {
 
   @ViewChild(PlayerComponent) private player: PlayerComponent;
 
-  constructor(private route: ActivatedRoute, private adapter: MergeAdapter, private visibility: VisibilityService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private adapter: MergeAdapter,
+    private visibility: VisibilityService
+  ) {}
 
   ngOnInit() {
     this.route.queryParams.forEach(params => {
       this.pymId = params[PYM_CHILD_ID_PARAM];
-      this.showPlaylist = typeof params[EMBED_SHOW_PLAYLIST_PARAM] !== 'undefined';
+      this.showPlaylist =
+        typeof params[EMBED_SHOW_PLAYLIST_PARAM] !== 'undefined';
       this.setEmbedHeight();
       this.loadOnInFrame(params);
     });
@@ -167,23 +187,30 @@ export class EmbedComponent implements OnInit {
   }
 
   playStoreLink() {
-    return `https://play.radiopublic.com/${encodeURIComponent(this.subscribeUrl)}?getApp=1&platform=android`;
+    return `https://play.radiopublic.com/${encodeURIComponent(
+      this.subscribeUrl
+    )}?getApp=1&platform=android`;
   }
 
   appStoreLink() {
-    return `https://play.radiopublic.com/${encodeURIComponent(this.subscribeUrl)}?getApp=1&platform=ios`;
+    return `https://play.radiopublic.com/${encodeURIComponent(
+      this.subscribeUrl
+    )}?getApp=1&platform=ios`;
   }
 
   private assignEpisodePropertiesToPlayer(properties: AdapterProperties) {
-    this.audioUrl = ( properties.audioUrl || this.audioUrl );
-    this.duration = ( properties.duration || this.duration || 0 );
-    this.title = ( properties.title || this.title );
-    this.subtitle = ( properties.subtitle || this.subtitle );
-    this.subscribeUrl = ( properties.subscribeUrl || this.subscribeUrl );
-    this.subscribeTarget = ( properties.subscribeTarget || this.subscribeTarget || '_blank');
-    this.artworkUrl = ( properties.artworkUrl || this.artworkUrl );
-    this.feedArtworkUrl = ( properties.feedArtworkUrl || this.feedArtworkUrl );
+    this.audioUrl = properties.audioUrl || this.audioUrl;
+    this.duration = properties.duration || this.duration || 0;
+    this.title = properties.title || this.title;
+    this.subtitle = properties.subtitle || this.subtitle;
+    this.subscribeUrl = properties.subscribeUrl || this.subscribeUrl;
+    this.subscribeTarget =
+      properties.subscribeTarget || this.subscribeTarget || '_blank';
+    this.artworkUrl = properties.artworkUrl || this.artworkUrl;
+    this.feedArtworkUrl = properties.feedArtworkUrl || this.feedArtworkUrl;
     this.episodes = properties.episodes || [];
+    console.log(properties);
+    this.appLinks = properties.appLinks;
 
     // fallback to feed image
     this.artworkUrl = this.artworkUrl || this.feedArtworkUrl;
@@ -208,15 +235,19 @@ export class EmbedComponent implements OnInit {
   @HostListener('window:resize', [])
   setEmbedHeight() {
     if (window.parent && window.parent.postMessage) {
-      window.parent.postMessage(JSON.stringify({
-        src: window.location.toString(),
-        context: 'iframe.resize',
-        height: 185
-      }), '*');
+      window.parent.postMessage(
+        JSON.stringify({
+          src: window.location.toString(),
+          context: 'iframe.resize',
+          height: 185
+        }),
+        '*'
+      );
       if (this.pymId) {
-        window.parent.postMessage([
-          'pym', this.pymId, 'height', 185
-        ].join(PYM_MESSAGE_DELIMITER), '*');
+        window.parent.postMessage(
+          ['pym', this.pymId, 'height', 185].join(PYM_MESSAGE_DELIMITER),
+          '*'
+        );
       }
     }
   }
@@ -224,8 +255,11 @@ export class EmbedComponent implements OnInit {
   private logEvent(category: string, action: string, label: string) {
     if (window['ga']) {
       window['ga']('send', {
-        transport: BEACON, hitType: EVENT,
-        eventCategory: category, eventAction: action, eventLabel: label
+        transport: BEACON,
+        hitType: EVENT,
+        eventCategory: category,
+        eventAction: action,
+        eventLabel: label
       });
     }
   }
@@ -237,5 +271,4 @@ export class EmbedComponent implements OnInit {
       });
     });
   }
-
 }
