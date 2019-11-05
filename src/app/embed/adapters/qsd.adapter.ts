@@ -8,8 +8,8 @@ import { AdapterProperties, DataAdapter } from './adapter.properties';
 @Injectable()
 export class QSDAdapter implements DataAdapter {
 
-  public getProperties(params: Object): Observable<AdapterProperties> {
-    let props = this.playerProperties(params);
+  public getProperties(params: {}): Observable<AdapterProperties> {
+    const props = this.playerProperties(params);
     Object.keys(props).filter(k => props[k] === undefined).forEach(key => delete props[key]);
     return Observable.of(props);
   }
